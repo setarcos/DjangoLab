@@ -1,0 +1,33 @@
+{# Load the tag library #}
+{% load bootstrap3 %}
+
+{# Load CSS and JavaScritps #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+{% load i18n admin_static %}
+<link rel="stylesheet" type="text/css" href="{% static "admin/css/login.css" %}" />
+<body class="login">
+{% block content %}
+
+<div id="container">
+    <h1>请登录 </h1>
+<form method="post" action="{% url 'login' %}" class="form">
+{% csrf_token %}
+{% bootstrap_form form %}
+{% buttons %}
+<button type="submit" class="btn btn-primary">
+    {% bootstrap_icon "user" %}
+    Login
+</button>
+{% endbuttons %}
+<input type="hidden" name="next" value="{{ next }}" />
+</form>
+{# Assumes you setup the password_reset view in your URLconf #}
+<p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+</div>
+
+{% endblock %}
+</body>
