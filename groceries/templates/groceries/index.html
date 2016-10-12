@@ -1,3 +1,9 @@
+{% extends 'groceries/base.html' %}
+
+{% load bootstrap3 %}
+
+{% block title %}物品列表{% endblock %}
+{% block content %}
 {% if item_list %}
     <ul>
     {% for item in item_list %}
@@ -7,3 +13,4 @@
 {% else %}
     <p>No item are available.</p>
 {% endif %}
+{% endblock %}
