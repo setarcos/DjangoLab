@@ -10,9 +10,10 @@
     <li>{{ item.name }}, {{item.id}}</li>
     <a href="{% url 'groceries:lend' item.id %}">
         {% if item.status_id == 1 %} 正常 {% else %} 借出 {% endif %}</a>
+    <a href="{% url 'groceries:hist' item.id %}">历史</a>
     {% endfor %}
     </ul>
 {% else %}
-    <p>No item are available.</p>
+    <p>还没有任何物品</p>
 {% endif %}
 {% endblock %}

@@ -20,6 +20,7 @@ class Items(models.Model):
 class History(models.Model):
     item = models.ForeignKey(Items, on_delete=models.CASCADE)
     user = models.CharField(max_length=20)
-    date = models.DateTimeField('Borrow/Return Date')
+    date = models.DateTimeField('Borrow Date')
     tel = models.CharField(max_length=20)
     note = models.CharField(max_length=200)
+    back = models.DateTimeField('Return Date', blank=True)

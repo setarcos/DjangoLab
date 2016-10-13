@@ -1,0 +1,16 @@
+{% extends 'groceries/base.html' %}
+
+{% load bootstrap3 %}
+
+{% block title %}物品历史{% endblock %}
+{% block content %}
+{% if hist %}
+    <ul>
+    {% for item in hist %}
+    <li>{{ item.user}}, {{item.date}}, {{item.tel}}, {{item.note}}, {{item.back}}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>没有借出历史</p>
+{% endif %}
+{% endblock %}
