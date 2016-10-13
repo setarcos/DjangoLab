@@ -7,7 +7,9 @@
 {% if item_list %}
     <ul>
     {% for item in item_list %}
-    <li>{{ item.name }}</li>
+    <li>{{ item.name }}, {{item.id}}</li>
+    <a href="{% url 'groceries:lend' item.id %}">
+        {% if item.status_id == 1 %} 正常 {% else %} 借出 {% endif %}</a>
     {% endfor %}
     </ul>
 {% else %}

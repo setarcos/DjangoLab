@@ -1,7 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
-from .models import Items
+from .models import Items, History
 from django.contrib.auth.decorators import login_required
+import datetime
+from django.utils import timezone
 
 @login_required
 def index(request):
@@ -10,11 +12,25 @@ def index(request):
 
 from .forms import LendForm
 
-def lenditem(request):
+def lenditem(request, lend_id):
+    item = get_object_or_404(Items, pk=lend_id)
     if request.method == 'POST':
         form = LendForm(request.POST)
         if form.is_valid():
-            return HttpResponseRedirect('/thanks/')
+            if item.status_id == 1:
+                item.status_id = 2
+                hist = History(item = item)
+                hist.user = request.POST.get('username', '')
+                hist.tel = request.POST.get('telephone', '')
+                hist.note = request.POST.get('note', '')
+                hist.date = timezone.now()
+                hist.save()
+                item.save()
+            return HttpResponseRedirect('/')
     else:
+        if item.status_id == 2: # return the item
+            item.status_id = 1
+            item.save()
+            return HttpResponseRedirect('/')
         form = LendForm();
     return render(request, 'groceries/lend.html', {'form': form})

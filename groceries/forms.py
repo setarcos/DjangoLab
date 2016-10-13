@@ -23,3 +23,12 @@ class LendForm(forms.Form):
             }
         ),
     )
+    note = forms.CharField(
+        required=False,
+        label=u'备注',
+        widget=forms.TextInput(
+            attrs={
+                'placeholder':u'备注',
+            }
+        ),
+    )

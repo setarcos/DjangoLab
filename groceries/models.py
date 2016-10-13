@@ -22,3 +22,4 @@ class History(models.Model):
     user = models.CharField(max_length=20)
     date = models.DateTimeField('Borrow/Return Date')
     tel = models.CharField(max_length=20)
+    note = models.CharField(max_length=200)
