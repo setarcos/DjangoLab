@@ -4,16 +4,23 @@
 
 {% block title %}物品列表{% endblock %}
 {% block content %}
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading">列表</div>
+
 {% if item_list %}
-    <ul>
+  <table class="table">
     {% for item in item_list %}
-    <li>{{ item.name }}, {{item.id}}</li>
-    <a href="{% url 'groceries:lend' item.id %}">
-        {% if item.status_id == 1 %} 正常 {% else %} 借出 {% endif %}</a>
-    <a href="{% url 'groceries:hist' item.id %}">历史</a>
+    <tr>
+    <td>{{ item.name }}</td><td> {{item.id}}</td>
+    <td><a href="{% url 'groceries:lend' item.id %}">
+        {% if item.status_id == 1 %} 正常 {% else %} 借出 {% endif %}</a></td>
+    <td><a href="{% url 'groceries:hist' item.id %}">历史</a></td>
+    </tr>
     {% endfor %}
-    </ul>
+  </table>
 {% else %}
     <p>还没有任何物品</p>
 {% endif %}
+</div>
 {% endblock %}

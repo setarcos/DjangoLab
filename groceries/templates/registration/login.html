@@ -1,18 +1,18 @@
-{# Load the tag library #}
+{% extends 'groceries/base.html' %}
+
+{% block title %}登录{% endblock %}
+
+{% block content %}
 {% load bootstrap3 %}
 
-{# Load CSS and JavaScritps #}
+{# Load CSS and JavaScript #}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 
 {# Display django.contrib.messages as Bootstrap alerts #}
 {% bootstrap_messages %}
-{% load i18n admin_static %}
-<link rel="stylesheet" type="text/css" href="{% static "admin/css/login.css" %}" />
-<body class="login">
-{% block content %}
 
-<div id="container">
+<div class="jumbotron">
     <h1>请登录 </h1>
 <form method="post" action="{% url 'login' %}" class="form">
 {% csrf_token %}
@@ -30,4 +30,3 @@
 </div>
 
 {% endblock %}
-</body>
