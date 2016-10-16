@@ -20,14 +20,19 @@
 <body>
 <nav class="navbar navbar-default navbar-static-top">
   <div class="container">
-    <div class="navbar-header">
+    <ul class="nav navbar-nav">
+      <li><a href="/" class="navbar-link">首页</a></li>
     {% if user.is_authenticated %}
-      <p class="navbar-text"> 欢迎 {{ user.username }}
-      <a href="/admin/logout" class="navbar-link">退出登录</a></p>
-    {% else %}
-      <p class="navbar-text"><a href="{% url 'login'  %}" class="navbar-link">请登录</a></p>
+    <li><p class="navbar-text"> 欢迎 {{ user.username }}</p></li>
     {% endif %}
-    </div>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+    {% if user.is_authenticated %}
+    <li><a href="/admin/logout" class="navbar-link">退出登录</a></li>
+    {% else %}
+    <li><p class="navbar-text"><a href="{% url 'login'  %}" class="navbar-link">请登录</a></p></li>
+    {% endif %}
+    </ul>
   </div>
 </nav>
   <div class="container">

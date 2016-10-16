@@ -4,12 +4,19 @@
 
 {% block title %}物品历史{% endblock %}
 {% block content %}
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading">历史</div>
 {% if hist %}
-    <ul>
+  <table class="table">
+    <tr><th>姓名</th><th>借出时间</th><th>联系电话</th><th>备注</th><th>归还时间</th>
     {% for item in hist %}
-    <li>{{ item.user}}, {{item.date}}, {{item.tel}}, {{item.note}}, {{item.back}}</li>
+    <tr>
+    <td>{{ item.user }}</td><td> {{item.date}}</td>
+    <td>{{ item.tel }}</td><td> {{item.note}}</td><td> {{item.back}}</td>
+    </tr>
     {% endfor %}
-    </ul>
+  </table>
 {% else %}
     <p>没有借出历史</p>
 {% endif %}
