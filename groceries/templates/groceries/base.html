@@ -18,11 +18,23 @@
     {% block bootstrap3_extra_head %}{% endblock %}
 </head>
 <body>
-    <div class="container">
-        {% if title %} &rsaquo; {{ title }}{% endif %}
+<nav class="navbar navbar-default navbar-static-top">
+  <div class="container">
+    <div class="navbar-header">
+    {% if user.is_authenticated %}
+      <p class="navbar-text"> 欢迎 {{ user.username }}
+      <a href="/admin/logout" class="navbar-link">退出登录</a></p>
+    {% else %}
+      <p class="navbar-text"><a href="{% url 'login'  %}" class="navbar-link">请登录</a></p>
+    {% endif %}
+    </div>
+  </div>
+</nav>
+  <div class="container">
+{% if title %} &rsaquo; {{ title }}{% endif %}
 {% block content %}
 {% endblock %}
-    </div>
+  </div>
 {% if not 'javascript_in_head'|bootstrap_setting %}{% bootstrap_javascript jquery=True %}{% endif %}
 {% block bootstrap3_extra_script %}{% endblock %}
 </body>
