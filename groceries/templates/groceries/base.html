@@ -28,7 +28,7 @@
     </ul>
     <ul class="nav navbar-nav navbar-right">
     {% if user.is_authenticated %}
-    <li><a href="/admin/logout" class="navbar-link">退出登录</a></li>
+    <li><a href="{% url 'logout' %}?next=/" class="navbar-link">退出登录</a></li>
     {% else %}
     <li><p class="navbar-text"><a href="{% url 'login'  %}" class="navbar-link">请登录</a></p></li>
     {% endif %}

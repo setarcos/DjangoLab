@@ -12,7 +12,7 @@
   <table class="table">
     {% for item in item_list %}
     <tr>
-    <td>{{ item.name }}</td><td> {{item.id}}</td>
+        <td>{{ item.name }}</td><td> {{item.serial}}</td><td> {{item.position}}</td><td>{{item.note}}</td>
     <td><a href="{% url 'groceries:lend' item.id %}">
         {% if item.status_id == 1 %} 正常 {% else %} 借出 {% endif %}</a></td>
     <td><a href="{% url 'groceries:hist' item.id %}">历史</a></td>
