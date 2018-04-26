@@ -12,7 +12,7 @@ class Items(models.Model):
     serial = models.CharField(max_length=20)
     value = models.IntegerField(default=0)
     position = models.CharField(max_length=20)
-    status = models.ForeignKey(Status)
+    status = models.ForeignKey(Status, on_delete=models.CASCADE)
     note = models.CharField(max_length=200)
     def __unicode__(self):
         return self.name
