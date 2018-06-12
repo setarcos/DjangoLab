@@ -3,7 +3,7 @@
 {% block title %}登录{% endblock %}
 
 {% block content %}
-{% load bootstrap3 %}
+{% load bootstrap4 %}
 
 {# Load CSS and JavaScript #}
 {% bootstrap_css %}
@@ -19,14 +19,13 @@
 {% bootstrap_form form %}
 {% buttons %}
 <button type="submit" class="btn btn-primary">
-    {% bootstrap_icon "user" %}
-    Login
+    登录
 </button>
 {% endbuttons %}
 <input type="hidden" name="next" value="{{ next }}" />
 </form>
 {# Assumes you setup the password_reset view in your URLconf #}
-<p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+<p><a href="{% url 'password_reset' %}">忘记密码?</a></p>
 </div>
 
 {% endblock %}

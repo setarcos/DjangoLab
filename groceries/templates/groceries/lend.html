@@ -1,6 +1,6 @@
 {% extends 'groceries/base.html' %}
 
-{% load bootstrap3 %}
+{% load bootstrap4 %}
 
 {# Load CSS and JavaScript #}
 {% bootstrap_css %}
@@ -18,7 +18,7 @@
     {% bootstrap_form form %}
     {% buttons %}
       <button type="submit" class="btn btn-primary">
-        {% bootstrap_icon "star" %} Submit
+        Submit
       </button>
     {% endbuttons %}
   </form>
