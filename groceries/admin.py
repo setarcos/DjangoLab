@@ -1,8 +1,7 @@
 from django.contrib import admin
-from .models import Status, Items
+from .models import Items
 
 class ItemsAdmin(admin.ModelAdmin):
-    list_display = ('name', 'serial', 'position', 'status')
+    list_display = ('name', 'serial', 'position')
 
-admin.site.register(Status)
 admin.site.register(Items, ItemsAdmin)

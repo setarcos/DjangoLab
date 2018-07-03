@@ -17,20 +17,19 @@ def lenditem(request, lend_id):
     if request.method == 'POST':
         form = LendForm(request.POST)
         if form.is_valid():
-            if item.status_id == 1:
-                item.status_id = 2
+            if item.status == 0:
+                item.status = 1
                 hist = History(item = item)
                 hist.user = request.POST.get('username', '')
                 hist.tel = request.POST.get('telephone', '')
                 hist.note = request.POST.get('note', '')
                 hist.date = timezone.now()
-                hist.back = '1980-1-1'
                 hist.save()
                 item.save()
             return HttpResponseRedirect('/')
     else:
-        if item.status_id == 2: # return the item
-            item.status_id = 1
+        if item.status == 1: # return the item
+            item.status = 0
             item.save()
             hist = History.objects.filter(item=item).order_by('-date')
             if hist.count() >= 1:
