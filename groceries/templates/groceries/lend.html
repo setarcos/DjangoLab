@@ -1,4 +1,4 @@
-{% extends 'groceries/base.html' %}
+{% extends 'nav.html' %}
 
 {% load bootstrap4 %}
 
@@ -9,10 +9,10 @@
 {# Display django.contrib.messages as Bootstrap alerts #}
 {% bootstrap_messages %}
 
-{% block title %}借出物品{% endblock %}
-{% block content %}
+{% block subtitle %}-借出物品{% endblock %}
+{% block main %}
 <div class="row">
-  <div class="col-md-4">
+  <div class="col-md-12">
       <form action="" method="post">
     {% csrf_token %}
     {% bootstrap_form form %}

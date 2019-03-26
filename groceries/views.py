@@ -8,7 +8,7 @@ from django.utils import timezone
 @login_required
 def index(request):
     item_list = Items.objects.all()[:5]
-    return render(request, 'groceries/index.html', {'item_list': item_list})
+    return render(request, 'groceries/index.html', {'item_list': item_list, 'active':3})
 
 from .forms import LendForm
 
@@ -38,9 +38,9 @@ def lenditem(request, lend_id):
                 h.save()
             return HttpResponseRedirect('/')
         form = LendForm();
-    return render(request, 'groceries/lend.html', {'form': form})
+    return render(request, 'groceries/lend.html', {'form': form, 'active':3})
 
 def itemhist(request, lend_id):
     item = get_object_or_404(Items, pk=lend_id)
     hist = History.objects.filter(item=item).order_by('-date')
-    return render(request, 'groceries/hist.html', {'hist': hist})
+    return render(request, 'groceries/hist.html', {'hist': hist, 'active':3})
