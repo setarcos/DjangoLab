@@ -1,3 +1,9 @@
+.feather {
+  width: 18px;
+  height: 18px;
+  vertical-align: text-bottom;
+}
+
 .sidebar {
   position: fixed;
   top: 0;
@@ -17,6 +23,11 @@
   overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
 }
 
+.sidebar .nav-link .feather {
+  margin-right: 4px;
+  color: #999;
+}
+
 .sidebar .nav-link.active {
   color: #007bff;
 }
@@ -24,6 +35,16 @@
 .sidebar .nav-link {
   font-weight: 500;
   color: #333;
+}
+
+.sidebar .nav-link:hover .feather,
+.sidebar .nav-link.active .feather {
+  color: inherit;
+}
+
+.navbar .nav-text {
+  font-weight: 600;
+  color: #FFF;
 }
 
 [role="main"] {
