@@ -9,7 +9,14 @@
 {# Display django.contrib.messages as Bootstrap alerts #}
 {% bootstrap_messages %}
 
-{% block subtitle %}-借出物品{% endblock %}
+{% block subtitle %}
+{% if f == "lend" %}
+-借出设备
+{% endif %}
+{% if f == "new" %}
+-新建设备
+{% endif %}
+{% endblock %}
 {% block main %}
 <div class="row">
   <div class="col-md-12">
@@ -18,7 +25,7 @@
     {% bootstrap_form form %}
     {% buttons %}
       <button type="submit" class="btn btn-primary">
-        Submit
+        提交
       </button>
     {% endbuttons %}
   </form>

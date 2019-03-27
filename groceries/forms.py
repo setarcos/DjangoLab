@@ -4,31 +4,31 @@ from django import forms
 
 class LendForm(forms.Form):
     username = forms.CharField(
-        required=True,
-        label=u'姓名',
-        error_messages={'required': '请输入姓名'},
-        widget=forms.TextInput(
-            attrs={
-                'placeholder':u'姓名',
-            }
-        ),
-    )
+        label='姓名',
+        error_messages={'required': '姓名必须填写'} # don't work for hint messages?
+        )
     telephone = forms.CharField(
-        required=True,
-        label=u'电话',
-        error_messages={'required': '请输入联系方式'},
-        widget=forms.TextInput(
-            attrs={
-                'placeholder':u'电话',
-            }
-        ),
-    )
+        label='电话',
+        )
     note = forms.CharField(
-        required=False,
-        label=u'备注',
-        widget=forms.TextInput(
-            attrs={
-                'placeholder':u'备注',
-            }
-        ),
-    )
+        label='备注',
+        )
+
+class NewItem(forms.Form):
+    itemname = forms.CharField(
+        label = '设备名称',
+        )
+    serial = forms.CharField(
+        label = '序列号',
+        )
+    value = forms.CharField(
+        label = '价格',
+        )
+    room = forms.CharField(
+        label = '所在房间号',
+        )
+    note = forms.CharField(
+        required = False,
+        label = '备注',
+        widget = forms.Textarea(),
+        )

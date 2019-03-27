@@ -1,23 +1,26 @@
 {% extends 'nav.html' %}
-{% block subtitle %}-物品列表{% endblock %}
+{% block subtitle %}-设备列表{% endblock %}
 {% block main %}
 <div class="panel panel-default">
   <!-- Default panel contents -->
-  <div class="panel-heading text-center"><h2>列表</h2></div>
-
+  <div class="panel-heading text-center"><h2>设备列表</h2></div>
+  <a href="{% url 'groceries:new' %}">新建设备</a>
 {% if item_list %}
   <table class="table">
     {% for item in item_list %}
     <tr>
         <td>{{ item.name }}</td><td> {{item.serial}}</td><td> {{item.position}}</td><td>{{item.note}}</td>
-    <td><a href="{% url 'groceries:lend' item.id %}">
-        {% if item.status == 0 %} 正常 {% else %} 借出 {% endif %}</a></td>
+    <td>{% if item.status == 0 %}正常{% else %}借出{% endif %}</td>
     <td><a href="{% url 'groceries:hist' item.id %}">历史</a></td>
+    <td><a href="{% url 'groceries:lend' item.id %}">
+        {% if item.status == 0 %}出借{% else %}归还{% endif %}</a></td>
+    <td><a href="{% url 'groceries:edit' item.id %}">修改</a></td>
+    <td><a href="{% url 'groceries:del' item.id %}">删除</a></td>
     </tr>
     {% endfor %}
   </table>
 {% else %}
-    <p>还没有任何物品</p>
+    <p>还没有任何设备</p>
 {% endif %}
 </div>
 {% endblock %}

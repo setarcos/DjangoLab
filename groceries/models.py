@@ -1,6 +1,5 @@
-from __future__ import unicode_literals
-
 from django.db import models
+from home.models import Teacher
 
 class Items(models.Model):
     name = models.CharField(max_length=200)
@@ -9,6 +8,7 @@ class Items(models.Model):
     position = models.CharField(max_length=20)
     status = models.IntegerField(default=0)
     note = models.CharField(max_length=200)
+    owner = models.ForeignKey(Teacher, on_delete = models.CASCADE)
     def __unicode__(self):
         return self.name
 
