@@ -25,41 +25,25 @@
       <div class="sidebar-sticky">
         <ul class="nav flex-column">
           <li class="nav-item">
-            {% if active == 1 %}
-            <a class="nav-link active" href="#">
-            {% else %}
-            <a class="nav-link" href="/">
-            {% endif %}
+            <a class="nav-link {% block ac1 %}{% endblock %}" href="/">
             <span data-feather="check"></span>
             待办事项
             </a>
           </li>
           <li class="nav-item">
-            {% if active == 2 %}
-            <a class="nav-link active" href="#">
-            {% else %}
-            <a class="nav-link" href="#">
-            {% endif %}
+            <a class="nav-link {% block ac2 %}{% endblock %}" href="#">
             <span data-feather="sun"></span>
             我的课程
             </a>
           </li>
           <li class="nav-item">
-            {% if active == 3 %}
-            <a class="nav-link active" href="#">
-            {% else %}
-            <a class="nav-link" href="/items/">
-            {% endif %}
+            <a class="nav-link {% block ac3 %}{% endblock %}" href="{% url 'groceries:index' %}">
             <span data-feather="printer"></span>
             我的设备
             </a>
           </li>
           <li class="nav-item">
-            {% if active == 4 %}
-            <a class="nav-link active" href="#">
-            {% else %}
-            <a class="nav-link" href="#">
-            {% endif %}
+            <a class="nav-link {% block ac4 %}{% endblock %}" href="#">
             <span data-feather="calendar"></span>
             预订会议室
             </a>

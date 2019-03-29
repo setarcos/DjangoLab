@@ -9,7 +9,7 @@ import json
 
 def index(request):
     if request.user.is_authenticated:
-        return render(request, 'home/index.html', {'active':1});
+        return render(request, 'home/index.html');
     else:
         return HttpResponseRedirect('static/login.html');
 

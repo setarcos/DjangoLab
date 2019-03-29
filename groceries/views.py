@@ -18,7 +18,7 @@ def getTea(request):
 def index(request):
     tea = getTea(request)
     item_list = Items.objects.filter(owner = tea)[:5]
-    return render(request, 'groceries/index.html', {'item_list': item_list, 'active':3})
+    return render(request, 'groceries/index.html', {'item_list': item_list})
 
 from .forms import LendForm, NewItem
 
@@ -48,7 +48,7 @@ def lendItem(request, lend_id):
                 h.save()
             return HttpResponseRedirect(reverse('groceries:index'))
         form = LendForm();
-    return render(request, 'groceries/lend.html', {'form': form, 'active':3, 'f':'lend'})
+    return render(request, 'groceries/lend.html', {'form': form, 'f':'lend'})
 
 def newItem(request):
     tea = getTea(request)
@@ -65,7 +65,7 @@ def newItem(request):
             return HttpResponseRedirect('/items/')
     else:
         form = NewItem();
-    return render(request, 'groceries/lend.html', {'form': form, 'active':3, 'f':'new'})
+    return render(request, 'groceries/lend.html', {'form': form, 'f':'new'})
 
 def editItem(request, lend_id):
     item = get_object_or_404(Items, pk=lend_id)
@@ -86,7 +86,7 @@ def editItem(request, lend_id):
                 'value': item.value,
                 'room': item.position,
                 'note': item.note});
-    return render(request, 'groceries/lend.html', {'form': form, 'active':3, 'f':'new'})
+    return render(request, 'groceries/lend.html', {'form': form, 'f':'new'})
 
 def delItem(request, lend_id):
     item = get_object_or_404(Items, pk=lend_id)
@@ -96,4 +96,4 @@ def delItem(request, lend_id):
 def itemHist(request, lend_id):
     item = get_object_or_404(Items, pk=lend_id)
     hist = History.objects.filter(item=item).order_by('-date')
-    return render(request, 'groceries/hist.html', {'hist': hist, 'active':3})
+    return render(request, 'groceries/hist.html', {'hist': hist})
