@@ -5,9 +5,32 @@
   <!-- Default panel contents -->
   <div class="panel-heading text-center"><h2>设备列表</h2></div>
   <a href="{% url 'groceries:new' %}">新建设备</a>
-{% if item_list %}
-  <table class="table">
-    {% for item in item_list %}
+  {% if item_list.object_list.count %}
+  <ul class="pagination">
+	<li class="prev page-item{% if not item_list.has_previous %} disabled{% endif %}">
+        <a class="page-link" href="{% if not item_list.has_previous %}#{% else %}?page=1{% endif %}">&laquo;</a>
+    </li>
+    <li class="prev page-item{% if not item_list.has_previous %} disabled{% endif %}">
+        <a class="page-link" href="{% if not item_list.has_previous %}#{% else %}?page={{ item_list.previous_page_number }}{% endif %}">前一页</a>
+    </li>
+    {% for p in item_list.paginator.page_range %}
+    {% if p > item_list.number|add:'-3' and p < item_list.number|add:'3' %}
+      <li class="page-item{% if item_list.number == p %} active{% endif %}">
+          <a class="page-link" href="{% if item_list.number == p %}#{% else %}?page={{ p }}{% endif %}">{{ p }}</a>
+      </li>
+    {% endif %}
+    {% endfor %}
+    <li class="last page-item{% if not item_list.has_next %} disabled{%endif %}">
+        <a class="page-link" href="{% if not item_list.has_next %}#{% else %}?page={{ item_list.next_page_number }}{%endif %}">后一页</a>
+    </li>
+    <li class="last page-item{% if not item_list.has_next %} disabled{%endif %}">
+        <a class="page-link" href="{% if not item_list.has_next %}#{% else %}?page={{ item_list.num_pages }}{%endif %}">&raquo;</a>
+    </li>
+  </ul>
+
+  <table class="table-sm table-bordered">
+    <tr><th>设备名称</th><th>序列号</th><th>保存位置</th><th>备注</th><th>状态</th><th colspan=4 align="center"> 操作</th> </tr>
+    {% for item in item_list.object_list %}
     <tr>
         <td>{{ item.name }}</td><td> {{item.serial}}</td><td> {{item.position}}</td><td>{{item.note}}</td>
     <td>{% if item.status == 0 %}正常{% else %}借出{% endif %}</td>

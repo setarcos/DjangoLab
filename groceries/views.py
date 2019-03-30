@@ -1,9 +1,10 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from .models import Items, History
 from django.contrib.auth.decorators import login_required
 import datetime
 from django.utils import timezone
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from home.models import Teacher
 
 def getTea(request):
@@ -17,8 +18,15 @@ def getTea(request):
 
 def index(request):
     tea = getTea(request)
-    item_list = Items.objects.filter(owner = tea)[:5]
-    return render(request, 'groceries/index.html', {'item_list': item_list})
+    paginator = Paginator(Items.objects.all(), 25)
+    page = request.GET.get('page', 1)
+    try:
+        items = paginator.page(page)
+    except PageNotAnInteger:
+        items = paginator.page(1)
+    except EmptyPage:
+        items = paginator.page(paginator.num_pages)
+    return render(request, 'groceries/index.html', {'item_list': items})
 
 from .forms import LendForm, NewItem
 

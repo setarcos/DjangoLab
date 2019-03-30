@@ -1,5 +1,5 @@
 {% extends "nav.html" %}
 {% block ac1 %}active{% endblock %}
 {% block main %}
-Hello
+Hello {{ user.username }} {{ request.session.schoolid }}
 {% endblock %}
