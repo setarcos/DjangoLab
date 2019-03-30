@@ -1,0 +1,9 @@
+{% extends "nav.html" %}
+{% block subtitle %}-会议室列表{% endblock %}
+
+{% block main %}
+    <h4 class="text-center">会议室列表</h4>
+    {% for room in rooms %}
+      {{ room.room_no }} , {{ room.info }} <br>
+    {% endfor %}
+{% endblock %}

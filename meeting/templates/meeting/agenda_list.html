@@ -1,0 +1,78 @@
+{% extends "nav.html" %}
+
+{% load bootstrap4 %}
+
+{% bootstrap_messages %}
+
+{% block subtitle %}-日程列表{% endblock %}
+{% block main %}
+<ul class="nav nav-tabs">
+    <li class="nav-item"><a class="nav-link active" href="#aaa" data-toggle="tab">日程表</a></li>
+    <li class="nav-item"><a class="nav-link" href="#bbb" data-toggle="tab">日程详细列表</a></li>
+</ul>
+<div class="tab-content" id="tabs">
+  <div class="tab-pane" id="bbb">
+  <div class="col-md-8">
+      <table class="table table-bordered table-hover table-sm">
+          <tr><th>事项</th><th>日期</th><th>操作</th></tr>
+            {% for agenda in agendas %}
+              <tr><td> {{ agenda.title }} </td><td>
+                {% if agenda.repeat == 0 %} {{ agenda.date }} {% else %}
+                  {% if agenda.week == 0 %}周一{% endif %}
+                  {% if agenda.week == 1 %}周二{% endif %}
+                  {% if agenda.week == 2 %}周三{% endif %}
+                  {% if agenda.week == 3 %}周四{% endif %}
+                  {% if agenda.week == 4 %}周五{% endif %}
+                  {% if agenda.week == 5 %}周六{% endif %}
+                  {% if agenda.week == 6 %}周日{% endif %}
+                  （截止日期 {{ agenda.date }}）
+                {% endif %}
+                  </td>
+                  <td><a href="{% url 'meeting:agenda_view' agenda.id %}">查看</a></td>
+              </tr>
+            {% endfor %}
+      </table>
+  </div>
+  </div>
+  <div class="tab-pane active" id="aaa">
+  <div class="container p-0" style="position: relative;min-height:500px">
+    <table class="table-sm table-bordered">
+        <tr><th style="width:50px"></th><td class="cal-header">周一</td>
+            <td class="cal-header">周二</td>
+            <td class="cal-header">周三</td>
+            <td class="cal-header">周四</td>
+            <td class="cal-header">周五</td>
+            <td class="cal-header">周六</td>
+            <td class="cal-header">周日</td></tr>
+        <tr><th class="cal-row">06:00</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><th class="cal-row">07:00</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><th class="cal-row">08:00</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><th class="cal-row">09:00</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><th class="cal-row">10:00</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><th class="cal-row">11:00</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><th class="cal-row">12:00</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><th class="cal-row">13:00</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><th class="cal-row">14:00</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><th class="cal-row">15:00</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><th class="cal-row">16:00</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><th class="cal-row">17:00</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><th class="cal-row">18:00</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><th class="cal-row">19:00</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><th class="cal-row">20:00</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><th class="cal-row">21:00</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><th class="cal-row">22:00</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><th class="cal-row">23:00</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><th class="cal-row">24:00</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    </table>
+    {% for agenda in agendas %}
+    {% if agenda.view != '' %}
+        <div class="calendar" style="position: absolute;{{ agenda.view }}">
+            <a href="{% url 'meeting:agenda_view' agenda.id %}">{{agenda.title }}</a>
+        </div>
+    {% endif %}
+    {% endfor %}
+  </div>
+  </div>
+</div>
+<li><a href="{% url 'meeting:agenda_add' room_id %}">增加新日程</a>
+{% endblock %}

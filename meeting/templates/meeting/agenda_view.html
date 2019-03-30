@@ -1,0 +1,32 @@
+{% extends "nav.html" %}
+
+{% load bootstrap4 %}
+
+{% bootstrap_messages %}
+
+{% block subtitle %}-日程详情{% endblock %}
+{% block main %}
+<div class="row">
+  <div class="col-md-8">
+      <table class="table table-bordered table-sm">
+          <tr><th>事项</th><td> {{ agenda.title }} </td></tr>
+          <tr><th>类型</th><td> {% if agenda.repeat == 1 %} 每周重复
+                  {% if agenda.week == 0 %}（周一）{% endif %}
+                  {% if agenda.week == 1 %}（周二）{% endif %}
+                  {% if agenda.week == 2 %}（周三）{% endif %}
+                  {% if agenda.week == 3 %}（周四）{% endif %}
+                  {% if agenda.week == 4 %}（周五）{% endif %}
+                  {% if agenda.week == 5 %}（周六）{% endif %}
+                  {% if agenda.week == 6 %}（周日）{% endif %}
+                  {% else %} 固定日期 {% endif %}
+          <tr><th>{% if agenda.repeat == 1 %}截止{% endif %}日期</th><td> {{ agenda.date }} </td></tr>
+          <tr><th>开始时间</th><td> {{ agenda.start_time }} </td>
+          <tr><th>结束时间</th><td> {{ agenda.end_time}} </td>
+          <tr><th>预订人</th><td> {{ agenda.username }} </td>
+      </table>
+      {% if user.is_superuser or request.session.schoolid == agenda.userid %}
+         <a href="{% url 'meeting:agenda_del' agenda.id %}">删除</a>
+      {% endif %}
+  </div>
+</div>
+{% endblock %}

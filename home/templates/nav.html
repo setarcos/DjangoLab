@@ -43,7 +43,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {% block ac4 %}{% endblock %}" href="#">
+              <a class="nav-link {% block ac4 %}{% endblock %}" href="{% url 'meeting:index' %}">
             <span data-feather="calendar"></span>
             预订会议室
             </a>
@@ -51,7 +51,7 @@
         </ul>
       </div>
     </nav>
-    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+    <main role="main" class="container col-md-9 ml-sm-auto col-lg-10 px-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
       {% block main %}
       {% endblock %}
