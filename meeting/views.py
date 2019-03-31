@@ -3,7 +3,17 @@ from django.http import HttpResponseRedirect, Http404
 from .models import MeetingRoom, RoomAgenda
 from .forms import AgendaForm
 from django.urls import reverse
+from home.models import Teacher
 import datetime
+
+def getTea(request):
+    try:
+        tea = Teacher.objects.get(uid = request.session['schoolid'])
+    except Teacher.DoesNotExist:
+        return -1
+    except KeyError:
+        return -2
+    return 1
 
 def index(request):
     rooms = MeetingRoom.objects.all()
@@ -16,7 +26,7 @@ def index(request):
 def agenda_add(request, room_id):
     room = get_object_or_404(MeetingRoom, pk=room_id)
     errors = []
-    if (not request.session.has_key('schoolid')) or request.user.username != request.session['schoolid']:
+    if (getTea(request) < 0):
         errors = ["你没有增加日程的权限"]
     if request.method == 'POST':
         form = AgendaForm(request.POST)

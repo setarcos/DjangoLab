@@ -6,8 +6,8 @@
 
 {% block subtitle %}-日程详情{% endblock %}
 {% block main %}
-<div class="row">
-  <div class="col-md-8">
+<div class="row justify-content-md-center">
+  <div class="container col-md-10" style="position: relative;min-width:610px;min-height=500px">
       <table class="table table-bordered table-sm">
           <tr><th>事项</th><td> {{ agenda.title }} </td></tr>
           <tr><th>类型</th><td> {% if agenda.repeat == 1 %} 每周重复
@@ -30,3 +30,4 @@
   </div>
 </div>
 {% endblock %}
+{% block ac4 %}active{% endblock %}

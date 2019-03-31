@@ -6,13 +6,16 @@
 
 {% block subtitle %}-日程列表{% endblock %}
 {% block main %}
+<div class="row justify-content-md-center">
 <ul class="nav nav-tabs">
     <li class="nav-item"><a class="nav-link active" href="#aaa" data-toggle="tab">日程表</a></li>
     <li class="nav-item"><a class="nav-link" href="#bbb" data-toggle="tab">日程详细列表</a></li>
+    <li class="nav-item"><a class="nav-link" href="{% url 'meeting:agenda_add' room_id %}">增加新日程</a>
 </ul>
+<div class="w-100"></div>
 <div class="tab-content" id="tabs">
   <div class="tab-pane" id="bbb">
-  <div class="col-md-8">
+  <div class="container p-0" style="position: relative;min-width:610px;min-height=500px">
       <table class="table table-bordered table-hover table-sm">
           <tr><th>事项</th><th>日期</th><th>操作</th></tr>
             {% for agenda in agendas %}
@@ -74,5 +77,6 @@
   </div>
   </div>
 </div>
-<li><a href="{% url 'meeting:agenda_add' room_id %}">增加新日程</a>
+</div>
 {% endblock %}
+{% block ac4 %}active{% endblock %}
