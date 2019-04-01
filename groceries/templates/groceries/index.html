@@ -1,6 +1,16 @@
 {% extends 'nav.html' %}
 {% block subtitle %}-设备列表{% endblock %}
 {% block main %}
+<script language="JavaScript">
+<!--
+function SureDel(delurl)
+{
+	if (confirm("确定要删除这条记录?")){
+        location = delurl;
+	}
+}
+-->
+</script>
 <div class="panel panel-default">
   <!-- Default panel contents -->
   <div class="panel-heading text-center"><h2>设备列表</h2></div>
@@ -38,7 +48,7 @@
     <td><a href="{% url 'groceries:lend' item.id %}">
         {% if item.status == 0 %}出借{% else %}归还{% endif %}</a></td>
     <td><a href="{% url 'groceries:edit' item.id %}">修改</a></td>
-    <td><a href="{% url 'groceries:del' item.id %}">删除</a></td>
+    <td><a href="javascript:SureDel('{% url 'groceries:del' item.id %}');">删除</a></td>
     </tr>
     {% endfor %}
   </table>

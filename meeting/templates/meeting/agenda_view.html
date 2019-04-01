@@ -6,6 +6,16 @@
 
 {% block subtitle %}-日程详情{% endblock %}
 {% block main %}
+<script language="JavaScript">
+<!--
+function SureDel()
+{
+	if (confirm("确定要删除这条记录?")){
+        location = "{% url 'meeting:agenda_del' agenda.id %}";
+	}
+}
+-->
+</script>
 <div class="row justify-content-md-center">
   <div class="container col-md-10" style="position: relative;min-width:610px;min-height=500px">
       <table class="table table-bordered table-sm">
@@ -25,7 +35,7 @@
           <tr><th>预订人</th><td> {{ agenda.username }} </td>
       </table>
       {% if user.is_superuser or request.session.schoolid == agenda.userid %}
-         <a href="{% url 'meeting:agenda_del' agenda.id %}">删除</a>
+         <a href="javascript:SureDel()">删除</a>
       {% endif %}
   </div>
 </div>
