@@ -2,6 +2,11 @@ from django.db import models
 from home.models import Teacher
 
 class Items(models.Model):
+
+    class Meta:
+        verbose_name="设备"
+        verbose_name_plural="设备"
+
     name = models.CharField(max_length=200)
     serial = models.CharField(max_length=20)
     value = models.IntegerField(default=0)
