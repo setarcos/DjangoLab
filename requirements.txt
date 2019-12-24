@@ -1,2 +1,3 @@
 django-bootstrap4
-request
+requests
+django-ckeditor
