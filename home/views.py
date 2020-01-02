@@ -9,9 +9,9 @@ import json
 
 def index(request):
     if request.user.is_authenticated:
-        return render(request, 'home/index.html');
+        return render(request, 'home/index.html')
     else:
-        return HttpResponseRedirect('static/login.html');
+        return HttpResponseRedirect('static/login.html')
 
 def auth(request):
     def get_client_ip(request):
