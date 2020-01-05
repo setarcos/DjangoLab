@@ -40,3 +40,17 @@
 </div>
 {% endblock %}
 {% block ac4 %}active{% endblock %}
+{% block morescripts %}
+<script>
+$(document).ready(function(){
+  $("#id_repeatable_0").click(function(){
+    $("label[for='id_date_year']").text("日期");
+	$("#id_week").prop('disabled', true);
+  });
+  $("#id_repeatable_1").click(function(){
+    $("label[for='id_date_year']").text("截止时间");
+	$("#id_week").prop('disabled', false);
+  });
+});
+</script>
+{% endblock %}
