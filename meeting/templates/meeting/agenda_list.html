@@ -17,7 +17,7 @@
   <div class="tab-pane" id="bbb">
   <div class="container p-0" style="position: relative;min-width:610px;min-height=500px">
       <table class="table table-bordered table-hover table-sm">
-          <tr><th>事项</th><th>日期</th><th>操作</th></tr>
+          <tr><th>事项</th><th>日期</th><th>状态</th><th>操作</th></tr>
             {% for agenda in agendas %}
               <tr><td> {{ agenda.title }} </td><td>
                 {% if agenda.repeat == 0 %} {{ agenda.date }} {% else %}
@@ -30,6 +30,15 @@
                   {% if agenda.week == 6 %}周日{% endif %}
                   （截止日期 {{ agenda.date }}）
                 {% endif %}
+                  </td>
+                  <td>
+                  {% if agenda.confirm == 0 %}
+                      {% if perm %}
+                      <a href="{% url 'meeting:agenda_confirm' agenda.id %}">未确认</a>
+                      {% else %}
+                      未确认
+                      {% endif %}
+                  {% else %}已确认{% endif %}
                   </td>
                   <td><a href="{% url 'meeting:agenda_view' agenda.id %}">查看</a></td>
               </tr>

@@ -27,6 +27,7 @@ class RoomAgenda(models.Model):
     week = models.IntegerField(default=-1)
     start_time = models.TimeField(default='00:00')
     end_time = models.TimeField(default='00:00')
+    confirm = models.IntegerField(default=0)
 
     def collide_time(self, other):
         if ((self.start_time < other.end_time) and (self.start_time > other.start_time)):
