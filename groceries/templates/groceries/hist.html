@@ -7,7 +7,7 @@
   <div class="panel-heading">历史</div>
 {% if hist %}
   <table class="table">
-    <tr><th>姓名</th><th>借出时间</th><th>联系电话</th><th>备注</th><th>归还时间</th>
+    <tr><th>姓名</th><th>借出时间</th><th>联系电话</th><th>备注</th><th>归还时间</th></tr>
     {% for item in hist %}
     <tr>
     <td>{{ item.user }}</td><td> {{item.date}}</td>
