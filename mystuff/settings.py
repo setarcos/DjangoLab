@@ -40,9 +40,10 @@ INSTALLED_APPS = [
     'bootstrap4',
     'ckeditor',
     'ckeditor_uploader',
-    'groceries',
-    'home',
-    'meeting',
+    'groceries.apps.GroceriesConfig',
+    'home.apps.UserConfig',
+    'meeting.apps.MeetingConfig',
+    'courses.apps.CoursesConfig',
 ]
 
 MIDDLEWARE = [
@@ -130,5 +131,6 @@ MEDIA_URL = '/media/'
 LOGIN_REDIRECT_URL = '/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_ROOT = os.path.join(STATIC_ROOT, 'media')
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 CKEDITOR_BROWSE_SHOW_DIRS = True
 CKEDITOR_UPLOAD_PATH='uploads/'

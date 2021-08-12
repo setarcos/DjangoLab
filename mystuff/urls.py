@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^ckeditor/', include('ckeditor_uploader.urls')),
     url(r'^items/', include('groceries.urls')),
     url(r'^meeting/', include('meeting.urls')),
+    url(r'^courses/', include('courses.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('django.contrib.auth.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

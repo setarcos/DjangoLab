@@ -1,0 +1,35 @@
+{% extends 'nav.html' %}
+  
+{% block subtitle %}-课程列表{% endblock %}
+
+{% block main %}
+<script language="JavaScript">
+function expendcode(code)
+{
+    document.write(code.replace(/,/g, "</td><td>"));
+}
+function termcode(term)
+{
+    if (term == 0) document.write("春季");
+    else if (term == 1) document.write("秋季");
+    else document.write("暑期");
+}
+</script>
+
+<div class="panel panel-default">
+  <div class="panel-heading"> 课程列表 </div>
+  {% if course_list %}
+   <table class="table">
+       <tr><th>课程名称</th><th>课程编号</th><th>学分</th><th>课时</th><th>学期</th><th>授课教师</th></tr>
+       {% for c in course_list %}
+    <tr> <td>{{ c.name }}</td><td><script language="JavaScript"> expendcode("{{ c.ccode }}") </script> </td>
+    <td><script language="JavaScript"> termcode({{ c.term }})</script>  <td> {{ c.tea_name }} </td>
+    </tr>
+       {% endfor %}
+   </table>
+  {% else %}
+    <p> 还没有课程，请在 admin 页面创建新课程 </p>
+  {% endif %}
+{% endblock %}
+{% block ac2 %}active{% endblock %}
+
