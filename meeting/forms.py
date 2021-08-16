@@ -28,11 +28,13 @@ class AgendaForm(forms.Form):
     start = forms.TimeField(
         required=True,
         label="起始时间",
+        widget=forms.TimeInput(attrs={'title':"时间格式：HH:MM"}),
     )
 
     end = forms.TimeField(
         required=True,
         label="结束时间",
+        widget=forms.TimeInput(attrs={'title':"时间格式：HH:MM"}),
     )
 
     note = forms.CharField(

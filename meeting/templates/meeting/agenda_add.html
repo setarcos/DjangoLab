@@ -7,7 +7,7 @@
 {% block subtitle %}-日程列表{% endblock %}
 {% block main %}
 <div class="row">
-  <div class="col-md-5">
+  <div class="col-md">
     {% for err in errors %}
     <div class="alert alert-danger" role="alert">
         <h4>{{ err }}</h4>
@@ -21,21 +21,7 @@
        提交 
       </button>
     {% endbuttons %}
-  </form>
-  </div>
-  <div class="col-md-5">
-    <div class="alert alert-primary" role="alert">
-       提示：固定时间的日程星期项被忽略
-    </div>
-    <div class="alert alert-primary" role="alert">
-       提示：每周重复的日程日期项表示重复截止的日期，也就是设定日期之后的会议室不会被预订
-    </div>
-    <div class="alert alert-primary" role="alert">
-       提示：起始时间和结束时间的格式是"HH:MM"，例如"11:30"表示11点30分
-    </div>
-    <div class="alert alert-primary" role="alert">
-       提示：事由请简明扼要
-    </div>
+      </form>
   </div>
 </div>
 {% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'nav.html' %}
+ 
+{% block subtitle %}-课程详情{% endblock %}
+
+{% block main %}
+<script language="JavaScript">
+function expendcode(code, idx)
+{
+    document.write(code.split(",")[idx]);
+}
+function termcode(term)
+{
+    if (term == 0) document.write("春季");
+    else if (term == 1) document.write("秋季");
+    else document.write("暑期");
+}
+</script>
+
+<div class="panel panel-default">
+  <div class="panel-heading"> 课程详情 </div>
+   <table class="table">
+       <tr><th>课程名称</th> <td> {{ course.name }} </td> </tr>
+       <tr><th>英文名称</th> <td> {{ course.ename }} </td></tr>
+       <tr><th>课程编号</th> <td> <script> expendcode("{{ course.ccode }}", 0) </script></td></tr>
+       <tr><th>学分</th> <td> <script> expendcode("{{ course.ccode }}", 1) </script></td></tr>
+       <tr><th>课时</th> <td> <script> expendcode("{{ course.ccode }}", 2) </script></td></tr>
+       <tr><th>学期</th> <td> <script> termcode({{ course.term }}) </script></td></tr>
+       <tr><th>授课教师</th> <td> {{ course.tea_name }} </td></tr>
+       <tr><th>课程大纲</th> <td> {{ course.intro|safe }} </td></tr>
+       <tr><th>联系方式</th> <td> {{ course.mailbox }} </td></tr>
+   </table>
+{% endblock %}
+{% block ac2 %}active{% endblock %}
+

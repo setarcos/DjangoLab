@@ -22,7 +22,8 @@ function termcode(term)
    <table class="table">
        <tr><th>课程名称</th><th>课程编号</th><th>学分</th><th>课时</th><th>学期</th><th>授课教师</th></tr>
        {% for c in course_list %}
-    <tr> <td>{{ c.name }}</td><td><script language="JavaScript"> expendcode("{{ c.ccode }}") </script> </td>
+       <tr> <td><a href="{% url 'courses:detail' c.id %}">{{ c.name }}</a></td>
+        <td><script language="JavaScript"> expendcode("{{ c.ccode }}") </script> </td>
     <td><script language="JavaScript"> termcode({{ c.term }})</script>  <td> {{ c.tea_name }} </td>
     </tr>
        {% endfor %}
