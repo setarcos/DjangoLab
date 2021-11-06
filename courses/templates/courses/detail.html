@@ -29,6 +29,15 @@ function termcode(term)
        <tr><th>课程大纲</th> <td> {{ course.intro|safe }} </td></tr>
        <tr><th>联系方式</th> <td> {{ course.mailbox }} </td></tr>
    </table>
+  {% if group.count %}
+  <h3>分组信息：</h3>
+  <table class = "table">
+      <tr><th>时间</th><th>地点</th><th>人数上限</th></tr>
+    {% for p in group %}
+      <tr><td>{{ p.week }}</td><td>{{ p.room }}</td><td>{{ p.limit }}</td></tr>
+    {% endfor %}
+  </table>
+  {% endif %}
 {% endblock %}
 {% block ac2 %}active{% endblock %}
 
