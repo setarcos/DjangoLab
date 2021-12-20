@@ -16,10 +16,10 @@ function termcode(term)
 }
 </script>
 
-<div class="panel panel-default">
+<div class="container">
   <div class="panel-heading"> 课程列表 </div>
   {% if course_list %}
-   <table class="table">
+   <table class="table table-course">
        <tr><th>课程名称</th><th>课程编号</th><th>学分</th><th>课时</th><th>学期</th><th>授课教师</th></tr>
        {% for c in course_list %}
        <tr> <td><a href="{% url 'courses:detail' c.id %}">{{ c.name }}</a></td>
@@ -31,6 +31,7 @@ function termcode(term)
   {% else %}
     <p> 还没有课程，请在 admin 页面创建新课程 </p>
   {% endif %}
+</div>
 {% endblock %}
 {% block ac2 %}active{% endblock %}
 

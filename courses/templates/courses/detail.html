@@ -16,10 +16,15 @@ function termcode(term)
 }
 </script>
 
-<div class="panel panel-default">
-  <div class="panel-heading"> 课程详情 </div>
-   <table class="table">
-       <tr><th>课程名称</th> <td> {{ course.name }} </td> </tr>
+<div class="container">
+  <ul class="nav nav-tabs">
+    <li class="nav-item"><a class="nav-link active" href="#course-md" data-toggle="tab">课程详情</a></li>
+    <li class="nav-item"><a class="nav-link" href="#group-md" data-toggle="tab">分组信息</a></li>
+  </ul>
+  <div class="tab-content" id="course-tabs">
+    <div class="tab-pane show active" id="course-md">
+    <table class="table table-course">
+       <tr><th width="20%">课程名称</th> <td widht="80%"> {{ course.name }} </td> </tr>
        <tr><th>英文名称</th> <td> {{ course.ename }} </td></tr>
        <tr><th>课程编号</th> <td> <script> expendcode("{{ course.ccode }}", 0) </script></td></tr>
        <tr><th>学分</th> <td> <script> expendcode("{{ course.ccode }}", 1) </script></td></tr>
@@ -28,16 +33,20 @@ function termcode(term)
        <tr><th>授课教师</th> <td> {{ course.tea_name }} </td></tr>
        <tr><th>课程大纲</th> <td> {{ course.intro|safe }} </td></tr>
        <tr><th>联系方式</th> <td> {{ course.mailbox }} </td></tr>
-   </table>
-  {% if group.count %}
-  <h3>分组信息：</h3>
-  <table class = "table">
-      <tr><th>时间</th><th>地点</th><th>人数上限</th></tr>
-    {% for p in group %}
-      <tr><td>{{ p.week }}</td><td>{{ p.room }}</td><td>{{ p.limit }}</td></tr>
-    {% endfor %}
-  </table>
-  {% endif %}
+    </table>
+    </div>
+    <div class="tab-pane" id="group-md">
+      {% if group.count %}
+      <table class = "table table-course">
+          <tr><th>时间</th><th>地点</th><th>人数上限</th></tr>
+        {% for p in group %}
+          <tr><td>{{ p.week }}</td><td>{{ p.room }}</td><td>{{ p.limit }}</td></tr>
+        {% endfor %}
+      </table>
+      {% endif %}
+    </div>
+  </div>
+</div>
 {% endblock %}
 {% block ac2 %}active{% endblock %}
 
