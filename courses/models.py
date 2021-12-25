@@ -16,15 +16,46 @@ class Course(models.Model):
     def __str__(self):
         return self.name
 
+class LabRoom(models.Model):
+    class Meta:
+        verbose_name="实验室"
+        verbose_name_plural="实验室"
+    name = models.CharField(max_length=10, verbose_name="房间号")
+    cname = models.CharField(max_length=30, verbose_name="实验室名称")
+    manager = models.CharField(max_length=10, verbose_name="负责人")
+    def __str__(self):
+        return self.name
+
+class SchoolYear(models.Model):
+    class Meta:
+        verbose_name="学年"
+        verbose_name_plural="学年"
+    name = models.CharField(max_length=10, verbose_name="学期")
+    start = models.DateField(default='2022-01-01', verbose_name="起始时间")
+    end = models.DateField(default='2022-01-01', verbose_name="结束时间")
+    def __str__(self):
+        return self.name
+
+class CourseSchedule(models.Model):
+    class Meta:
+        verbose_name="课程安排"
+        verbose_name_plural="课程安排"
+    week = models.IntegerField(default=0, verbose_name="周")
+    name = models.CharField(max_length=20, verbose_name="实验内容")
+    require = models.CharField(max_length=50, verbose_name="实验要求")
+    def __str__(self):
+        return self.name
+
 class CourseGroup(models.Model):
     class Meta:
         verbose_name="课程分组"
         verbose_name_plural="课程分组"
     course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name="课程")
-    week = models.CharField(max_length=50, verbose_name="上课时间")
-    room = models.CharField(max_length=10, verbose_name="上课地点")
+    # 两位数，第一位代表星期，第二位代表上午下午和晚上，例如 72 代表周日晚上，0 代表特殊时间安排
+    week = models.IntegerField(default=0, verbose_name="上课时间")
+    room = models.ForeignKey(LabRoom, on_delete=models.CASCADE, verbose_name="上课地点")
     tea_name = models.CharField(max_length=10, verbose_name="授课教师")
-    year = models.IntegerField(default=2020, verbose_name="学年") # 2020 代表 20-21 学年
+    year = models.ForeignKey(SchoolYear, on_delete=models.CASCADE, verbose_name="学年")
     limit = models.IntegerField(default=15, verbose_name="人数限制")
 
 class StudentGroup(models.Model):
@@ -35,7 +66,7 @@ class StudentGroup(models.Model):
 
 class StudentHist(models.Model):
     stu_id = models.CharField(max_length=10, verbose_name="学号")
-    datetime = models.DateTimeField(default='2018-01-01', verbose_name="日期")
+    datetime = models.DateTimeField(default='2018-01-01 00:00:00', verbose_name="日期")
     room = models.CharField(max_length=10, verbose_name="上课地点")
     seat = models.IntegerField(default=0, verbose_name="座位")
     note = models.CharField(max_length=50, verbose_name="自记录")
