@@ -1,12 +1,12 @@
-from django.urls import re_path
+from django.urls import path
 from . import views
 
 app_name = 'groceries'
 urlpatterns = [
-    re_path(r'^$', views.index, name='index'),
-    re_path(r'lend/(?P<lend_id>[0-9]+)/$', views.lendItem, name='lend'),
-    re_path(r'hist/(?P<lend_id>[0-9]+)/$', views.itemHist, name='hist'),
-    re_path(r'edit/(?P<lend_id>[0-9]+)/$', views.editItem, name='edit'),
-    re_path(r'del/(?P<lend_id>[0-9]+)/$', views.delItem, name='del'),
-    re_path(r'new/$', views.newItem, name='new'),
+    path('', views.index, name='index'),
+    path('lend/<int:lend_id>/', views.lendItem, name='lend'),
+    path('hist/<int:lend_id>/', views.itemHist, name='hist'),
+    path('edit/<int:lend_id>/', views.editItem, name='edit'),
+    path('del/<int:lend_id>/', views.delItem, name='del'),
+    path('new/', views.newItem, name='new'),
 ]

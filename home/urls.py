@@ -1,9 +1,9 @@
-from django.urls import re_path
+from django.urls import path
 from . import views
 
 app_name = 'home'
 urlpatterns = [
-    re_path(r'^$', views.index, name='index'),
-    re_path(r'^auth/', views.auth, name='auth'),
-    re_path(r'^logout/', views.logout_view, name='logout'),
+    path('', views.index, name='index'),
+    path('auth/', views.auth, name='auth'),
+    path('logout/', views.logout_view, name='logout'),
 ]

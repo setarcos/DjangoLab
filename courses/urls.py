@@ -1,11 +1,11 @@
-from django.urls import re_path
+from django.urls import path
 from . import views
 
 app_name = 'courses'
 urlpatterns = [
-    re_path(r'^$', views.index, name='index'),
-    re_path(r'^(?P<course_id>[0-9]+)/$', views.detail, name='detail'),
-    re_path(r'^join/(?P<group_id>[0-9]+)/$', views.joinGroup, name='joinGroup'),
-    re_path(r'^leave/(?P<group_id>[0-9]+)/$', views.leaveGroup, name='leaveGroup'),
-    re_path(r'^group/(?P<group_id>[0-9]+)/$', views.groupDetail, name='gdetail'),
+    path('', views.index, name='index'),
+    path('<int:course_id>/', views.detail, name='detail'),
+    path('join/<int:group_id>/', views.joinGroup, name='joinGroup'),
+    path('leave/<int:group_id>/', views.leaveGroup, name='leaveGroup'),
+    path('group/<int:group_id>/', views.groupDetail, name='gdetail'),
 ]
