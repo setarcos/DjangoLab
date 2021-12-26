@@ -1,6 +1,8 @@
 from django.db import models
 from ckeditor.fields import RichTextField
 
+import datetime
+
 class Course(models.Model):
     class Meta:
         verbose_name="课程"
@@ -35,6 +37,12 @@ class SchoolYear(models.Model):
     end = models.DateField(default='2022-01-01', verbose_name="结束时间")
     def __str__(self):
         return self.name
+
+    def get_status(self):
+        now = datetime.datetime.now().date();
+        if (now < self.start) or (now > self.end):
+            return "假期"
+        return self.name + f"学期，第 {int((now - self.start).days / 7)} 周"
 
 class CourseSchedule(models.Model):
     class Meta:

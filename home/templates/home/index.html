@@ -1,5 +1,45 @@
 {% extends "nav.html" %}
 {% block ac1 %}active{% endblock %}
 {% block main %}
-Hello {{ user.username }} {{ request.session.schoolid }}
+<div class="container">
+<div class="row">
+   {{ user.username }} 您好！<br>
+   <script type="text/javascript">
+    var date = new Date();
+    document.write("今天是：" + date.getFullYear() + "年" + (date.getMonth() + 1) + "月" + date.getDate() + "日" + " 星期" + "日一二三四五六".charAt(date.getDay()));
+
+    function weekcode(week)
+    {
+        w = week / 10;
+        document.write("星期" + "一二三四五六日".charAt(w - 1));
+        if (week % 10 == 1) document.write("下午");
+        if (week % 10 == 2) document.write("晚上");
+    }
+   </script>
+   ，现在是{{ schoolyear.get_status }}
+</div>
+<br>
+<div class="row">
+  <div class="card">
+    <div class="card-header">
+      本学期课程
+    </div>
+    <ul class="list-group list-group-flush">
+    {% if courses %}
+     <table class="table table-course">
+         <tr><th>课程名称</th><th>上课时间</th><th>上课地点</th></tr>
+         {% for c in courses %}
+         <tr> <td><a href="{% url 'courses:detail' c.id %}">{{ c.course }}</a></td>
+             <td><script>weekcode("{{ c.week }}")</script></td>
+             <td>{{ c.room }}</td>
+      </tr>
+         {% endfor %}
+     </table>
+    {% else %}
+      <p> 没有课程 </p>
+    {% endif %}
+    </ul>
+  </div>
+</div>
+</div>
 {% endblock %}

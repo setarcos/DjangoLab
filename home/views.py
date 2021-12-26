@@ -2,16 +2,32 @@ from django.http import HttpResponseRedirect, Http404
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout
 from django.shortcuts import render, get_object_or_404
+from courses.models import SchoolYear, CourseGroup, StudentGroup
 
 import hashlib
 import requests
 import json
+import datetime
 
 def index(request):
-    if request.user.is_authenticated:
-        return render(request, 'home/index.html')
-    else:
+    if not request.user.is_authenticated:
         return HttpResponseRedirect('static/login.html')
+    sy = SchoolYear.objects.all().order_by('-start');
+    if sy.count() == 0:
+        raise Http404("没有定义学期");
+    year = sy.first() # current school season
+    cg = CourseGroup.objects.filter(year=year) # all lab sessions
+    course_list = []
+    if request.user.username == 'Student':
+        for g in cg:
+            sg = StudentGroup.objects.filter(group=g,stu_id=request.session['schoolid'])
+            if sg.count() > 0:
+                course_list.append(g)
+    else:
+        for g in cg:
+            if g.tea_name == request.session['realname']:
+                course_list.append(g);
+    return render(request, 'home/index.html', {'schoolyear':year, 'courses':course_list})
 
 def auth(request):
     def get_client_ip(request):
