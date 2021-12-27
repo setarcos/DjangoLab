@@ -10,6 +10,10 @@ def index(request):
 def detail(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
     group = CourseGroup.objects.filter(course=course)
+    for g in group.all():
+        m = StudentGroup.objects.filter(group=g,stu_id = request.session['schoolid'])
+        if m.count() > 0:
+            request.session["has_me"]=g.id
     return render(request, 'courses/detail.html', {'course': course, 'group': group})
 
 def groupDetail(request, group_id):

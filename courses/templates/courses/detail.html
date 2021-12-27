@@ -52,7 +52,12 @@ function weekcode(week)
           <tr><th>时间</th><th>地点</th><th>人数上限</th><th>操作</th></tr>
         {% for p in group %}
             <tr><td><script>weekcode("{{ p.week }}") </script></td><td>{{ p.room }}</td><td>{{ p.limit }}</td>
-              <td><a class="btn btn-outline-primary" href="{% url 'courses:joinGroup' p.id %}">选择</a>
+                    <td>
+                  {% if request.session.has_me == p.id %}
+                  <a class="btn btn-outline-danger" href="{% url 'courses:leaveGroup' p.id %}">退出</a>
+                  {% else %}
+                  <a class="btn btn-outline-primary" href="{% url 'courses:joinGroup' p.id %}">选择</a>
+                  {% endif %}
               &nbsp;&nbsp;<a class="btn btn-outline-primary" href="{% url 'courses:gdetail' p.id %}">查看</a>
               </td>
           </tr>
