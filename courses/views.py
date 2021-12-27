@@ -3,6 +3,9 @@ from django.http import HttpResponseRedirect, Http404
 from django.contrib.auth.models import User
 from .models import Course, CourseGroup, StudentGroup, StudentHist
 
+from filelock import FileLock
+from os import remove
+
 def index(request):
     course_all = Course.objects.all()
     return render(request, 'courses/index.html', {'course_list': course_all})
@@ -34,15 +37,18 @@ def joinGroup(request, group_id):
                 raise Http404("你已经在这个组里面了")
             else:
                 raise Http404("你在这个课的其他组里")
-    student = StudentGroup.objects.filter(group=group)
-    m = StudentGroup(group = group)
-    m.stu_id = request.session['schoolid']
-    m.stu_name = request.session['realname']
-    if (student.count() > 0):
-        m.seat = student.order_by('-seat')[0].seat + 1
-    else:
-        m.seat = 1
-    m.save()
+    lockfile = FileLock(f"group.{group_id}")
+    with lockfile:
+        student = StudentGroup.objects.filter(group=group)
+        m = StudentGroup(group = group)
+        m.stu_id = request.session['schoolid']
+        m.stu_name = request.session['realname']
+        if (student.count() > 0):
+            m.seat = student.order_by('-seat')[0].seat + 1
+        else:
+            m.seat = 1
+        m.save()
+    remove(f"group.{group_id}")
     return render(request, 'courses/group_detail.html', {'group': student.order_by('seat')})
 
 def leaveGroup(request, group_id):
