@@ -48,6 +48,7 @@ class CourseSchedule(models.Model):
     class Meta:
         verbose_name="课程安排"
         verbose_name_plural="课程安排"
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name="课程")
     week = models.IntegerField(default=0, verbose_name="周")
     name = models.CharField(max_length=20, verbose_name="实验内容")
     require = models.CharField(max_length=50, verbose_name="实验要求")
@@ -74,9 +75,11 @@ class StudentGroup(models.Model):
 
 class StudentHist(models.Model):
     stu_id = models.CharField(max_length=10, verbose_name="学号")
+    stu_name = models.CharField(max_length=10, verbose_name="姓名")
     datetime = models.DateTimeField(default='2018-01-01 00:00:00', verbose_name="日期")
     room = models.CharField(max_length=10, verbose_name="上课地点")
     seat = models.IntegerField(default=0, verbose_name="座位")
     note = models.CharField(max_length=50, verbose_name="自记录")
     tea_note =models.CharField(max_length=50, verbose_name="教师记录")
+    tea_name = models.CharField(max_length=10, verbose_name="教师姓名")
     confirm = models.IntegerField(default=0, verbose_name="确认")
