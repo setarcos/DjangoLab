@@ -87,6 +87,7 @@ class StudentGroup(models.Model):
 class StudentHist(models.Model):
     stu_id = models.CharField(max_length=10, verbose_name="学号")
     stu_name = models.CharField(max_length=10, verbose_name="姓名")
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name="课程名称")
     room = models.ForeignKey(LabRoom, on_delete=models.CASCADE, verbose_name="上课地点")
     seat = models.IntegerField(default=0, verbose_name="座位")
     lab_name = models.CharField(max_length=20, verbose_name="实验内容")

@@ -71,7 +71,7 @@ def logAdd(request, group_id):
         form = StuLabForm(request.POST)
         if form.is_valid() and (form.cleaned_data['stu_id'] == cur_id):
             if (old_his.count() > 0):
-                history = old_his.first()
+                history = old_his.first() # update the last log
             else:
                 history = StudentHist()
             history.stu_id = cur_id
@@ -81,6 +81,7 @@ def logAdd(request, group_id):
             history.lab_name = form.cleaned_data['lab_name']
             history.note = form.cleaned_data['note']
             history.fin_time = datetime.now()
+            history.course = group.course
             history.save()
             return HttpResponseRedirect(reverse('courses:detail', args=(group.course.id,)))
     else:

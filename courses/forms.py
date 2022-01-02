@@ -17,6 +17,7 @@ class StuLabForm(forms.Form):
     seat = forms.IntegerField(
         max_value = 100,
         min_value = 1,
+        label='座位号',
         )
     lab_name = forms.CharField(
         label='实验名称',
