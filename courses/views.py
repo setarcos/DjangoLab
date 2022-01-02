@@ -1,10 +1,12 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, Http404
 from django.contrib.auth.models import User
-from .models import Course, CourseGroup, StudentGroup, StudentHist
+from django.urls import reverse
+from .models import Course, CourseGroup, StudentGroup, StudentHist, SchoolYear, CourseSchedule
 
 from filelock import FileLock
 from os import remove
+from datetime import datetime
 
 def index(request):
     course_all = Course.objects.all()
@@ -59,3 +61,51 @@ def leaveGroup(request, group_id):
     student = StudentGroup.objects.filter(group=group)
     return render(request, 'courses/group_detail.html', {'group': student.order_by('seat')})
 
+from .forms import StuLabForm
+
+def logAdd(request, group_id):
+    group = get_object_or_404(CourseGroup, pk=group_id)
+    cur_id = request.session['schoolid']
+    old_his = StudentHist.objects.filter(stu_id=cur_id,confirm=0).order_by('-fin_time');
+    if request.method == 'POST':
+        form = StuLabForm(request.POST)
+        if form.is_valid() and (form.cleaned_data['stu_id'] == cur_id):
+            if (old_his.count() > 0):
+                history = old_his.first()
+            else:
+                history = StudentHist()
+            history.stu_id = cur_id
+            history.stu_name = form.cleaned_data['stu_name']
+            history.room = form.cleaned_data['room']
+            history.seat = form.cleaned_data['seat']
+            history.lab_name = form.cleaned_data['lab_name']
+            history.note = form.cleaned_data['note']
+            history.fin_time = datetime.now()
+            history.save()
+            return HttpResponseRedirect(reverse('courses:detail', args=(group.course.id,)))
+    else:
+        his_dfl = StudentHist()
+        if (old_his.count() > 0):
+            his_dfl = old_his.first()
+        else:
+            his_dfl.stu_id = cur_id;
+            his_dfl.stu_name = request.session['realname']
+            his_dfl.room = group.room
+            student = StudentGroup.objects.filter(group=group,stu_id=cur_id)
+            if (student.count() > 0):
+                his_dfl.seat = student[0].seat
+            else:
+                his_dfl.seat = 0;
+            week = SchoolYear.get_week()
+            lab = CourseSchedule.objects.filter(course=group.course,week=week)
+            if (lab.count() > 0):
+                his_def.lab_name = lab[0].name
+        initials = {}
+        initials['stu_id'] = cur_id
+        initials['stu_name'] = his_dfl.stu_name
+        initials['room'] = his_dfl.room
+        initials['seat'] = his_dfl.seat
+        initials['lab_name'] = his_dfl.lab_name
+        initials['note'] = his_dfl.note
+        form = StuLabForm(initials)
+    return render(request, 'courses/log_add.html', {'form': form})

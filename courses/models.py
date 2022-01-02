@@ -38,11 +38,22 @@ class SchoolYear(models.Model):
     def __str__(self):
         return self.name
 
+    def get_wcount(self):
+        now = datetime.datetime.now().date();
+        return int((now - self.start).days / 7)
+
+    @staticmethod
+    def get_week():
+        sy = SchoolYear.objects.all().order_by('-start');
+        if sy.count() == 0:
+            return -1
+        return sy.first().get_wcount();
+
     def get_status(self):
         now = datetime.datetime.now().date();
         if (now < self.start) or (now > self.end):
             return "假期"
-        return self.name + f"学期，第 {int((now - self.start).days / 7)} 周"
+        return self.name + f"学期，第 {self.get_wcount()} 周"
 
 class CourseSchedule(models.Model):
     class Meta:
@@ -76,10 +87,11 @@ class StudentGroup(models.Model):
 class StudentHist(models.Model):
     stu_id = models.CharField(max_length=10, verbose_name="学号")
     stu_name = models.CharField(max_length=10, verbose_name="姓名")
-    datetime = models.DateTimeField(default='2018-01-01 00:00:00', verbose_name="日期")
-    room = models.CharField(max_length=10, verbose_name="上课地点")
+    room = models.ForeignKey(LabRoom, on_delete=models.CASCADE, verbose_name="上课地点")
     seat = models.IntegerField(default=0, verbose_name="座位")
+    lab_name = models.CharField(max_length=20, verbose_name="实验内容")
     note = models.CharField(max_length=50, verbose_name="自记录")
     tea_note =models.CharField(max_length=50, verbose_name="教师记录")
     tea_name = models.CharField(max_length=10, verbose_name="教师姓名")
+    fin_time = models.DateTimeField(default='2018-01-01 00:00:00', verbose_name="日期")  # confirm 时间
     confirm = models.IntegerField(default=0, verbose_name="确认")

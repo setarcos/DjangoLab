@@ -29,7 +29,7 @@
      <table class="table table-course">
          <tr><th>课程名称</th><th>上课时间</th><th>上课地点</th></tr>
          {% for c in courses %}
-         <tr> <td><a href="{% url 'courses:detail' c.id %}">{{ c.course }}</a></td>
+         <tr> <td><a href="{% url 'courses:detail' c.course.id %}">{{ c.course }}</a></td>
              <td><script>weekcode("{{ c.week }}")</script></td>
              <td>{{ c.room }}</td>
       </tr>
