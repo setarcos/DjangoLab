@@ -1,0 +1,45 @@
+{% extends 'nav.html' %}
+ 
+{% block subtitle %}-课程详情{% endblock %}
+
+{% block main %}
+<script language="JavaScript">
+function weekcode(week)
+{
+    w = week / 10;
+    document.write("星期" + "一二三四五六日".charAt(w - 1));
+    if (week % 10 == 1) document.write("下午");
+    if (week % 10 == 2) document.write("晚上");
+}
+</script>
+
+<div class="container">
+  <ul class="nav nav-tabs">
+      <li class="nav-item"><a class="nav-link" href="{% url 'courses:detail' course.id %}">课程详情</a></li>
+    <li class="nav-item"><a class="nav-link active">分组信息</a></li>
+  </ul>
+  <div class="tab-content" id="course-tabs">
+      {% if group.count %}
+      <table class = "table table-course table-striped">
+          <tr><th>时间</th><th>地点</th><th>人数上限</th><th>操作</th></tr>
+        {% for p in group %}
+            <tr><td><script>weekcode("{{ p.week }}") </script></td><td>{{ p.room }}</td><td>{{ p.limit }}</td>
+                    <td>
+                {% if request.user.username == 'Student' %}
+                  {% if request.session.has_me == p.id %}
+                  <a class="btn btn-outline-danger" href="{% url 'courses:leaveGroup' p.id %}">退出</a>
+                  {% else %}
+                  <a class="btn btn-outline-primary" href="{% url 'courses:joinGroup' p.id %}">选择</a>
+                  {% endif %}
+                {% endif %}
+              &nbsp;&nbsp;<a class="btn btn-outline-primary" href="{% url 'courses:gdetail' p.id %}">查看</a>
+              </td>
+          </tr>
+        {% endfor %}
+      </table>
+      {% endif %}
+  </div>
+</div>
+{% endblock %}
+{% block ac2 %}active{% endblock %}
+

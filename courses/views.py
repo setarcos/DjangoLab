@@ -14,13 +14,17 @@ def index(request):
 
 def detail(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
+    return render(request, 'courses/detail.html', {'course': course})
+
+def groups(request, course_id):
+    course = get_object_or_404(Course, pk=course_id)
     group = CourseGroup.objects.filter(course=course)
     request.session["has_me"]=""
     for g in group.all():
         m = StudentGroup.objects.filter(group=g,stu_id = request.session['schoolid'])
         if m.count() > 0:
             request.session["has_me"]=g.id
-    return render(request, 'courses/detail.html', {'course': course, 'group': group})
+    return render(request, 'courses/groups.html', {'course': course, 'group': group})
 
 def groupDetail(request, group_id):
     group = get_object_or_404(CourseGroup, pk=group_id)
