@@ -16,7 +16,7 @@
 {% block extra_js %}
     {% if not 'javascript_in_head'|bootstrap_setting %}
         <!-- Bootstrap JavaScript if it is in body -->
-        {% bootstrap_javascript jquery='slim' %}
+        {% bootstrap_javascript jquery='full' %}
     {% endif %}
     {% block bootstrap4_extra_script %}{% endblock %}
 {% endblock %}

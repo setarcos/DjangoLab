@@ -65,7 +65,8 @@ def leaveGroup(request, group_id):
     student = StudentGroup.objects.filter(group=group)
     return render(request, 'courses/group_detail.html', {'group': student.order_by('seat')})
 
-from .forms import StuLabForm
+from .forms import StuLabForm, GroupForm
+from bootstrap_modal_forms.generic import BSModalCreateView
 
 def logAdd(request, group_id):
     group = get_object_or_404(CourseGroup, pk=group_id)
@@ -114,3 +115,15 @@ def logAdd(request, group_id):
         initials['note'] = his_dfl.note
         form = StuLabForm(initials)
     return render(request, 'courses/log_add.html', {'form': form})
+
+class AddGroupView(BSModalCreateView):
+    template_name = 'courses/add_group.html'
+    form_class = GroupForm
+
+    def get_success_url(self):
+        return reverse('courses:groups', kwargs={'course_id': self.kwargs['course_id']})
+
+    def form_valid(self, form):
+        form.instance.course_id = self.kwargs['course_id']
+        form.instance.year_id = SchoolYear.get_current_year().id
+        return super().form_valid(form)

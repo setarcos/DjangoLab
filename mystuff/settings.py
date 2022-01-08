@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'bootstrap4',
     'ckeditor',
     'ckeditor_uploader',
+    'bootstrap_modal_forms',
     'groceries.apps.GroceriesConfig',
     'home.apps.UserConfig',
     'meeting.apps.MeetingConfig',

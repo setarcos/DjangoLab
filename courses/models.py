@@ -49,6 +49,11 @@ class SchoolYear(models.Model):
             return -1
         return sy.first().get_wcount();
 
+    @staticmethod
+    def get_current_year():
+        sy = SchoolYear.objects.all().order_by('-start');
+        return sy.first()
+
     def get_status(self):
         now = datetime.datetime.now().date();
         if (now < self.start) or (now > self.end):

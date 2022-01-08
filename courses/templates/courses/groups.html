@@ -1,4 +1,5 @@
 {% extends 'nav.html' %}
+{% load static %}
  
 {% block subtitle %}-课程详情{% endblock %}
 
@@ -39,7 +40,28 @@ function weekcode(week)
       </table>
       {% endif %}
   </div>
+{% if request.session.schoolid == course.tea_id %}
+<!-- Create book button -->
+<button id="add-group" class="btn btn-primary" type="button" name="button">增加</button>
+{% endif %}
 </div>
+<div class="modal fade" tabindex="-1" role="dialog" id="modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content"></div>
+  </div>
+</div>
+
 {% endblock %}
 {% block ac2 %}active{% endblock %}
+{% block morescripts %}
+<script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+<script language="JavaScript">
+$(document).ready(function() {
 
+    $("#add-group").modalForm({
+        formURL: "{% url 'courses:addGroup' course.id %}"
+    });
+
+});
+</script>
+{% endblock %}
