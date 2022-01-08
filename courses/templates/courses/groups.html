@@ -12,6 +12,12 @@ function weekcode(week)
     if (week % 10 == 1) document.write("下午");
     if (week % 10 == 2) document.write("晚上");
 }
+function SureDel(delurl)
+{
+	if (confirm("确定要删除这条记录?")){
+        location = delurl;
+	}
+}
 </script>
 
 <div class="container">
@@ -32,6 +38,9 @@ function weekcode(week)
                   {% else %}
                   <a class="btn btn-outline-primary" href="{% url 'courses:joinGroup' p.id %}">选择</a>
                   {% endif %}
+                {% endif %}
+                {% if request.session.schoolid == course.tea_id %}
+                  <a class="btn btn-outline-danger" href="javascript:SureDel('{% url 'courses:delGroup' p.id %}');">删除</a>
                 {% endif %}
               &nbsp;&nbsp;<a class="btn btn-outline-primary" href="{% url 'courses:gdetail' p.id %}">查看</a>
               </td>

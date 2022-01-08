@@ -18,7 +18,8 @@ def detail(request, course_id):
 
 def groups(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
-    group = CourseGroup.objects.filter(course=course)
+    year = SchoolYear.get_current_year() # only current year
+    group = CourseGroup.objects.filter(course=course,year=year)
     request.session["has_me"]=""
     for g in group.all():
         m = StudentGroup.objects.filter(group=g,stu_id = request.session['schoolid'])
@@ -131,3 +132,10 @@ class AddGroupView(BSModalCreateView):
         form.instance.year_id = SchoolYear.get_current_year().id
         form.instance.week = int(form.cleaned_data['nweek']) * 10 + int(form.cleaned_data['npart'])
         return super().form_valid(form)
+
+def delGroup(request, group_id):
+    group = get_object_or_404(CourseGroup, pk=group_id)
+    course = group.course
+    if request.session['schoolid'] == course.tea_id:
+        group.delete()
+    return HttpResponseRedirect(reverse('courses:groups', args=(course.id,)))

@@ -9,6 +9,7 @@ urlpatterns = [
     path('join/<int:group_id>/', views.joinGroup, name='joinGroup'),
     path('leave/<int:group_id>/', views.leaveGroup, name='leaveGroup'),
     path('group/<int:group_id>/', views.groupDetail, name='gdetail'),
+    path('group/del/<int:group_id>/', views.delGroup, name='delGroup'),
     path('group/add/<int:course_id>/', views.AddGroupView.as_view(), name='addGroup'),
     path('log/add/<int:group_id>/', views.logAdd, name='logAdd'),
 ]
