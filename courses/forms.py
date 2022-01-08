@@ -59,6 +59,11 @@ class GroupForm(BSModalModelForm):
         fields = ['room', 'tea_name', 'limit']
 
 class ScheduleForm(BSModalModelForm):
+    require = forms.CharField(
+            required = False,
+            label='具体要求',
+            )
+
     class Meta:
         model = CourseSchedule
         fields = ['week', 'name', 'require']
