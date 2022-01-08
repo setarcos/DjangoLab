@@ -67,7 +67,7 @@ class CourseSchedule(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name="课程")
     week = models.IntegerField(default=0, verbose_name="周")
     name = models.CharField(max_length=20, verbose_name="实验内容")
-    require = models.CharField(max_length=50, verbose_name="实验要求")
+    require = models.CharField(max_length=50, verbose_name="实验要求", default="")
     def __str__(self):
         return self.name
 

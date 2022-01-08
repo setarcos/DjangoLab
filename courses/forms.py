@@ -1,5 +1,5 @@
 from django import forms
-from .models import LabRoom, CourseGroup, Course
+from .models import LabRoom, CourseGroup, Course, CourseSchedule
 from bootstrap_modal_forms.forms import BSModalModelForm
 
 class StuLabForm(forms.Form):
@@ -57,3 +57,8 @@ class GroupForm(BSModalModelForm):
     class Meta:
         model = CourseGroup
         fields = ['room', 'tea_name', 'limit']
+
+class ScheduleForm(BSModalModelForm):
+    class Meta:
+        model = CourseSchedule
+        fields = ['week', 'name', 'require']

@@ -1,0 +1,62 @@
+{% extends 'nav.html' %}
+{% load static %}
+ 
+{% block subtitle %}-课程安排{% endblock %}
+
+{% block main %}
+<script language="JavaScript">
+function SureDel(delurl)
+{
+	if (confirm("确定要删除这条记录?")){
+        location = delurl;
+	}
+}
+</script>
+
+<div class="container">
+  <ul class="nav nav-tabs">
+    <li class="nav-item"><a class="nav-link" href="{% url 'courses:detail' course.id %}">课程详情</a></li>
+    <li class="nav-item"><a class="nav-link" href="{% url 'courses:groups' course.id %}">分组信息</a></li>
+    <li class="nav-item"><a class="nav-link active">时间安排</a></li>
+  </ul>
+  <div class="tab-content" id="course-tabs">
+      {% if object_list.count %}
+      <table class = "table table-course table-striped">
+          <tr><th>周次</th><th>内容</th><th>具体要求</th>
+              {% if request.session.schoolid == course.tea_id %} <th>操作</th> {% endif %}
+          </tr>
+        {% for p in object_list %}
+          <tr><td>{{ p.week }}</td><td>{{ p.name}}</td><td>{{ p.require }}</td>
+          {% if request.session.schoolid == course.tea_id %}
+          <td><a class="btn btn-outline-danger" href="javascript:SureDel('{% url 'courses:delSchedule' p.id %}');">删除</a> </td>
+          {% endif %}
+          </tr>
+        {% endfor %}
+      </table>
+      {% endif %}
+  </div>
+{% if request.session.schoolid == course.tea_id %}
+<!-- Create book button -->
+<button id="add-group" class="btn btn-primary" type="button" name="button">增加</button>
+{% endif %}
+</div>
+<div class="modal fade" tabindex="-1" role="dialog" id="modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content"></div>
+  </div>
+</div>
+
+{% endblock %}
+{% block ac2 %}active{% endblock %}
+{% block morescripts %}
+<script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+<script language="JavaScript">
+$(document).ready(function() {
+
+    $("#add-group").modalForm({
+        formURL: "{% url 'courses:addSchedule' course.id %}"
+    });
+
+});
+</script>
+{% endblock %}

@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect, Http404
 from django.contrib.auth.models import User
 from django.urls import reverse
 from .models import Course, CourseGroup, StudentGroup, StudentHist, SchoolYear, CourseSchedule
+from django.views.generic.list import ListView
 
 from filelock import FileLock
 from os import remove
@@ -66,7 +67,7 @@ def leaveGroup(request, group_id):
     student = StudentGroup.objects.filter(group=group)
     return render(request, 'courses/group_detail.html', {'group': student.order_by('seat')})
 
-from .forms import StuLabForm, GroupForm
+from .forms import StuLabForm, GroupForm, ScheduleForm
 from bootstrap_modal_forms.generic import BSModalCreateView
 
 def logAdd(request, group_id):
@@ -139,3 +140,38 @@ def delGroup(request, group_id):
     if request.session['schoolid'] == course.tea_id:
         group.delete()
     return HttpResponseRedirect(reverse('courses:groups', args=(course.id,)))
+
+class ScheduleListView(ListView):
+    model = CourseSchedule
+    template_name = 'courses/schedules.html'
+
+    def get_queryset(self):
+        self.course = get_object_or_404(Course, pk=self.kwargs['course_id'])
+        return CourseSchedule.objects.filter(course=self.course).order_by('week')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        course = get_object_or_404(Course, pk=self.kwargs['course_id'])
+        context['course'] = course
+        return context
+
+class AddScheduleView(BSModalCreateView):
+    template_name = 'courses/add_schedule.html'
+    form_class = ScheduleForm
+
+    def get_success_url(self):
+        return reverse('courses:schedules', kwargs={'course_id': self.kwargs['course_id']})
+
+    def form_valid(self, form):
+        course = Course.objects.get(pk=self.kwargs['course_id'])
+        if self.request.session['schoolid'] != course.tea_id:
+            return HttpResponseRedirect(reverse('courses:schedules', args=(course.id,)))
+        form.instance.course_id = self.kwargs['course_id']
+        return super().form_valid(form)
+
+def delSchedule(request, sche_id):
+    sche = get_object_or_404(CourseSchedule, pk=sche_id)
+    course = sche.course
+    if request.session['schoolid'] == course.tea_id:
+        sche.delete()
+    return HttpResponseRedirect(reverse('courses:schedules', args=(course.id,)))

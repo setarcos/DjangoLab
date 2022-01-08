@@ -1,0 +1,23 @@
+{% load bootstrap4 %}
+{% bootstrap_messages %}
+<form method="post" action="">
+{% csrf_token %}
+ <div class="modal-header">
+    <h5 class="modal-title">增加内容</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    {% bootstrap_form form %}
+  </div>
+
+  <div class="modal-footer">
+    {% buttons %}
+    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+    <button type="submit" class="btn btn-primary">增加</button>
+    {% endbuttons %}
+  </div>
+
+</form>
