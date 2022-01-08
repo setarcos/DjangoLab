@@ -1,6 +1,7 @@
+{% load bootstrap4 %}
+{% bootstrap_messages %}
 <form method="post" action="">
-  {% csrf_token %}
-
+{% csrf_token %}
  <div class="modal-header">
     <h5 class="modal-title">增加时段</h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -9,20 +10,14 @@
   </div>
 
   <div class="modal-body">
-    {% for field in form %}
-      <div class="form-group{% if field.errors %} invalid{% endif %}">
-        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-        {{ field }}
-        {% for error in field.errors %}
-          <p class="help-block">{{ error }}</p>
-        {% endfor %}
-      </div>
-    {% endfor %}
+    {% bootstrap_form form %}
   </div>
 
   <div class="modal-footer">
+    {% buttons %}
     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
     <button type="submit" class="btn btn-primary">增加</button>
+    {% endbuttons %}
   </div>
 
 </form>

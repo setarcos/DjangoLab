@@ -1,5 +1,5 @@
 from django import forms
-from .models import LabRoom, CourseGroup
+from .models import LabRoom, CourseGroup, Course
 from bootstrap_modal_forms.forms import BSModalModelForm
 
 class StuLabForm(forms.Form):
@@ -46,13 +46,14 @@ class StuLabForm(forms.Form):
 class GroupForm(BSModalModelForm):
     nweek = forms.ChoiceField(
             label='星期',
-            choices=((0, "---"), (1, "周一"), (2, "周二"), (3, "周三"), (4, "周四"),
+            choices=((0, "不指定"), (1, "周一"), (2, "周二"), (3, "周三"), (4, "周四"),
                 (5, "周五"), (6, "周六"), (7, "周日")),
             )
     npart = forms.ChoiceField(
             label='时间',
             choices=((0, "上午"), (1, "下午"), (2, "晚上")),
             )
+
     class Meta:
         model = CourseGroup
         fields = ['room', 'tea_name', 'limit']

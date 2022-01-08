@@ -124,6 +124,10 @@ class AddGroupView(BSModalCreateView):
         return reverse('courses:groups', kwargs={'course_id': self.kwargs['course_id']})
 
     def form_valid(self, form):
+        course = Course.objects.get(pk=self.kwargs['course_id'])
+        if self.request.session['schoolid'] != course.tea_id:
+            return HttpResponseRedirect(reverse('courses:groups', args=(course.id,)))
         form.instance.course_id = self.kwargs['course_id']
         form.instance.year_id = SchoolYear.get_current_year().id
+        form.instance.week = int(form.cleaned_data['nweek']) * 10 + int(form.cleaned_data['npart'])
         return super().form_valid(form)
