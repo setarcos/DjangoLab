@@ -11,11 +11,10 @@ function SureDel(delurl)
 }
 -->
 </script>
-<div class="panel panel-default">
+<div class="panel panel-default col-md-12">
   <!-- Default panel contents -->
   <div class="panel-heading text-center"><h2>设备列表</h2></div>
-  <a href="{% url 'groceries:new' %}">新建设备</a>
-  {% if item_list.object_list.count %}
+{% if item_list.object_list.count %}
   <ul class="pagination">
 	<li class="prev page-item{% if not item_list.has_previous %} disabled{% endif %}">
         <a class="page-link" href="{% if not item_list.has_previous %}#{% else %}?page=1{% endif %}">&laquo;</a>
@@ -36,19 +35,20 @@ function SureDel(delurl)
     <li class="last page-item{% if not item_list.has_next %} disabled{%endif %}">
         <a class="page-link" href="{% if not item_list.has_next %}#{% else %}?page={{ item_list.num_pages }}{%endif %}">&raquo;</a>
     </li>
+    &nbsp;&nbsp;<a class="btn btn-outline-primary" href="{% url 'groceries:new' %}">新建设备</a>
   </ul>
 
-  <table class="table-sm table-bordered">
-    <tr><th>设备名称</th><th>序列号</th><th>保存位置</th><th>备注</th><th>状态</th><th colspan=4 align="center"> 操作</th> </tr>
+  <table class="table table-bordered table-striped">
+    <tr><th>设备名称</th><th>序列号</th><th>保存位置</th><th>备注</th><th>状态</th><th> 操作</th> </tr>
     {% for item in item_list.object_list %}
     <tr>
         <td>{{ item.name }}</td><td> {{item.serial}}</td><td> {{item.position}}</td><td>{{item.note}}</td>
     <td>{% if item.status == 0 %}正常{% else %}借出{% endif %}</td>
-    <td><a href="{% url 'groceries:hist' item.id %}">历史</a></td>
-    <td><a href="{% url 'groceries:lend' item.id %}">
-        {% if item.status == 0 %}出借{% else %}归还{% endif %}</a></td>
-    <td><a href="{% url 'groceries:edit' item.id %}">修改</a></td>
-    <td><a href="javascript:SureDel('{% url 'groceries:del' item.id %}');">删除</a></td>
+    <td><a class="btn btn-outline-primary" href="{% url 'groceries:hist' item.id %}">历史</a>
+    <a class="btn btn-outline-primary" href="{% url 'groceries:lend' item.id %}">
+        {% if item.status == 0 %}出借{% else %}归还{% endif %}</a>
+    <a class="btn btn-outline-primary" href="{% url 'groceries:edit' item.id %}">修改</a>
+    <a class="btn btn-outline-danger" href="javascript:SureDel('{% url 'groceries:del' item.id %}');">删除</a></td>
     </tr>
     {% endfor %}
   </table>
