@@ -18,7 +18,7 @@ def getTea(request):
 
 def index(request):
     tea = getTea(request)
-    paginator = Paginator(Items.objects.all(), 25)
+    paginator = Paginator(Items.objects.filter(owner=tea), 25)
     page = request.GET.get('page', 1)
     try:
         items = paginator.page(page)
@@ -77,6 +77,9 @@ def newItem(request):
 
 def editItem(request, lend_id):
     item = get_object_or_404(Items, pk=lend_id)
+    tea = getTea(request)
+    if (tea != item.owner):
+        raise Http404("不能修改其他用户设备")
     if request.method == 'POST':
         form = NewItem(request.POST)
         if form.is_valid():
@@ -98,6 +101,9 @@ def editItem(request, lend_id):
 
 def delItem(request, lend_id):
     item = get_object_or_404(Items, pk=lend_id)
+    tea = getTea(request)
+    if (tea != item.owner):
+        raise Http404("不能删除其他用户设备")
     item.delete()
     return HttpResponseRedirect('/items/')
 
