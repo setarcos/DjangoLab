@@ -119,7 +119,7 @@ def logAdd(request, group_id):
     return render(request, 'courses/log_add.html', {'form': form})
 
 class AddGroupView(BSModalCreateView):
-    template_name = 'courses/add_group.html'
+    template_name = 'courses/form_temp.html'
     form_class = GroupForm
 
     def get_success_url(self):
@@ -156,7 +156,7 @@ class ScheduleListView(ListView):
         return context
 
 class AddScheduleView(BSModalCreateView):
-    template_name = 'courses/add_schedule.html'
+    template_name = 'courses/form_temp.html'
     form_class = ScheduleForm
 
     def get_success_url(self):

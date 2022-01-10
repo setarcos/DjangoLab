@@ -53,6 +53,7 @@ class GroupForm(BSModalModelForm):
             label='时间',
             choices=((0, "上午"), (1, "下午"), (2, "晚上")),
             )
+    modal_title = "增加时段"
 
     class Meta:
         model = CourseGroup
@@ -63,6 +64,7 @@ class ScheduleForm(BSModalModelForm):
             required = False,
             label='具体要求',
             )
+    modal_title = "增加实验内容"
 
     class Meta:
         model = CourseSchedule
