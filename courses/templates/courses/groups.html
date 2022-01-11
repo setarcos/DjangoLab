@@ -27,14 +27,14 @@ function SureDel(delurl)
     <li class="nav-item"><a class="nav-link" href="{% url 'courses:schedules' course.id %}">时间安排</a></li>
   </ul>
   <div class="tab-content" id="course-tabs">
-      {% if group.count %}
+      {% if group %}
       <table class = "table table-course table-striped">
           <tr><th>时间</th><th>地点</th><th>人数上限</th><th>操作</th></tr>
         {% for p in group %}
             <tr><td><script>weekcode("{{ p.week }}") </script></td><td>{{ p.room }}</td><td>{{ p.limit }}</td>
                     <td>
                 {% if request.user.username == 'Student' %}
-                  {% if request.session.has_me == p.id %}
+                  {% if p.has_me == 1 %}
                   <a class="btn btn-outline-danger" href="{% url 'courses:leaveGroup' p.id %}">退出</a>
                   {% else %}
                   <a class="btn btn-outline-primary" href="{% url 'courses:joinGroup' p.id %}">选择</a>

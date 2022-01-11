@@ -1,0 +1,27 @@
+{% extends 'nav.html' %}
+  
+{% block subtitle %}-成员列表{% endblock %}
+
+{% block main %}
+
+<div class="container">
+  <div class="panel-heading"> 成员列表</div>
+   <table class="table table-course">
+       <tr><th>学号</th><th>姓名</th><th>座位</th><th>状态</th></tr>
+       {% for g in object_list %}
+       <tr><td>{{ g.stu_id }}</td>
+           <td>{{ g.stu_name }}</td>
+           <td>{{ g.seat }}</td>
+           <td>{% if g.complete == 1 %}
+               完成
+               {% else %}
+               未完成
+               {% endif %}
+           </td>
+       </tr>
+       {% endfor %}
+   </table>
+</div>
+{% endblock %}
+{% block ac2 %}active{% endblock %}
+

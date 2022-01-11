@@ -7,7 +7,7 @@ from django.views.generic.list import ListView
 
 from filelock import FileLock
 from os import remove
-from datetime import datetime
+from datetime import datetime, time
 
 def index(request):
     course_all = Course.objects.all()
@@ -20,12 +20,13 @@ def detail(request, course_id):
 def groups(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
     year = SchoolYear.get_current_year() # only current year
-    group = CourseGroup.objects.filter(course=course,year=year)
-    request.session["has_me"]=""
-    for g in group.all():
-        m = StudentGroup.objects.filter(group=g,stu_id = request.session['schoolid'])
+    group = list(CourseGroup.objects.filter(course=course,year=year))
+    for i in range(len(group)):
+        m = StudentGroup.objects.filter(group=group[i].id,stu_id = request.session['schoolid'])
         if m.count() > 0:
-            request.session["has_me"]=g.id
+            group[i].has_me=1
+        else:
+            group[i].has_me=0
     return render(request, 'courses/groups.html', {'course': course, 'group': group})
 
 def groupDetail(request, group_id):
@@ -88,9 +89,9 @@ def logAdd(request, group_id):
             history.lab_name = form.cleaned_data['lab_name']
             history.note = form.cleaned_data['note']
             history.fin_time = datetime.now()
-            history.course = group.course
+            history.group = group
             history.save()
-            return HttpResponseRedirect(reverse('courses:detail', args=(group.course.id,)))
+            return HttpResponseRedirect(reverse('home:index'))
     else:
         his_dfl = StudentHist()
         if (old_his.count() > 0):
@@ -117,6 +118,33 @@ def logAdd(request, group_id):
         initials['note'] = his_dfl.note
         form = StuLabForm(initials)
     return render(request, 'courses/log_add.html', {'form': form})
+
+def logConfirm(request, log_id):
+    log = get_object_or_404(StudentHist, pk=log_id)
+    if request.user.username != 'Teacher':
+        raise Http404("只有教师具有此权限")
+    log.tea_name = request.session['realname']
+    log.fin_time = datetime.now()
+    log.save()
+    return reverse('courses:logView', grgs=(log.group))
+
+def logView(request, group_id):
+    group = get_object_or_404(CourseGroup, pk=group_id)
+    if request.user.username != 'Teacher':
+        raise Http404("只有教师具有此权限")
+    students = list(StudentGroup.objects.filter(group=group))
+    time_begin = datetime.combine(datetime.now(), time(0,0,0))
+    logs = StudentHist.objects.filter(group=group,fin_time__gte=time_begin)
+    all_logs = {}
+    for log in logs:
+        all_logs[logs.stu_id] = logs.note
+    for i in range(len(students)):
+        if students[i].stu_id in all_logs:
+            students[i].complete = 1
+            students[i].note = all_logs[students[i].stu_id]
+        else:
+            students[i].complete = 0
+    return render(request, 'courses/log_view.html', {'object_list':students})
 
 class AddGroupView(BSModalCreateView):
     template_name = 'courses/form_temp.html'

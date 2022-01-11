@@ -92,12 +92,18 @@ class StudentGroup(models.Model):
 class StudentHist(models.Model):
     stu_id = models.CharField(max_length=10, verbose_name="学号")
     stu_name = models.CharField(max_length=10, verbose_name="姓名")
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name="课程名称")
+    group = models.ForeignKey(CourseGroup, on_delete=models.SET_NULL, verbose_name="课程名称", null=True)
     room = models.ForeignKey(LabRoom, on_delete=models.CASCADE, verbose_name="上课地点")
     seat = models.IntegerField(default=0, verbose_name="座位")
     lab_name = models.CharField(max_length=20, verbose_name="实验内容")
     note = models.CharField(max_length=50, verbose_name="自记录")
-    tea_note =models.CharField(max_length=50, verbose_name="教师记录")
+    tea_note =models.CharField(default="", max_length=50, verbose_name="教师记录")
     tea_name = models.CharField(max_length=10, verbose_name="教师姓名")
     fin_time = models.DateTimeField(default='2018-01-01 00:00:00', verbose_name="日期")  # confirm 时间
     confirm = models.IntegerField(default=0, verbose_name="确认")
+
+class StudentLog(models.Model):
+    stu_id = models.CharField(max_length=10, verbose_name="学号")
+    tea_id = models.CharField(max_length=10, verbose_name="教师帐号")
+    note = models.CharField(max_length=100, verbose_name="记录内容")
+    note_time = models.DateTimeField(verbose_name="时间")
