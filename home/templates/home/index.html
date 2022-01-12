@@ -34,7 +34,14 @@
          {% for c in courses %}
          <tr> <td><a href="{% url 'courses:detail' c.course.id %}">{{ c.course }}</a></td>
              <td><script>weekcode("{{ c.week }}")</script></td>
-             <td>{{ c.room }}</td>
+             <td>{{ c.room }}
+                 {% if request.user.username == 'Student' %}
+                 {% if c.complete == 0 %}
+                 <a class="btn btn-outline-danger" href="{% url 'courses:logAdd' c.id %}">实验记录</a>
+                 {% endif %}
+                 {% else %}
+                 {% endif %}
+             </td>
       </tr>
          {% endfor %}
      </table>

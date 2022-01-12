@@ -2,7 +2,7 @@ from django.http import HttpResponseRedirect, Http404
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout
 from django.shortcuts import render, get_object_or_404
-from courses.models import SchoolYear, CourseGroup, StudentGroup
+from courses.models import SchoolYear, CourseGroup, StudentGroup, StudentHist
 
 import hashlib
 import requests
@@ -22,6 +22,12 @@ def index(request):
         for g in cg:
             sg = StudentGroup.objects.filter(group=g,stu_id=request.session['schoolid'])
             if sg.count() > 0:
+                now = datetime.datetime.combine(datetime.datetime.now(), datetime.time(0,0,0))
+                sh = StudentHist.objects.filter(group=g, stu_id=request.session['schoolid'],confirm=1,fin_time__gte=now)
+                if (sh.count() > 0):
+                    g.complete = 1  # 每天只能完成一个实验一次，其他时间也可以重复记录
+                else:
+                    g.complete = 0
                 course_list.append(g)
     else:
         for g in cg:

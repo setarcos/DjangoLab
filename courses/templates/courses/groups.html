@@ -29,9 +29,10 @@ function SureDel(delurl)
   <div class="tab-content" id="course-tabs">
       {% if group %}
       <table class = "table table-course table-striped">
-          <tr><th>时间</th><th>地点</th><th>人数上限</th><th>操作</th></tr>
+          <tr><th>时间</th><th>地点</th><th>任课教师</th><th>人数上限</th><th>操作</th></tr>
         {% for p in group %}
-            <tr><td><script>weekcode("{{ p.week }}") </script></td><td>{{ p.room }}</td><td>{{ p.limit }}</td>
+            <tr><td><script>weekcode("{{ p.week }}") </script></td><td>{{ p.room }}</td>
+                    <td>{{ p.tea_name }}</td><td>{{ p.limit }}</td>
                     <td>
                 {% if request.user.username == 'Student' %}
                   {% if p.has_me == 1 %}
