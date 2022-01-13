@@ -125,8 +125,9 @@ def logConfirm(request, log_id):
         raise Http404("只有教师具有此权限")
     log.tea_name = request.session['realname']
     log.fin_time = datetime.now()
+    log.confirm = 1
     log.save()
-    return reverse('courses:logView', grgs=(log.group))
+    return HttpResponseRedirect(reverse('courses:logView', args=(log.group_id,)))
 
 def logView(request, group_id):
     group = get_object_or_404(CourseGroup, pk=group_id)
@@ -137,11 +138,13 @@ def logView(request, group_id):
     logs = StudentHist.objects.filter(group=group,fin_time__gte=time_begin)
     all_logs = {}
     for log in logs:
-        all_logs[logs.stu_id] = logs.note
+        all_logs[log.stu_id] = log
     for i in range(len(students)):
         if students[i].stu_id in all_logs:
             students[i].complete = 1
-            students[i].note = all_logs[students[i].stu_id]
+            students[i].note = all_logs[students[i].stu_id].note
+            students[i].confirmed = all_logs[students[i].stu_id].confirm
+            students[i].log_id = all_logs[students[i].stu_id].id
         else:
             students[i].complete = 0
     return render(request, 'courses/log_view.html', {'object_list':students})

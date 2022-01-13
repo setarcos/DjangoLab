@@ -3,19 +3,36 @@
 {% block subtitle %}-成员列表{% endblock %}
 
 {% block main %}
-
+<script language="JavaScript">
+function SureConfirm(name, url)
+{
+	if (confirm(name + "可以下课了吗?")){
+        location = url;
+	}
+}
+</script>
 <div class="container">
   <div class="panel-heading"> 成员列表</div>
    <table class="table table-course">
-       <tr><th>学号</th><th>姓名</th><th>座位</th><th>状态</th></tr>
+       <tr><th>学号</th><th>姓名</th><th>座位</th><th>状态</th><th>操作</th></tr>
        {% for g in object_list %}
        <tr><td>{{ g.stu_id }}</td>
            <td>{{ g.stu_name }}</td>
            <td>{{ g.seat }}</td>
            <td>{% if g.complete == 1 %}
-               完成
+               完成，
                {% else %}
-               未完成
+               未完成，
+               {% endif %}
+               {% if g.confirmed == 1 %}
+               已验收
+               {% else %}
+               未验收
+               {% endif %}
+           </td>
+           <td>
+               {% if g.confirmed == 0 %}
+               <a class="btn btn-outline-danger" href="javascript:SureConfirm('{{ g.stu_name }}', '{% url 'courses:logConfirm' g.log_id %}');">验收</a>
                {% endif %}
            </td>
        </tr>
