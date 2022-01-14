@@ -104,6 +104,6 @@ class StudentHist(models.Model):
 class StudentLog(models.Model):
     group = models.ForeignKey(CourseGroup, on_delete=models.CASCADE)
     stu_id = models.CharField(max_length=10, verbose_name="学号")
-    tea_id = models.CharField(max_length=10, verbose_name="教师帐号")
+    tea_name = models.CharField(max_length=10, verbose_name="教师")
     note = models.CharField(max_length=100, verbose_name="记录内容")
     note_time = models.DateTimeField(verbose_name="时间")

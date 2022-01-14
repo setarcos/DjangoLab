@@ -1,0 +1,21 @@
+{% extends 'nav.html' %}
+  
+{% block subtitle %}-学生情况{% endblock %}
+
+{% block main %}
+
+<div class="container">
+   <div class="panel-heading">{{ student_name }} 评价表</div>
+   <table class="table table-course">
+       <tr><th width="20%">时间</th><th>内容</th></tr>
+       {% for g in object_list %}
+       <tr><td>{{ g.note_time}}</td>
+           <td {% if g.tea_name == request.session.realname %}class="alert-secondary"{% else %}class="alert-dark"{% endif %}>{{ g.note }}
+               {% if g.tea_name != request.session.realname %}({{ g.tea_name }}){% endif %}
+           </td></tr>
+       {% endfor %}
+   </table>
+</div>
+{% endblock %}
+{% block ac2 %}active{% endblock %}
+

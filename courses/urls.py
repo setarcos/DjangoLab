@@ -17,5 +17,6 @@ urlpatterns = [
     path('schedule/<int:course_id>', views.ScheduleListView.as_view(), name='schedules'),
     path('schedule/add/<int:course_id>/', views.AddScheduleView.as_view(), name='addSchedule'),
     path('schedule/del/<int:sche_id>/', views.delSchedule, name='delSchedule'),
-    path('eva/<int:group_id>/<str:stu_id>/', views.AddStudentEvaView.as_view(), name='addEva'),
+    path('eva/<int:group_id>/<str:stu_id>/', views.evaView, name='evaView'),
+    path('eva/add/<int:group_id>/<str:stu_id>/', views.AddStudentEvaView.as_view(), name='addEva'),
 ]

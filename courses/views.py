@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, Http404
 from django.contrib.auth.models import User
 from django.urls import reverse
-from .models import Course, CourseGroup, StudentGroup, StudentHist, SchoolYear, CourseSchedule
+from .models import Course, CourseGroup, StudentGroup, StudentHist, SchoolYear, CourseSchedule, StudentLog
 from django.views.generic.list import ListView
 
 from filelock import FileLock
@@ -221,6 +221,13 @@ class AddStudentEvaView(BSModalCreateView):
             return HttpResponseRedirect(reverse('home:index'))
         form.instance.group_id = self.kwargs['group_id']
         form.instance.stu_id = self.kwargs['stu_id']
-        form.instance.tea_id = self.request.session['schoolid']
+        form.instance.tea_name = self.request.session['realname']
         form.instance.note_time = timezone.now()
         return super().form_valid(form)
+
+def evaView(request, group_id, stu_id):
+    m = StudentGroup.objects.filter(group_id=group_id,stu_id=stu_id)
+    if m.count() == 0:
+        raise Http404("没有这个学生");
+    sl = StudentLog.objects.filter(group_id=group_id,stu_id=stu_id).order_by('note_time')
+    return render(request, 'courses/eva_list.html', {'object_list': sl, 'student_name':m.first().stu_name})
