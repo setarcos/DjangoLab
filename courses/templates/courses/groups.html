@@ -44,7 +44,12 @@ function SureDel(delurl)
                 {% if request.session.schoolid == course.tea_id %}
                   <a class="btn btn-outline-danger" href="javascript:SureDel('{% url 'courses:delGroup' p.id %}');">删除</a>
                 {% endif %}
-              &nbsp;&nbsp;<a class="btn btn-outline-primary" href="{% url 'courses:gdetail' p.id %}">查看</a>
+              &nbsp;&nbsp;
+              {% if request.user.username == 'Student' %}
+              <a class="btn btn-outline-primary" href="{% url 'courses:gdetail' p.id %}">查看</a>
+              {% else %}
+              <a class="btn btn-outline-primary" href="{% url 'courses:logView' p.id %}">查看</a>
+              {% endif %}
               </td>
           </tr>
         {% endfor %}

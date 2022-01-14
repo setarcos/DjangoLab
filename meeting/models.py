@@ -37,7 +37,7 @@ class RoomAgenda(models.Model):
         return False
 
     def collide(self):
-        today = timezone.now.date()
+        today = timezone.now().date()
         all_agenda = RoomAgenda.objects.filter(room=self.room,date__gte=today)
         if self.repeat == 1:
             for a in all_agenda.filter(week=self.week,repeat=1):

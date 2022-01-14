@@ -8,6 +8,7 @@ import hashlib
 import requests
 import json
 from datetime import timedelta
+from django.utils import timezone
 
 def index(request):
     if not request.user.is_authenticated:
