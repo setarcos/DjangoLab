@@ -1,5 +1,5 @@
 from django import forms
-import datetime
+from django.utils import timezone
 from .models import RoomAgenda, MeetingRoom
 
 class AgendaForm(forms.Form):
@@ -14,7 +14,7 @@ class AgendaForm(forms.Form):
     date = forms.DateField(
         required=False,
         label="日期",
-        initial=datetime.date.today,
+        initial=timezone.now().date(),
         widget=forms.SelectDateWidget,
     )
 
@@ -52,5 +52,5 @@ class AgendaForm(forms.Form):
         if (s >= e):
             raise forms.ValidationError("起始时间要早于结束时间")
         d = self.cleaned_data.get('date')
-        if (d < datetime.date.today()):
+        if (d < timezone.now().date()):
             raise forms.ValidationError("日期不能在过去")

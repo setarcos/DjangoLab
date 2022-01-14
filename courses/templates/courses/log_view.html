@@ -1,4 +1,5 @@
 {% extends 'nav.html' %}
+{% load static %}
   
 {% block subtitle %}-成员列表{% endblock %}
 
@@ -34,11 +35,26 @@ function SureConfirm(name, url)
                {% if g.confirmed == 0 %}
                <a class="btn btn-outline-danger" href="javascript:SureConfirm('{{ g.stu_name }}', '{% url 'courses:logConfirm' g.log_id %}');">验收</a>
                {% endif %}
+                <button type="button" class="eva-stu bs-modal btn btn-sm btn-primary" data-form-url="{% url 'courses:addEva' group.id g.stu_id %}">评价</button>
            </td>
        </tr>
        {% endfor %}
    </table>
 </div>
+<div class="modal fade" tabindex="-1" role="dialog" id="modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content"></div>
+  </div>
+</div>
 {% endblock %}
 {% block ac2 %}active{% endblock %}
-
+{% block morescripts %}
+<script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+<script type="text/javascript">
+  $(function () {
+    $(".eva-stu").each(function () {
+        $(this).modalForm({formURL: $(this).data("form-url")});
+    });
+   });
+</script>
+{% endblock %}

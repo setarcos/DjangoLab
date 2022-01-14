@@ -1,7 +1,6 @@
 from django.db import models
 from ckeditor.fields import RichTextField
-
-import datetime
+from django.utils import timezone
 
 class Course(models.Model):
     class Meta:
@@ -39,7 +38,7 @@ class SchoolYear(models.Model):
         return self.name
 
     def get_wcount(self):
-        now = datetime.datetime.now().date();
+        now = timezone.now().date();
         return int((now - self.start).days / 7)
 
     @staticmethod
@@ -55,7 +54,7 @@ class SchoolYear(models.Model):
         return sy.first()
 
     def get_status(self):
-        now = datetime.datetime.now().date();
+        now = timezone.now().date();
         if (now < self.start) or (now > self.end):
             return "假期"
         return self.name + f"学期，第 {self.get_wcount()} 周"
@@ -103,6 +102,7 @@ class StudentHist(models.Model):
     confirm = models.IntegerField(default=0, verbose_name="确认")
 
 class StudentLog(models.Model):
+    group = models.ForeignKey(CourseGroup, on_delete=models.CASCADE)
     stu_id = models.CharField(max_length=10, verbose_name="学号")
     tea_id = models.CharField(max_length=10, verbose_name="教师帐号")
     note = models.CharField(max_length=100, verbose_name="记录内容")

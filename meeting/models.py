@@ -1,5 +1,5 @@
 from django.db import models
-import datetime
+from django.utils import timezone
 
 class MeetingRoom(models.Model):
     room_no = models.CharField(max_length=15, verbose_name="房间号")
@@ -37,7 +37,7 @@ class RoomAgenda(models.Model):
         return False
 
     def collide(self):
-        today = datetime.date.today()
+        today = timezone.now.date()
         all_agenda = RoomAgenda.objects.filter(room=self.room,date__gte=today)
         if self.repeat == 1:
             for a in all_agenda.filter(week=self.week,repeat=1):

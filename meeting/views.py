@@ -4,7 +4,8 @@ from .models import MeetingRoom, RoomAgenda
 from .forms import AgendaForm
 from django.urls import reverse
 from home.models import Teacher
-import datetime
+from django.utils import timezone
+from datetime import timedelta
 
 def get_tea_perm(request):
     try:
@@ -47,7 +48,7 @@ def agenda_add(request, room_id):
             if agenda.collide():
                 errors= errors + ["与其它日程存在冲突，请检查"]
             if agenda.repeat == 1:
-                if (agenda.date - datetime.date.today()).days < 7:
+                if (agenda.date - timezone.now().date()).days < 7:
                     errors = errors + ["每周重复日程请设定合适的截止日期"]
             if len(errors) == 0:
                 agenda.save()
@@ -58,12 +59,12 @@ def agenda_add(request, room_id):
 
 def agenda_list(request, room_id):
     room = get_object_or_404(MeetingRoom, pk=room_id)
-    td = datetime.date.today()
-    td = td - datetime.timedelta(days=td.weekday()) # whole week
+    td = timezone.now().date()
+    td = td - timedelta(days=td.weekday()) # whole week
     agendas = RoomAgenda.objects.filter(room=room,date__gte=td)
     for a in agendas:
         a.view = ""
-        if (a.repeat == 0) and (a.date > td + datetime.timedelta(days=6)):
+        if (a.repeat == 0) and (a.date > td + timedelta(days=6)):
             continue
         a.view = a.view + "left: %dpx;" % (a.week * 80 + 50)
         k = (a.start_time.hour - 5) * 40 + (a.start_time.minute / 6 * 4) - 5

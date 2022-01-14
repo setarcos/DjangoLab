@@ -7,7 +7,7 @@ from courses.models import SchoolYear, CourseGroup, StudentGroup, StudentHist
 import hashlib
 import requests
 import json
-import datetime
+from datetime import timedelta
 
 def index(request):
     if not request.user.is_authenticated:
@@ -22,7 +22,7 @@ def index(request):
         for g in cg:
             sg = StudentGroup.objects.filter(group=g,stu_id=request.session['schoolid'])
             if sg.count() > 0:
-                now = datetime.datetime.combine(datetime.datetime.now(), datetime.time(0,0,0))
+                now = timezone.now() + timedelta(hours=-5) # 五小时以内
                 sh = StudentHist.objects.filter(group=g, stu_id=request.session['schoolid'],confirm=1,fin_time__gte=now)
                 if (sh.count() > 0):
                     g.complete = 1  # 每天只能完成一个实验一次，其他时间也可以重复记录

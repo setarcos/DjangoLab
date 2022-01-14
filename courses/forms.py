@@ -1,5 +1,5 @@
 from django import forms
-from .models import LabRoom, CourseGroup, Course, CourseSchedule
+from .models import LabRoom, CourseGroup, Course, CourseSchedule, StudentLog
 from bootstrap_modal_forms.forms import BSModalModelForm
 
 class StuLabForm(forms.Form):
@@ -69,3 +69,9 @@ class ScheduleForm(BSModalModelForm):
     class Meta:
         model = CourseSchedule
         fields = ['week', 'name', 'require']
+
+class StudentEvaForm(BSModalModelForm):
+    modal_title = "增加学生评价"
+    class Meta:
+        model = StudentLog
+        fields = ['note']

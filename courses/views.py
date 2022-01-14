@@ -7,7 +7,11 @@ from django.views.generic.list import ListView
 
 from filelock import FileLock
 from os import remove
-from datetime import datetime, time
+from django.utils import timezone
+from datetime import timedelta
+
+from .forms import StuLabForm, GroupForm, ScheduleForm, StudentEvaForm
+from bootstrap_modal_forms.generic import BSModalCreateView
 
 def index(request):
     course_all = Course.objects.all()
@@ -68,9 +72,6 @@ def leaveGroup(request, group_id):
     student = StudentGroup.objects.filter(group=group)
     return render(request, 'courses/group_detail.html', {'group': student.order_by('seat')})
 
-from .forms import StuLabForm, GroupForm, ScheduleForm
-from bootstrap_modal_forms.generic import BSModalCreateView
-
 def logAdd(request, group_id):
     group = get_object_or_404(CourseGroup, pk=group_id)
     cur_id = request.session['schoolid']
@@ -88,7 +89,7 @@ def logAdd(request, group_id):
             history.seat = form.cleaned_data['seat']
             history.lab_name = form.cleaned_data['lab_name']
             history.note = form.cleaned_data['note']
-            history.fin_time = datetime.now()
+            history.fin_time = timezone.now()
             history.group = group
             history.save()
             return HttpResponseRedirect(reverse('home:index'))
@@ -124,7 +125,7 @@ def logConfirm(request, log_id):
     if request.user.username != 'Teacher':
         raise Http404("只有教师具有此权限")
     log.tea_name = request.session['realname']
-    log.fin_time = datetime.now()
+    log.fin_time = timezone.now()
     log.confirm = 1
     log.save()
     return HttpResponseRedirect(reverse('courses:logView', args=(log.group_id,)))
@@ -134,7 +135,7 @@ def logView(request, group_id):
     if request.user.username != 'Teacher':
         raise Http404("只有教师具有此权限")
     students = list(StudentGroup.objects.filter(group=group))
-    time_begin = datetime.combine(datetime.now(), time(0,0,0))
+    time_begin = timezone.now() + timedelta(hours=-5)
     logs = StudentHist.objects.filter(group=group,fin_time__gte=time_begin)
     all_logs = {}
     for log in logs:
@@ -147,7 +148,7 @@ def logView(request, group_id):
             students[i].log_id = all_logs[students[i].stu_id].id
         else:
             students[i].complete = 0
-    return render(request, 'courses/log_view.html', {'object_list':students})
+    return render(request, 'courses/log_view.html', {'object_list':students, 'group':group})
 
 class AddGroupView(BSModalCreateView):
     template_name = 'courses/form_temp.html'
@@ -206,3 +207,20 @@ def delSchedule(request, sche_id):
     if request.session['schoolid'] == course.tea_id:
         sche.delete()
     return HttpResponseRedirect(reverse('courses:schedules', args=(course.id,)))
+
+class AddStudentEvaView(BSModalCreateView):
+    template_name = 'courses/form_temp.html'
+    form_class = StudentEvaForm
+
+    def get_success_url(self):
+        return reverse('courses:logView', kwargs={'group_id': self.kwargs['group_id']})
+
+    def form_valid(self, form):
+        group = CourseGroup.objects.get(pk=self.kwargs['group_id'])
+        if self.request.user.username != 'Teacher':
+            return HttpResponseRedirect(reverse('home:index'))
+        form.instance.group_id = self.kwargs['group_id']
+        form.instance.stu_id = self.kwargs['stu_id']
+        form.instance.tea_id = self.request.session['schoolid']
+        form.instance.note_time = timezone.now()
+        return super().form_valid(form)
