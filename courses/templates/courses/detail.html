@@ -24,19 +24,19 @@ function termcode(term)
   </ul>
   <div class="tab-content" id="course-tabs">
     <table class="table table-course">
-       <tr><th width="100px">课程名称</th> <td> {{ course.name }} </td> </tr>
-       <tr><th>英文名称</th> <td> {{ course.ename }} </td></tr>
-       <tr><th>课程编号</th> <td> <script> expendcode("{{ course.ccode }}", 0) </script></td></tr>
-       <tr><th>学分</th> <td> <script> expendcode("{{ course.ccode }}", 1) </script></td></tr>
-       <tr><th>课时</th> <td> <script> expendcode("{{ course.ccode }}", 2) </script></td></tr>
-       <tr><th>学期</th> <td> <script> termcode({{ course.term }}) </script></td></tr>
-       <tr><th>授课教师</th> <td> {{ course.tea_name }} </td></tr>
-       <tr><th>课程大纲</th> <td> {{ course.intro|safe }}
+       <tr><th width="10%">课程名称</th> <td colspan="7"> {{ course.name }} </td> </tr>
+       <tr><th>英文名称</th> <td colspan="7"> {{ course.ename }} </td></tr>
+       <tr><th>课程编号</th> <td width="15%"> <script> expendcode("{{ course.ccode }}", 0) </script></td>
+           <th width="12.5%">学分</th> <td width="12.5%"> <script> expendcode("{{ course.ccode }}", 1) </script></td>
+           <th width="12.5%">课时</th> <td width="12.5%"> <script> expendcode("{{ course.ccode }}", 2) </script></td>
+           <th width="12.5%">学期</th> <td> <script> termcode({{ course.term }}) </script></td></tr>
+       <tr><th>授课教师</th> <td colspan="3"> {{ course.tea_name }} </td>
+           <th>联系方式</th> <td colspan="3"> {{ course.mailbox }} </td></tr>
+       <tr><th>课程大纲</th> <td colspan="7"> {{ course.intro|safe }}
            {% if request.session.schoolid == course.tea_id %}
            <a class="btn btn-outline-primary" herf="#">修改</a>
            {% endif %}
            </td></tr>
-       <tr><th>联系方式</th> <td> {{ course.mailbox }} </td></tr>
     </table>
   </div>
 </div>
