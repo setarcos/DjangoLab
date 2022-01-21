@@ -2,6 +2,7 @@ from django.http import HttpResponseRedirect, Http404
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout
 from django.shortcuts import render, get_object_or_404
+from django.conf import settings
 from courses.models import SchoolYear, CourseGroup, StudentGroup, StudentHist
 from .models import Teacher
 
@@ -50,19 +51,20 @@ def auth(request):
     KEY='7028D67CD5F82F92E0530100007F7A7D'
     ip=get_client_ip(request)
     token=request.GET.get('token', '')
-    if (token == 'Student') or (token == 'Teacher'): # database should has those two
-        u = User.objects.filter(username=token)
-        if u.count() == 0:
-            raise Http404('Invalid login')
-        login(request, u.first())
-        request.session['realname'] = request.GET.get('name', '贾鸣')
-        request.session['schoolid'] = request.GET.get('id', '123456')
-        tea = Teacher.objects.filter(uid = request.session['schoolid'])
-        if tea.count() > 0:
-            request.session['userperm'] = tea.first().perm
-        else:
-            request.session['userperm'] = 0
-        return HttpResponseRedirect('/')
+    if settings.DEBUG:
+        if (token == 'Student') or (token == 'Teacher'):
+            u = User.objects.filter(username=token)
+            if u.count() == 0:
+                raise Http404('Invalid login')
+            login(request, u.first())
+            request.session['realname'] = request.GET.get('name', '贾鸣')
+            request.session['schoolid'] = request.GET.get('id', '123456')
+            tea = Teacher.objects.filter(uid = request.session['schoolid'])
+            if tea.count() > 0:
+                request.session['userperm'] = tea.first().perm
+            else:
+                request.session['userperm'] = 0
+            return HttpResponseRedirect('/')
 
     para='appId=EELABWeb&remoteAddr='+ip+'&token='+token+KEY
     m=hashlib.md5()
