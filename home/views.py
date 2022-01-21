@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout
 from django.shortcuts import render, get_object_or_404
 from courses.models import SchoolYear, CourseGroup, StudentGroup, StudentHist
+from .models import Teacher
 
 import hashlib
 import requests
@@ -12,6 +13,8 @@ from django.utils import timezone
 
 def index(request):
     if not request.user.is_authenticated:
+        return HttpResponseRedirect('static/login.html')
+    if not 'realname' in request.session:
         return HttpResponseRedirect('static/login.html')
     sy = SchoolYear.objects.all().order_by('-start');
     if sy.count() == 0:
@@ -54,6 +57,11 @@ def auth(request):
         login(request, u.first())
         request.session['realname'] = request.GET.get('name', '贾鸣')
         request.session['schoolid'] = request.GET.get('id', '123456')
+        tea = Teacher.objects.filter(uid = request.session['schoolid'])
+        if tea.count() > 0:
+            request.session['userperm'] = tea.first().perm
+        else:
+            request.session['userperm'] = 0
         return HttpResponseRedirect('/')
 
     para='appId=EELABWeb&remoteAddr='+ip+'&token='+token+KEY
@@ -82,6 +90,11 @@ def auth(request):
         login(request, user)
         request.session['realname'] = data['userInfo']['name']
         request.session['schoolid'] = uid
+        tea = Teacher.objects.filter(uid = uid)
+        if tea.count() > 0:
+            request.session['userperm'] = tea.first().perm
+        else:
+            request.session['userperm'] = 0
     return HttpResponseRedirect('/')
 
 def logout_view(request):

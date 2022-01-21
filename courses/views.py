@@ -2,7 +2,9 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, Http404
 from django.contrib.auth.models import User
 from django.urls import reverse
-from .models import Course, CourseGroup, StudentGroup, StudentHist, SchoolYear, CourseSchedule, StudentLog
+from .models import Course, CourseGroup, StudentGroup, StudentHist
+from .models import SchoolYear, CourseSchedule, StudentLog, LabRoom
+from home.models import Teacher
 from django.views.generic.list import ListView
 
 from filelock import FileLock
@@ -231,3 +233,12 @@ def evaView(request, group_id, stu_id):
         raise Http404("没有这个学生");
     sl = StudentLog.objects.filter(group_id=group_id,stu_id=stu_id).order_by('note_time')
     return render(request, 'courses/eva_list.html', {'object_list': sl, 'student_name':m.first().stu_name})
+
+class RoomListView(ListView):
+    model = LabRoom
+    template_name = 'courses/rooms.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['perm'] = Teacher.is_lab_admin(self.request)
+        return context

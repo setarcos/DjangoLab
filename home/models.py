@@ -1,6 +1,7 @@
 from django.db import models
 
 MEETING_ADMIN = 1  # 会议室确认权限
+LAB_ADMIN = 2      # 实验室管理员
 
 class Teacher(models.Model):
 
@@ -16,7 +17,13 @@ class Teacher(models.Model):
         return self.perm & MEETING_ADMIN
 
     @staticmethod
-    def is_meeting_admin(p):
-        if p < 0:
-            return False
-        return p & MEETING_ADMIN
+    def is_meeting_admin(request):
+        if 'userperm' in request.session:
+            return request.session['userperm'] & MEETING_ADMIN
+        return False
+
+    @staticmethod
+    def is_lab_admin(request):
+        if 'userperm' in request.session:
+            return request.session['userperm'] & LAB_ADMIN
+        return False

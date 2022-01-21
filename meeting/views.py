@@ -7,15 +7,6 @@ from home.models import Teacher
 from django.utils import timezone
 from datetime import timedelta
 
-def get_tea_perm(request):
-    try:
-        tea = Teacher.objects.get(uid = request.session['schoolid'])
-    except Teacher.DoesNotExist:
-        return -1
-    except KeyError:
-        return -2
-    return tea.perm
-
 def index(request):
     rooms = MeetingRoom.objects.all()
     if (rooms.count() == 0):
@@ -27,8 +18,8 @@ def index(request):
 def agenda_add(request, room_id):
     room = get_object_or_404(MeetingRoom, pk=room_id)
     errors = []
-    if (get_tea_perm(request) < 0):
-        errors = ["你没有增加日程的权限"]
+    if (request.user.username != 'Teacher'):
+        errors = ["你没有预定会议室的权限"]
     if request.method == 'POST':
         form = AgendaForm(request.POST)
         if form.is_valid():
@@ -71,7 +62,7 @@ def agenda_list(request, room_id):
         a.view = a.view + "top: %dpx;" % k
         k = (a.end_time.hour - a.start_time.hour) * 40 + (a.end_time.minute - a.start_time.minute) / 6 * 4
         a.view = a.view + "height: %dpx;" % k
-    perm = Teacher.is_meeting_admin(get_tea_perm(request))
+    perm = Teacher.is_meeting_admin(request)
     return render(request, 'meeting/agenda_list.html', {'agendas': agendas, 'room_id': room_id, 'perm': perm})
 
 def agenda_view(request, agenda_id):
@@ -88,8 +79,7 @@ def agenda_del(request, agenda_id):
 def agenda_confirm(request, agenda_id):
     agenda = get_object_or_404(RoomAgenda, pk=agenda_id)
     room = agenda.room
-    p = get_tea_perm(request)
-    if Teacher.is_meeting_admin(p):
+    if Teacher.is_meeting_admin(request):
         agenda.confirm = 1
         agenda.save()
     return HttpResponseRedirect(reverse('meeting:agenda_list', args=(room.id,)))
