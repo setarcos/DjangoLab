@@ -12,7 +12,7 @@ from os import remove
 from django.utils import timezone
 from datetime import timedelta
 
-from .forms import StuLabForm, GroupForm, ScheduleForm, StudentEvaForm
+from .forms import StuLabForm, GroupForm, ScheduleForm, StudentEvaForm, LabRoomQueryForm
 from bootstrap_modal_forms.generic import BSModalCreateView
 
 def index(request):
@@ -242,3 +242,25 @@ class RoomListView(ListView):
         context = super().get_context_data(**kwargs)
         context['perm'] = Teacher.is_lab_admin(self.request)
         return context
+
+def roomDetail(request, room_id):
+    room = get_object_or_404(LabRoom, pk=room_id)
+    if not 'userperm' in request.session:
+        raise Http404("用户没有登陆")
+    if not Teacher.is_lab_admin(request):
+        raise Http404("用户没有权限")
+
+    edate = timezone.now().date()
+    sdate = edate + timedelta(days=-1)
+    if request.method == 'POST':
+        form = LabRoomQueryForm(request.POST)
+        if form.is_valid():
+            sdate = form.cleaned_data['sdate']
+            edate = form.cleaned_data['edate']
+    history = StudentHist.objects.filter(room=room, fin_time__gte=sdate, fin_time__lte=edate).order_by('fin_time')
+    number = history.count()
+    initials = {}
+    initials['sdate'] = sdate
+    initials['edate'] = edate
+    form = LabRoomQueryForm(initials)
+    return render(request, 'courses/room_detail.html', {'form': form, 'hist': history, 'number': number})

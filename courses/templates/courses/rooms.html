@@ -9,7 +9,9 @@
    <table class="table table-course">
        <tr><th width="20%">房间号</th><th>实验室名称</th><th>负责人</th></tr>
        {% for g in object_list %}
-       <tr><td>{{ g.name}}</td>
+       <tr><td>{% if perm %}<a href="{% url 'courses:roomDetail' g.id %}">{% endif %}
+                   {{ g.name}}{% if perm %}</a>{% endif %}
+           </td>
            <td>{{ g.cname }}</td><td>{{ g.manager }}</td></tr>
        {% endfor %}
    </table>
