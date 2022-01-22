@@ -1,0 +1,19 @@
+{% extends 'nav.html' %}
+  
+{% block subtitle %}-实验室列表{% endblock %}
+
+{% block main %}
+
+<div class="container">
+   <div class="panel-heading">实验室列表</div>
+   <table class="table table-course">
+       <tr><th width="20%">房间号</th><th>实验室名称</th><th>负责人</th></tr>
+       {% for g in object_list %}
+       <tr><td>{{ g.name}}</td>
+           <td>{{ g.cname }}</td><td>{{ g.manager }}</td></tr>
+       {% endfor %}
+   </table>
+</div>
+{% endblock %}
+{% block ac5 %}active{% endblock %}
+
