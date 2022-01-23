@@ -6,13 +6,14 @@ from .models import Course, CourseGroup, StudentGroup, StudentHist
 from .models import SchoolYear, CourseSchedule, StudentLog, LabRoom
 from home.models import Teacher
 from django.views.generic.list import ListView
+from django.views.generic.edit import UpdateView
 
 from filelock import FileLock
 from os import remove
 from django.utils import timezone
 from datetime import timedelta
 
-from .forms import StuLabForm, GroupForm, ScheduleForm, StudentEvaForm, LabRoomQueryForm
+from .forms import StuLabForm, GroupForm, ScheduleForm, StudentEvaForm, LabRoomQueryForm, CourseForm
 from bootstrap_modal_forms.generic import BSModalCreateView
 
 def index(request):
@@ -264,3 +265,16 @@ def roomDetail(request, room_id):
     initials['edate'] = edate
     form = LabRoomQueryForm(initials)
     return render(request, 'courses/room_detail.html', {'form': form, 'hist': history, 'number': number})
+
+class CourseUpdateView(UpdateView):
+    model = Course
+    template_name = 'courses/course_update.html'
+    form_class = CourseForm
+
+    def get_success_url(self):
+        return reverse('courses:detail', kwargs={'course_id': self.kwargs['pk']})
+
+    def form_valid(self, form):
+        if self.request.session['schoolid'] != form.instance.tea_id:
+            return HttpResponseRedirect(self.get_success_url())
+        return super().form_valid(form)

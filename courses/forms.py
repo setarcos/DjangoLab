@@ -1,6 +1,7 @@
 from django import forms
 from .models import LabRoom, CourseGroup, Course, CourseSchedule, StudentLog
 from bootstrap_modal_forms.forms import BSModalModelForm
+from ckeditor.widgets import CKEditorWidget
 
 class StuLabForm(forms.Form):
     stu_id = forms.CharField(
@@ -83,3 +84,12 @@ class LabRoomQueryForm(forms.Form):
     edate = forms.DateField(
         label='结束时间',
         )
+
+class CourseForm(forms.ModelForm):
+    term = forms.ChoiceField(
+            label='开课学期',
+            choices=((0, "春季"), (1, "秋季"), (2, "暑期")),
+            )
+    class Meta:
+        model = Course
+        exclude = ['ccode','tea_id']

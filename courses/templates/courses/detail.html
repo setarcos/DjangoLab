@@ -34,7 +34,7 @@ function termcode(term)
            <th>联系方式</th> <td colspan="3"> {{ course.mailbox }} </td></tr>
        <tr><th>课程大纲</th> <td colspan="7"> {{ course.intro|safe }}
            {% if request.session.schoolid == course.tea_id %}
-           <a class="btn btn-outline-primary" herf="#">修改</a>
+           <a class="btn btn-outline-primary" href="{% url 'courses:courseUpdate' course.id %}">修改</a>
            {% endif %}
            </td></tr>
     </table>

@@ -1,0 +1,23 @@
+{% extends "nav.html" %}
+
+{% load bootstrap4 %}
+
+{% bootstrap_messages %}
+{% block subtitle %}-修改课程信息{% endblock %}
+{% block main %}
+<div class="row">
+  <div class="col-md">
+      <form action="" method="post">
+    {% csrf_token %}
+    {{ form.media }}
+    {% bootstrap_form form %}
+    {% buttons %}
+      <button type="submit" class="btn btn-primary">
+       提交 
+      </button>
+    {% endbuttons %}
+      </form>
+  </div>
+</div>
+{% endblock %}
+{% block ac2 %}active{% endblock %}
