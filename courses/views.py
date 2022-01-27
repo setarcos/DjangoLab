@@ -133,6 +133,16 @@ def logConfirm(request, log_id):
     log.save()
     return HttpResponseRedirect(reverse('courses:logView', args=(log.group_id,)))
 
+def updateSeat(request, log_id):
+    log = get_object_or_404(StudentHist, pk=log_id)
+    if request.user.username != 'Teacher':
+        raise Http404("只有教师具有此权限")
+    student = StudentGroup.objects.filter(group=log.group, stu_id=log.stu_id).first()
+    if student:
+        student.seat = log.seat
+        student.save()
+    return HttpResponseRedirect(reverse('courses:logView', args=(log.group_id,)))
+
 def logView(request, group_id):
     group = get_object_or_404(CourseGroup, pk=group_id)
     if request.user.username != 'Teacher':
@@ -149,6 +159,10 @@ def logView(request, group_id):
             students[i].note = all_logs[students[i].stu_id].note
             students[i].confirmed = all_logs[students[i].stu_id].confirm
             students[i].log_id = all_logs[students[i].stu_id].id
+            if students[i].seat != all_logs[students[i].stu_id].seat:
+                students[i].new_seat = all_logs[students[i].stu_id].seat
+            else:
+                students[i].new_seat = 0
         else:
             students[i].complete = 0
     return render(request, 'courses/log_view.html', {'object_list':students, 'group':group})
