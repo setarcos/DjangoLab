@@ -4,10 +4,13 @@
 
 {% bootstrap_messages %}
 
-{% block subtitle %}-日程列表{% endblock %}
+{% block subtitle %}-增加新日程{% endblock %}
 {% block main %}
-<div class="row">
-  <div class="col-md">
+<div class="container">
+  <div class="row justify-content-center"><div class="col-md-6">
+  <div class="card">
+    <div class="card-header">增加新日程</div>
+    <div class="card-body">
     {% for err in errors %}
     <div class="alert alert-danger" role="alert">
         <h4>{{ err }}</h4>
@@ -22,8 +25,10 @@
       </button>
     {% endbuttons %}
       </form>
+    </div>
   </div>
-</div>
+  </div>
+</div></div>
 {% endblock %}
 {% block ac4 %}active{% endblock %}
 {% block morescripts %}
