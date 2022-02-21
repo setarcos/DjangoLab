@@ -14,9 +14,9 @@ from django.utils import timezone
 
 def index(request):
     if not request.user.is_authenticated:
-        return HttpResponseRedirect('static/login.html')
+        return render(request, 'home/login.html');
     if not 'realname' in request.session:
-        return HttpResponseRedirect('static/login.html')
+        return render(request, 'home/login.html');
     sy = SchoolYear.objects.all().order_by('-start');
     if sy.count() == 0:
         raise Http404("没有定义学期");
