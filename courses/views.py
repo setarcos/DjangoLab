@@ -53,7 +53,7 @@ def joinGroup(request, group_id):
                 raise Http404("你已经在这个组里面了")
             else:
                 raise Http404("你在这个课的其他组里")
-    lockfile = FileLock(f"group.{group_id}")
+    lockfile = FileLock(f"/tmp/group.{group_id}")
     with lockfile:
         student = StudentGroup.objects.filter(group=group)
         m = StudentGroup(group = group)
@@ -64,7 +64,7 @@ def joinGroup(request, group_id):
         else:
             m.seat = 1
         m.save()
-    remove(f"group.{group_id}")
+    remove(f"/tmp/group.{group_id}")
     return render(request, 'courses/group_detail.html', {'group': student.order_by('seat')})
 
 def leaveGroup(request, group_id):
