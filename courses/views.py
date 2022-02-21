@@ -25,6 +25,8 @@ def detail(request, course_id):
     return render(request, 'courses/detail.html', {'course': course})
 
 def groups(request, course_id):
+    if not 'schoolid' in request.session:
+        raise Http404("登录才可以查看")
     course = get_object_or_404(Course, pk=course_id)
     year = SchoolYear.get_current_year() # only current year
     group = list(CourseGroup.objects.filter(course=course,year=year))
