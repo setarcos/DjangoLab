@@ -39,7 +39,7 @@ class SchoolYear(models.Model):
 
     def get_wcount(self):
         now = timezone.now().date();
-        return int((now - self.start).days / 7)
+        return int((now - self.start).days / 7 + 1)
 
     @staticmethod
     def get_week():
