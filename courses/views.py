@@ -114,7 +114,7 @@ def logAdd(request, group_id):
             week = SchoolYear.get_week()
             lab = CourseSchedule.objects.filter(course=group.course,week=week)
             if (lab.count() > 0):
-                his_def.lab_name = lab[0].name
+                his_dfl.lab_name = lab[0].name
         initials = {}
         initials['stu_id'] = cur_id
         initials['stu_name'] = his_dfl.stu_name
