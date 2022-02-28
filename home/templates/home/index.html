@@ -40,6 +40,7 @@
                  <a class="btn btn-outline-danger" href="{% url 'courses:logAdd' c.id %}">实验记录</a>
                  {% endif %}
                  {% else %}
+                 <a class="btn btn-outline-danger" href="{% url 'courses:logView' c.id %}">查看名单</a>
                  {% endif %}
              </td>
       </tr>
