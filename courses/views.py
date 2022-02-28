@@ -274,7 +274,7 @@ def roomDetail(request, room_id):
         if form.is_valid():
             sdate = form.cleaned_data['sdate']
             edate = form.cleaned_data['edate']
-    history = StudentHist.objects.filter(room=room, fin_time__gte=sdate, fin_time__lte=edate).order_by('fin_time')
+    history = StudentHist.objects.filter(room=room, fin_time__gte=sdate, fin_time__lte=(edate + timedelta(days=1))).order_by('fin_time')
     number = history.count()
     initials = {}
     initials['sdate'] = sdate
