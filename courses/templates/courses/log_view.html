@@ -27,7 +27,7 @@ function SureConfirm(name, url)
            <td>{% if g.complete == 1 %}
                完成，
                {% else %}
-               未完成，
+	       <font color="red">未完成</font>，
                {% endif %}
                {% if g.confirmed == 1 %}
                已验收
