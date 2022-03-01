@@ -149,7 +149,7 @@ def logView(request, group_id):
     group = get_object_or_404(CourseGroup, pk=group_id)
     if request.user.username != 'Teacher':
         raise Http404("只有教师具有此权限")
-    students = list(StudentGroup.objects.filter(group=group))
+    students = list(StudentGroup.objects.filter(group=group).order_by('seat'))
     time_begin = timezone.now() + timedelta(hours=-5)
     logs = StudentHist.objects.filter(group=group,fin_time__gte=time_begin)
     all_logs = {}
