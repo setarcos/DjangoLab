@@ -80,11 +80,14 @@ def leaveGroup(request, group_id):
 def logAdd(request, group_id):
     group = get_object_or_404(CourseGroup, pk=group_id)
     cur_id = request.session['schoolid']
-    old_his = StudentHist.objects.filter(stu_id=cur_id,confirm=0).order_by('-fin_time');
+    now = timezone.now() + timedelta(hours=-5) # 五小时以内
+    old_his = StudentHist.objects.filter(stu_id=cur_id,fin_time__gte=now).order_by('-fin_time');
     if request.method == 'POST':
         form = StuLabForm(request.POST)
         if form.is_valid() and (form.cleaned_data['stu_id'] == cur_id):
-            if (old_his.count() > 0):
+            if (old_his.count() > 0) and (old_his.first().confirm == 1):
+                return HttpResponseRedirect(reverse('home:index'))
+            if (old_his.count() > 0):  # not confirmed entry can be overwrited (e.g. change seat no.)
                 history = old_his.first() # update the last log
             else:
                 history = StudentHist()
