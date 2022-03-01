@@ -54,6 +54,7 @@ function SureDel(delurl)
   </table>
 {% else %}
     <p>还没有任何设备</p>
+    <a class="btn btn-outline-primary" href="{% url 'groceries:new' %}">新建设备</a>
 {% endif %}
 </div>
 {% endblock %}
