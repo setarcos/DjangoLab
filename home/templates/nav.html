@@ -4,10 +4,10 @@
 {% block title %}电子信息科学基础实验中心{% block subtitle %}{% endblock %}{% endblock %}
 {% block body_class %}homepage{% endblock %}
 {% block content %}
-<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/">首页</a>
-  <ul class="navbar-nav px-3">
-    <li class="nav-text text-nowrap">电子信息科学基础实验中心</li></ul>
+<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+  <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/">电子信息科学基础实验中心</a>
+   <button class="navbar-toggler d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+   <span data-feather="sidebar">菜单</span></button>
   <ul class="navbar-nav px-3">
     <li class="nav-item text-nowrap">
     {% if user.is_authenticated %}
@@ -21,7 +21,7 @@
 <div class="container-fluid">
   {% block container %}
   <div class="row">
-    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+    <nav id="sidebarMenu" class="col-md-2 col-lg-2 d-md-block bg-light sidebar collapse">
       <div class="sidebar-sticky">
         <ul class="nav flex-column">
           <li class="nav-item">
