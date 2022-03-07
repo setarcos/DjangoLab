@@ -237,6 +237,13 @@ class AddStudentEvaView(BSModalCreateView):
     def get_success_url(self):
         return reverse('courses:logView', kwargs={'group_id': self.kwargs['group_id']})
 
+    def get_initial(self):
+        stu = StudentGroup.objects.get(stu_id=self.kwargs['stu_id'],group=self.kwargs['group_id'])
+        if (stu):
+            return {'stu_name':stu.stu_name,}
+        else:
+            return {'stu_name':'42',}
+
     def form_valid(self, form):
         group = CourseGroup.objects.get(pk=self.kwargs['group_id'])
         if self.request.user.username != 'Teacher':

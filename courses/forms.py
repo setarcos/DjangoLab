@@ -73,9 +73,14 @@ class ScheduleForm(BSModalModelForm):
 
 class StudentEvaForm(BSModalModelForm):
     modal_title = "增加学生评价"
+    stu_name = forms.CharField(
+        label='姓名',
+        widget=forms.TextInput(attrs={'readonly':True}),
+        )
+
     class Meta:
         model = StudentLog
-        fields = ['note']
+        fields = ['note', 'stu_name']
 
 class LabRoomQueryForm(forms.Form):
     sdate = forms.DateField(
