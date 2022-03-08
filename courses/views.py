@@ -284,7 +284,7 @@ def evaDayView(request, group_id):
     initials = {}
     initials['edate'] = edate
     form = EvaDayForm(initials)
-    history = list(StudentGroup.objects.filter(group=group_id))
+    history = list(StudentGroup.objects.filter(group=group_id).order_by('seat'))
     for i in range(len(history)):
         history[i].log = list(StudentLog.objects.filter(group=group_id,stu_id=history[i].stu_id,note_time__gte=edate,note_time__lte=edate + timedelta(days=1)))
     return render(request, 'courses/eva_day.html', {'form': form, 'hist': history})

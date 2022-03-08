@@ -28,7 +28,7 @@
        <tr><td>{{ g.stu_id}}</td><td>{{ g.stu_name }}</td><td>{{ g.seat }}</td><td>
                <table class="table table-course">
                    {% for n in g.log %}
-                   <tr><td>{{ n.note }}</td><td>{{ n.note_time }}</td></tr>
+                   <tr><td>{{ n.note }}</td><td width="35%">{{ n.note_time }}</td></tr>
                    {% endfor %}
                </table>
         </td></tr>
