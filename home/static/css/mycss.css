@@ -73,3 +73,6 @@ th.cal-row{
 .table-course {
     border: 1px solid #aea2a6;
 }
+.table-home th {
+    border: none !important;
+}
