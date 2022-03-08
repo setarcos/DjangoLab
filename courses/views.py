@@ -216,6 +216,13 @@ class AddScheduleView(BSModalCreateView):
     def get_success_url(self):
         return reverse('courses:schedules', kwargs={'course_id': self.kwargs['course_id']})
 
+    def get_initial(self):
+        s = CourseSchedule.objects.filter(course=self.kwargs['course_id']).order_by('-week')
+        if (s.count() > 0):
+            return {'week':s[0].week + 1,}
+        else:
+            return {'week':'1',}
+
     def form_valid(self, form):
         course = Course.objects.get(pk=self.kwargs['course_id'])
         if self.request.session['schoolid'] != course.tea_id:
