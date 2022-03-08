@@ -49,6 +49,7 @@ function SureDel(delurl)
               <a class="btn btn-outline-primary" href="{% url 'courses:gdetail' p.id %}">查看</a>
               {% else %}
               <a class="btn btn-outline-primary" href="{% url 'courses:logView' p.id %}">查看</a>
+              <a class="btn btn-outline-primary" href="{% url 'courses:evaDay' p.id %}">评阅</a>
               {% endif %}
               </td>
           </tr>

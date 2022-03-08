@@ -20,6 +20,7 @@ urlpatterns = [
     path('schedule/del/<int:sche_id>/', views.delSchedule, name='delSchedule'),
     path('eva/<int:group_id>/<str:stu_id>/', views.evaView, name='evaView'),
     path('eva/add/<int:group_id>/<str:stu_id>/', views.AddStudentEvaView.as_view(), name='addEva'),
+    path('eva/day/<int:group_id>/', views.evaDayView, name='evaDay'),
     path('rooms/', views.RoomListView.as_view(), name='rooms'),
     path('rooms/<int:room_id>/', views.roomDetail, name='roomDetail'),
     path('update/<int:pk>/', views.CourseUpdateView.as_view(), name='courseUpdate'),

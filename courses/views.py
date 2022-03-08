@@ -13,7 +13,7 @@ from os import remove
 from django.utils import timezone
 from datetime import timedelta
 
-from .forms import StuLabForm, GroupForm, ScheduleForm, StudentEvaForm, LabRoomQueryForm, CourseForm
+from .forms import StuLabForm, GroupForm, ScheduleForm, StudentEvaForm, LabRoomQueryForm, CourseForm, EvaDayForm
 from bootstrap_modal_forms.generic import BSModalCreateView
 
 def index(request):
@@ -262,11 +262,32 @@ class AddStudentEvaView(BSModalCreateView):
         return super().form_valid(form)
 
 def evaView(request, group_id, stu_id):
+    if request.user.username != 'Teacher':
+        raise Http404("用户没有权限")
     m = StudentGroup.objects.filter(group_id=group_id,stu_id=stu_id)
     if m.count() == 0:
         raise Http404("没有这个学生");
     sl = StudentLog.objects.filter(group_id=group_id,stu_id=stu_id).order_by('note_time')
     return render(request, 'courses/eva_list.html', {'object_list': sl, 'student_name':m.first().stu_name})
+
+def evaDayView(request, group_id):
+    if not 'userperm' in request.session:
+        raise Http404("用户没有登陆")
+    if request.user.username != 'Teacher':
+        raise Http404("用户没有权限")
+
+    edate = timezone.now().date()
+    if request.method == 'POST':
+        form = EvaDayForm(request.POST)
+        if form.is_valid():
+            edate = form.cleaned_data['edate']
+    initials = {}
+    initials['edate'] = edate
+    form = EvaDayForm(initials)
+    history = list(StudentGroup.objects.filter(group=group_id))
+    for i in range(len(history)):
+        history[i].log = list(StudentLog.objects.filter(group=group_id,stu_id=history[i].stu_id,note_time__gte=edate,note_time__lte=edate + timedelta(days=1)))
+    return render(request, 'courses/eva_day.html', {'form': form, 'hist': history})
 
 class RoomListView(ListView):
     model = LabRoom

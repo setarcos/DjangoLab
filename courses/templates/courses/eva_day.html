@@ -1,0 +1,40 @@
+{% extends 'nav.html' %}
+  
+{% block subtitle %}-学生记录{% endblock %}
+{% block main %}
+
+{% load bootstrap4 %}
+{% bootstrap_messages %}
+<div class="container">
+    <div class="panel-heading">学生记录</div>
+      <form action="" method="post">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-sm-4">
+            <b>{{ form.edate.label_tag }}</b> - {{ form.edate }}
+        </div>
+        <div class="col-sm-4">
+    {% buttons %}
+      <button type="submit" class="btn btn-primary">
+       查询 
+      </button>
+    {% endbuttons %}
+        </div>
+    </div>
+      </form>
+   <table class="table table-course">
+       <tr><th>学号</th><th>姓名</th><th>座位</th><th>记录</th></tr>
+       {% for g in hist %}
+       <tr><td>{{ g.stu_id}}</td><td>{{ g.stu_name }}</td><td>{{ g.seat }}</td><td>
+               <table class="table table-course">
+                   {% for n in g.log %}
+                   <tr><td>{{ n.note }}</td><td>{{ n.note_time }}</td></tr>
+                   {% endfor %}
+               </table>
+        </td></tr>
+       {% endfor %}
+   </table>
+</div>
+{% endblock %}
+{% block ac5 %}active{% endblock %}
+

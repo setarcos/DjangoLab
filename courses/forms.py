@@ -82,6 +82,11 @@ class StudentEvaForm(BSModalModelForm):
         model = StudentLog
         fields = ['note', 'stu_name']
 
+class EvaDayForm(forms.Form):
+    edate = forms.DateField(
+        label='实验时间',
+        )
+
 class LabRoomQueryForm(forms.Form):
     sdate = forms.DateField(
         label='开始时间',
