@@ -28,7 +28,10 @@ function SureDel(delurl)
         {% for p in object_list %}
           <tr><td>{{ p.week }}</td><td>{{ p.name}}</td><td>{{ p.require }}</td>
           {% if request.session.schoolid == course.tea_id %}
-          <td><a class="btn btn-outline-danger" href="javascript:SureDel('{% url 'courses:delSchedule' p.id %}');">删除</a> </td>
+          <td><a class="btn btn-outline-danger" href="javascript:SureDel('{% url 'courses:delSchedule' p.id %}');">删除</a>
+              <button class="update-schedule btn btn-outline-primary" type="button"
+              data-form-url="{% url 'courses:updateSchedule' p.id %}">修改</button>
+          </td>
           {% endif %}
           </tr>
         {% endfor %}
@@ -37,7 +40,8 @@ function SureDel(delurl)
   </div>
 {% if request.session.schoolid == course.tea_id %}
 <!-- Create book button -->
-<button id="add-group" class="btn btn-primary" type="button" name="button">增加</button>
+<button id="add-schedule" class="btn btn-primary" type="button" name="button"
+    data-form-url="{% url 'courses:addSchedule' course.id %}">增加</button>
 {% endif %}
 </div>
 <div class="modal fade" tabindex="-1" role="dialog" id="modal">
@@ -51,12 +55,9 @@ function SureDel(delurl)
 {% block morescripts %}
 <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
 <script language="JavaScript">
-$(document).ready(function() {
-
-    $("#add-group").modalForm({
-        formURL: "{% url 'courses:addSchedule' course.id %}"
-    });
-
+$(function() {
+    $("#add-schedule").modalForm({formURL: "{% url 'courses:addSchedule' course.id %}", modalID: "#modal"});
+    $(".update-schedule").each(function (){$(this).modalForm({formURL: $(this).data("form-url")});});
 });
 </script>
 {% endblock %}

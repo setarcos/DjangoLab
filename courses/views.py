@@ -14,7 +14,7 @@ from django.utils import timezone
 from datetime import timedelta
 
 from .forms import StuLabForm, GroupForm, ScheduleForm, StudentEvaForm, LabRoomQueryForm, CourseForm, EvaDayForm
-from bootstrap_modal_forms.generic import BSModalCreateView
+from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView
 
 def index(request):
     course_all = Course.objects.all()
@@ -228,6 +228,22 @@ class AddScheduleView(BSModalCreateView):
         if self.request.session['schoolid'] != course.tea_id:
             return HttpResponseRedirect(reverse('courses:schedules', args=(course.id,)))
         form.instance.course_id = self.kwargs['course_id']
+        return super().form_valid(form)
+
+class UpdateScheduleView(BSModalUpdateView):
+    template_name = 'courses/form_temp.html'
+    form_class = ScheduleForm
+    model = CourseSchedule
+
+    def get_success_url(self):
+        sched = CourseSchedule.objects.get(pk=self.kwargs['pk'])
+        return reverse('courses:schedules', kwargs={'course_id': sched.course.id})
+
+    def form_valid(self, form):
+        sched = CourseSchedule.objects.get(pk=self.kwargs['pk'])
+        if self.request.session['schoolid'] != sched.course.tea_id:
+            return HttpResponseRedirect(reverse('courses:schedules', args=(sched.course.id,)))
+        form.instance.course_id = sched.course.id
         return super().form_valid(form)
 
 def delSchedule(request, sche_id):
