@@ -78,6 +78,10 @@ class StudentEvaForm(BSModalModelForm):
         widget=forms.TextInput(attrs={'readonly':True}),
         )
 
+    forget = forms.BooleanField(
+            label='学生未填写记录离开',
+            required = False,
+            )
     class Meta:
         model = StudentLog
         fields = ['note', 'stu_name']

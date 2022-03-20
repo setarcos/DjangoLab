@@ -275,6 +275,31 @@ class AddStudentEvaView(BSModalCreateView):
         form.instance.stu_id = self.kwargs['stu_id']
         form.instance.tea_name = self.request.session['realname']
         form.instance.note_time = timezone.now()
+        if form.cleaned_data['forget']==True:
+            now = timezone.now() + timedelta(hours=-1) # 1小时以内
+            old_his = StudentHist.objects.filter(stu_id=self.kwargs['stu_id'],fin_time__gte=now).order_by('-fin_time');
+            if (old_his.count() == 0):  # 这里可能会有竞争条件，但暂时忽略
+                hist = StudentHist()
+                hist.stu_id = self.kwargs['stu_id']
+                student = StudentGroup.objects.filter(group=group,stu_id=self.kwargs['stu_id'])
+                if (student.count() > 0):
+                    hist.seat = student[0].seat
+                    hist.stu_name = student[0].stu_name
+                else:
+                    hist.seat = 0;
+                    hist.stu_name = '未知'
+                week = SchoolYear.get_week()
+                lab = CourseSchedule.objects.filter(course=group.course,week=week)
+                if (lab.count() > 0):
+                    hist.lab_name = lab[0].name
+                else:
+                    hist.lab_name = '未知'
+                hist.room = group.room
+                hist.note = '学生忘记记录'
+                hist.fin_time = timezone.now();
+                hist.group = group
+                hist.confirm = 1
+                hist.save()
         return super().form_valid(form)
 
 def evaView(request, group_id, stu_id):
