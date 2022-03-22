@@ -101,7 +101,7 @@ class StudentHist(models.Model):
     fin_time = models.DateTimeField(default='2018-01-01 00:00:00', verbose_name="日期")  # confirm 时间
     confirm = models.IntegerField(default=0, verbose_name="确认")
 
-class StudentLog(models.Model):
+class StudentLog(models.Model): # StudentEva might be a better name, since I use a lot eva to distinguish it from StudentHist
     group = models.ForeignKey(CourseGroup, on_delete=models.CASCADE)
     stu_id = models.CharField(max_length=10, verbose_name="学号")
     tea_name = models.CharField(max_length=10, verbose_name="教师")

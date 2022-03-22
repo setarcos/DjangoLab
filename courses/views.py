@@ -330,6 +330,12 @@ def evaDayView(request, group_id):
         history[i].log = list(StudentLog.objects.filter(group=group_id,stu_id=history[i].stu_id,note_time__gte=edate,note_time__lte=edate + timedelta(days=1)))
     return render(request, 'courses/eva_day.html', {'form': form, 'hist': history})
 
+def delEva(request, pk):
+    log = get_object_or_404(StudentLog, pk=pk)
+    if request.session['realname'] == log.tea_name:
+        log.delete()
+    return HttpResponseRedirect(reverse('courses:evaView', args=(log.group.id,log.stu_id,)))
+
 class RoomListView(ListView):
     model = LabRoom
     template_name = 'courses/rooms.html'
