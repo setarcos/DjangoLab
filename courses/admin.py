@@ -1,7 +1,15 @@
 from django.contrib import admin
+from django import forms
 from .models import Course, CourseGroup, LabRoom, SchoolYear, CourseSchedule
 
+class CourseAdminForm(forms.ModelForm):
+    term = forms.ChoiceField(
+            label='开课学期',
+            choices=((0, "春季"), (1, "秋季"), (2, "暑期")),
+            )
+
 class CourseAdmin(admin.ModelAdmin):
+    form = CourseAdminForm
     list_display = ('name', 'ename', 'tea_id', 'tea_name','mailbox')
     list_filter = ['name']
     search_fields = ['name']
