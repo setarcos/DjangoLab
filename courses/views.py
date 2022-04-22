@@ -317,13 +317,22 @@ def evaDayView(request, group_id):
     if request.user.username != 'Teacher':
         raise Http404("用户没有权限")
 
+    course = get_object_or_404(CourseGroup, pk=group_id);
     edate = timezone.now().date()
+    nweek = SchoolYear.get_week()
     if request.method == 'POST':
         form = EvaDayForm(request.POST)
         if form.is_valid():
             edate = form.cleaned_data['edate']
+            nweek = form.cleaned_data['nweek']
+    if (nweek > 0):
+        week = course.week / 10 - 1 # Weekday
+        edate = timezone.now().date()
+        delta = (nweek - SchoolYear.get_week()) * 7 - edate.weekday() + week
+        edate = edate + timedelta(days=delta)
     initials = {}
     initials['edate'] = edate
+    initials['nweek'] = nweek
     form = EvaDayForm(initials)
     history = list(StudentGroup.objects.filter(group=group_id).order_by('seat'))
     for i in range(len(history)):

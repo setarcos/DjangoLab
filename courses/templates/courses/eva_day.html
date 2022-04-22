@@ -10,9 +10,8 @@
       <form action="" method="post">
     {% csrf_token %}
     <div class="row">
-        <div class="col-sm-4">
-            <b>{{ form.edate.label_tag }}</b> - {{ form.edate }}
-        </div>
+        <div class="col-sm-4"> <b>{{ form.edate.label_tag }}</b> - {{ form.edate }}</div>
+        <div class="col-sm-4"> <b>{{ form.nweek.label_tag }}</b> - {{ form.nweek}} </div>
         <div class="col-sm-4">
     {% buttons %}
       <button type="submit" class="btn btn-primary">

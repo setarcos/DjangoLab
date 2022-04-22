@@ -13,7 +13,9 @@ function SureConfirm(name, url)
 }
 </script>
 <div class="container">
-  <div class="panel-heading"> 学生完成情况</div>
+  <div class="panel-heading"> 学生完成情况
+      <a class="btn btn-outline-primary" href="{% url 'courses:evaDay' group.id %}">评阅</a>
+  </div>
    <table class="table table-course">
        <tr><th>学号</th><th>姓名</th><th>座位</th><th>状态</th><th>操作</th></tr>
        {% for g in object_list %}

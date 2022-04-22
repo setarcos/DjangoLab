@@ -90,6 +90,9 @@ class EvaDayForm(forms.Form):
     edate = forms.DateField(
         label='实验时间',
         )
+    nweek = forms.IntegerField(
+        label='上课周次',
+        )
 
 class LabRoomQueryForm(forms.Form):
     sdate = forms.DateField(
