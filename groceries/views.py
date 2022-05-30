@@ -11,7 +11,7 @@ def getTea(request):
     try:
         tea = Teacher.objects.get(uid = request.session['schoolid'])
     except Teacher.DoesNotExist:
-        raise Http404("没有数据")
+        raise Http404("需要在Teacher表中注册")
     except KeyError:
         raise Http404("非标准用户或未登录")
     return tea
