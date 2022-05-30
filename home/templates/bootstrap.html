@@ -1,22 +1,15 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% load bootstrap4 %}
 
 {% block extra_css %}
-    {% bootstrap_css %}
-
-    {% if 'javascript_in_head'|bootstrap_setting %}
-        <!-- Bootstrap JavaScript if it is in head -->
-        {% bootstrap_javascript jquery='slim' %}
-    {% endif %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
 
     {% block bootstrap4_extra_head %}{% endblock %}
 {% endblock %}
 
 {% block extra_js %}
-    {% if not 'javascript_in_head'|bootstrap_setting %}
-        <!-- Bootstrap JavaScript if it is in body -->
-        {% bootstrap_javascript jquery='full' %}
-    {% endif %}
+    <script src="{% static 'js/jquery-3.5.1.slim.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     {% block bootstrap4_extra_script %}{% endblock %}
 {% endblock %}
