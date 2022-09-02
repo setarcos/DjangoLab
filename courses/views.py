@@ -319,17 +319,18 @@ def evaDayView(request, group_id):
 
     course = get_object_or_404(CourseGroup, pk=group_id);
     edate = timezone.now().date()
-    nweek = SchoolYear.get_week()
+    nweek = course.year.get_week()
+    if (nweek > 18):
+        nweek = 18
     if request.method == 'POST':
         form = EvaDayForm(request.POST)
         if form.is_valid():
             edate = form.cleaned_data['edate']
             nweek = form.cleaned_data['nweek']
-    if (nweek > 0):
+    if (nweek > 0): # ignore edate
         week = course.week / 10 - 1 # Weekday
-        edate = timezone.now().date()
-        delta = (nweek - SchoolYear.get_week()) * 7 - edate.weekday() + week
-        edate = edate + timedelta(days=delta)
+        delta = nweek * 7 + week
+        edate = course.year.start + timedelta(days=delta)
     initials = {}
     initials['edate'] = edate
     initials['nweek'] = nweek
