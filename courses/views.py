@@ -319,7 +319,7 @@ def evaDayView(request, group_id):
 
     course = get_object_or_404(CourseGroup, pk=group_id);
     edate = timezone.now().date()
-    nweek = course.year.get_week()
+    nweek = course.year.get_wcount()
     if (nweek > 18):
         nweek = 18
     if request.method == 'POST':
