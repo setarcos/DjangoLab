@@ -329,7 +329,7 @@ def evaDayView(request, group_id):
             nweek = form.cleaned_data['nweek']
     if (nweek > 0): # ignore edate
         week = course.week / 10 - 1 # Weekday
-        delta = nweek * 7 + week
+        delta = (nweek - 1) * 7 + week
         edate = course.year.start + timedelta(days=delta)
     initials = {}
     initials['edate'] = edate
