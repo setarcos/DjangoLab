@@ -12,7 +12,11 @@
        {% for g in group %}
        <tr{% if g.stu_id == request.session.schoolid %} class="table-success"{% endif %}>
            <td>{{ g.stu_id }}</td>
+      {% if request.user.username == 'Teacher' %}
+           <td><a href="{% url 'courses:evaView' g.group.id g.stu_id %}">{{ g.stu_name }}</a></td>
+      {% else %}
            <td>{{ g.stu_name }}</td>
+      {% endif %}
            <td>{{ g.seat }}</td></tr>
        {% endfor %}
    </table>
