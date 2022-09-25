@@ -60,6 +60,7 @@ function SureDel(delurl)
 {% if request.session.schoolid == course.tea_id %}
 <!-- Create book button -->
 <button id="add-group" class="btn btn-primary" type="button" name="button">增加</button>
+<a class="btn btn-outline-primary" href="{% url 'courses:ghistory' course.id %}">历史</a>
 {% endif %}
 </div>
 <div class="modal fade" tabindex="-1" role="dialog" id="modal">

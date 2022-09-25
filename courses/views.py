@@ -38,6 +38,15 @@ def groups(request, course_id):
             group[i].has_me=0
     return render(request, 'courses/groups.html', {'course': course, 'group': group})
 
+def ghistory(request, course_id):
+    if not 'schoolid' in request.session:
+        raise Http404("登录才可以查看")
+    if request.user.username != 'Teacher':
+        raise Http404("只有教师具有此权限")
+    course = get_object_or_404(Course, pk=course_id)
+    group = CourseGroup.objects.filter(course=course)
+    return render(request, 'courses/ghistory.html', {'course': course, 'group': group})
+
 def groupDetail(request, group_id):
     group = get_object_or_404(CourseGroup, pk=group_id)
     student = StudentGroup.objects.filter(group=group).order_by('seat')

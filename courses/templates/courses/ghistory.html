@@ -1,0 +1,36 @@
+{% extends 'nav.html' %}
+{% load static %}
+ 
+{% block subtitle %}-课程分组历史{% endblock %}
+
+{% block main %}
+<script language="JavaScript">
+function weekcode(week)
+{
+    w = week / 10;
+    document.write("星期" + "一二三四五六日".charAt(w - 1));
+    if (week % 10 == 1) document.write("下午");
+    if (week % 10 == 2) document.write("晚上");
+}
+</script>
+
+<div class="container">
+      {% if group %}
+      <center><h2>课程名称：{{ course.name }}</h2></center>
+      <table class = "table table-course table-striped">
+          <tr><th>学年</th><th>时间</th><th>地点</th><th>任课教师</th><th>人数上限</th><th>操作</th></tr>
+        {% for p in group %}
+        <tr><td>{{ p.year }}</td><td><script>weekcode("{{ p.week }}") </script></td><td>{{ p.room }}</td>
+                    <td>{{ p.tea_name }}</td><td>{{ p.limit }}</td>
+                    <td>
+              {% if request.user.username == 'Teacher' %}
+              <a class="btn btn-outline-primary" href="{% url 'courses:gdetail' p.id %}">查看</a>
+              <a class="btn btn-outline-primary" href="{% url 'courses:evaDay' p.id %}">评阅</a>
+              {% endif %}
+              </td>
+          </tr>
+        {% endfor %}
+      </table>
+      {% endif %}
+{% endblock %}
+{% block ac2 %}active{% endblock %}

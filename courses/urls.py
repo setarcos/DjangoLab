@@ -6,6 +6,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('<int:course_id>/', views.detail, name='detail'),
     path('<int:course_id>/groups', views.groups, name='groups'),
+    path('<int:course_id>/ghistory', views.ghistory, name='ghistory'),
     path('join/<int:group_id>/', views.joinGroup, name='joinGroup'),
     path('leave/<int:group_id>/', views.leaveGroup, name='leaveGroup'),
     path('group/<int:group_id>/', views.groupDetail, name='gdetail'),
