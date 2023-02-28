@@ -52,7 +52,7 @@ class GroupForm(BSModalModelForm):
             )
     npart = forms.ChoiceField(
             label='时间',
-            choices=((0, "上午"), (1, "下午"), (2, "晚上")),
+            choices=((0, "上午"), (1, "下午"), (2, "晚上"), (3, "后段下午"), (4, "后段晚上")),
             )
     modal_title = "增加时段"
 

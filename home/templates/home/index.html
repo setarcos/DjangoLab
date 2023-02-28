@@ -1,21 +1,16 @@
 {% extends "nav.html" %}
+{% load static %}
 {% block ac1 %}active{% endblock %}
 {% block main %}
 <div class="container">
 <div class="row">
     <div class="col-md-12"><div class="card alert-info"><div class="card-body">
    {{ request.session.realname }} 您好！<br>
+   <script src="{% static 'js/weekcode.js' %}"></script>
    <script type="text/javascript">
     var date = new Date();
     document.write("今天是：" + date.getFullYear() + "年" + (date.getMonth() + 1) + "月" + date.getDate() + "日" + " 星期" + "日一二三四五六".charAt(date.getDay()));
 
-    function weekcode(week)
-    {
-        w = week / 10;
-        document.write("星期" + "一二三四五六日".charAt(w - 1));
-        if (week % 10 == 1) document.write("下午");
-        if (week % 10 == 2) document.write("晚上");
-    }
    </script>
    ，现在是{{ schoolyear.get_status }}
     </div></div></div>
