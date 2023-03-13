@@ -179,10 +179,6 @@ def logView(request, group_id):
             students[i].note = all_logs[students[i].stu_id].note
             students[i].confirmed = all_logs[students[i].stu_id].confirm
             students[i].log_id = all_logs[students[i].stu_id].id
-            if students[i].seat != all_logs[students[i].stu_id].seat:
-                students[i].new_seat = all_logs[students[i].stu_id].seat
-            else:
-                students[i].new_seat = 0
         else:
             students[i].complete = 0
     return render(request, 'courses/log_view.html', {'object_list':students, 'group':group})

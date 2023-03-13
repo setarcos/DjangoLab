@@ -21,13 +21,9 @@ function SureConfirm(name, url)
        {% for g in object_list %}
        <tr><td>{{ g.stu_id }}</td>
            <td><a href="{% url 'courses:evaView' group.id g.stu_id %}">{{ g.stu_name }}</a></td>
-           <td>{{ g.seat }}
-            {% if g.new_seat > 0 %}
-            <a href="{% url 'courses:updateSeat' g.log_id %}">(更新座位为{{ g.new_seat }})</a>
-            {% endif %}
-           </td>
+           <td>{{ g.seat }}</td>
            <td>{% if g.complete == 1 %}
-               完成，
+               完成({{ g.note }})，
                {% else %}
 	       <font color="red">未完成</font>，
                {% endif %}
