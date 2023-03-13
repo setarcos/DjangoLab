@@ -110,3 +110,8 @@ class CourseForm(forms.ModelForm):
     class Meta:
         model = Course
         exclude = ['ccode','tea_id']
+
+class SeatForm(forms.Form):
+    seat2 = forms.IntegerField(
+        label = '新座位号',
+        )

@@ -14,6 +14,7 @@ from django.utils import timezone
 from datetime import timedelta
 
 from .forms import StuLabForm, GroupForm, ScheduleForm, StudentEvaForm, LabRoomQueryForm, CourseForm, EvaDayForm
+from .forms import SeatForm
 from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView
 
 def index(request):
@@ -147,15 +148,20 @@ def logConfirm(request, log_id):
     log.save()
     return HttpResponseRedirect(reverse('courses:logView', args=(log.group_id,)))
 
-def updateSeat(request, log_id):
-    log = get_object_or_404(StudentHist, pk=log_id)
+def updateSeat(request, group_id, stu_id):
     if request.user.username != 'Teacher':
         raise Http404("只有教师具有此权限")
-    student = StudentGroup.objects.filter(group=log.group, stu_id=log.stu_id).first()
-    if student:
-        student.seat = log.seat
-        student.save()
-    return HttpResponseRedirect(reverse('courses:logView', args=(log.group_id,)))
+    m = StudentGroup.objects.filter(group_id=group_id,stu_id=stu_id)
+    if m.count() == 0:
+        raise Http404("没有这个学生");
+    if request.method == 'POST':
+        form = SeatForm(request.POST)
+        if form.is_valid():
+            seat2 = form.cleaned_data['seat2']
+            student = m.first()
+            student.seat = seat2
+            student.save()
+    return HttpResponseRedirect(reverse('courses:gdetail', args=(group_id,)))
 
 def logView(request, group_id):
     group = get_object_or_404(CourseGroup, pk=group_id)
@@ -317,8 +323,9 @@ def evaView(request, group_id, stu_id):
     m = StudentGroup.objects.filter(group_id=group_id,stu_id=stu_id)
     if m.count() == 0:
         raise Http404("没有这个学生");
+    form = SeatForm()
     sl = StudentLog.objects.filter(group_id=group_id,stu_id=stu_id).order_by('note_time')
-    return render(request, 'courses/eva_list.html', {'object_list': sl, 'student_name':m.first().stu_name})
+    return render(request, 'courses/eva_list.html', {'object_list': sl, 'student':m.first(), 'form':form})
 
 def evaDayView(request, group_id):
     if not 'userperm' in request.session:
