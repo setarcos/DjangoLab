@@ -146,6 +146,13 @@ def logConfirm(request, log_id):
     log.fin_time = timezone.now()
     log.confirm = 1
     log.save()
+    eva = StudentLog()
+    eva.tea_name = log.tea_name
+    eva.stu_id = log.stu_id
+    eva.note = "验收离开"
+    eva.note_time = log.fin_time
+    eva.group = log.group
+    eva.save()
     return HttpResponseRedirect(reverse('courses:logView', args=(log.group_id,)))
 
 def updateSeat(request, group_id, stu_id):
