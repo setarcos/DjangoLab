@@ -59,7 +59,7 @@ def joinGroup(request, group_id):
     group = get_object_or_404(CourseGroup, pk=group_id)
     allgroup = CourseGroup.objects.filter(course=group.course)
     for g in allgroup.all():
-        m = StudentGroup.objects.filter(group=g,stu_id = request.session['schoolid'])
+        m = StudentGroup.objects.filter(group=g,stu_id = request.session['schoolid'],seat__lte=100)
         if (m.count() > 0):
             if (g == group):
                 raise Http404("你已经在这个组里面了")
