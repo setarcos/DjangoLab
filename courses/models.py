@@ -81,6 +81,7 @@ class CourseGroup(models.Model):
     tea_name = models.CharField(max_length=10, verbose_name="授课教师")
     year = models.ForeignKey(SchoolYear, on_delete=models.CASCADE, verbose_name="学年")
     limit = models.IntegerField(default=15, verbose_name="人数限制")
+    lag = models.IntegerField(default=0, verbose_name="落后进度周数")
 
 class StudentGroup(models.Model):
     group = models.ForeignKey(CourseGroup, on_delete=models.CASCADE)

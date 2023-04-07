@@ -124,7 +124,7 @@ def logAdd(request, group_id):
                 his_dfl.seat = student[0].seat
             else:
                 his_dfl.seat = 0;
-            week = SchoolYear.get_week()
+            week = SchoolYear.get_week() + group.lag
             lab = CourseSchedule.objects.filter(course=group.course,week=week)
             if (lab.count() > 0):
                 his_dfl.lab_name = lab[0].name
