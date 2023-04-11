@@ -36,6 +36,7 @@
             全部课程
             </a>
           </li>
+          {% if request.user.username == 'Teacher' %}
           <li class="nav-item">
             <a class="nav-link {% block ac3 %}{% endblock %}" href="{% url 'groceries:index' %}">
             <span data-feather="printer"></span>
@@ -54,6 +55,7 @@
             全部实验室
             </a>
           </li>
+          {% endif %}
         </ul>
       </div>
     </nav>
