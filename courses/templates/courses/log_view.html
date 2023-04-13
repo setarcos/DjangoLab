@@ -17,9 +17,9 @@ function SureConfirm(name, url)
       <a class="btn btn-outline-primary" href="{% url 'courses:evaDay' group.id %}">评阅</a>
   </div>
    <table class="table table-course">
-       <tr><th>学号</th><th>姓名</th><th>座位</th><th>状态</th><th>操作</th></tr>
+       <tr><th class="d-none d-lg-table-cell">学号</th><th>学生姓名</th><th>座位</th><th>状态</th><th>操作</th></tr>
        {% for g in object_list %}
-       <tr><td>{{ g.stu_id }}</td>
+       <tr><td class="d-none d-lg-table-cell">{{ g.stu_id }}</td>
            <td><a href="{% url 'courses:evaView' group.id g.stu_id %}">{{ g.stu_name }}</a></td>
            <td>{{ g.seat }}</td>
            <td>{% if g.complete == 1 %}
