@@ -82,6 +82,10 @@ class StudentEvaForm(BSModalModelForm):
             label='学生未填写记录离开',
             required = False,
             )
+    note = forms.CharField(
+            label='记录内容',
+            required = False,
+            )
     class Meta:
         model = StudentLog
         fields = ['note', 'stu_name']

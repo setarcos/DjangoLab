@@ -1,4 +1,5 @@
 django-bootstrap4
 requests
+filelock
 django-ckeditor
 django-bootstrap-modal-forms

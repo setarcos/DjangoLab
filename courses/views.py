@@ -193,6 +193,7 @@ def logView(request, group_id):
 class AddGroupView(BSModalCreateView):
     template_name = 'courses/form_temp.html'
     form_class = GroupForm
+    success_message = ''
 
     def get_success_url(self):
         return reverse('courses:groups', kwargs={'course_id': self.kwargs['course_id']})
@@ -230,6 +231,7 @@ class ScheduleListView(ListView):
 class AddScheduleView(BSModalCreateView):
     template_name = 'courses/form_temp.html'
     form_class = ScheduleForm
+    success_message = ''
 
     def get_success_url(self):
         return reverse('courses:schedules', kwargs={'course_id': self.kwargs['course_id']})
@@ -251,6 +253,7 @@ class AddScheduleView(BSModalCreateView):
 class UpdateScheduleView(BSModalUpdateView):
     template_name = 'courses/form_temp.html'
     form_class = ScheduleForm
+    success_message = ''
     model = CourseSchedule
 
     def get_success_url(self):
@@ -274,6 +277,7 @@ def delSchedule(request, sche_id):
 class AddStudentEvaView(BSModalCreateView):
     template_name = 'courses/form_temp.html'
     form_class = StudentEvaForm
+    success_message = ''
 
     def get_success_url(self):
         return reverse('courses:logView', kwargs={'group_id': self.kwargs['group_id']})
@@ -283,17 +287,21 @@ class AddStudentEvaView(BSModalCreateView):
         if (stu):
             return {'stu_name':stu.stu_name,}
         else:
-            return {'stu_name':'42',}
+            return {'stu_name':'42',}  # 应该不会执行到这里
 
     def form_valid(self, form):
         group = CourseGroup.objects.get(pk=self.kwargs['group_id'])
         if self.request.user.username != 'Teacher':
             return HttpResponseRedirect(reverse('home:index'))
+        if (form.cleaned_data['forget'] == False) and (form.cleaned_data['note'] == ''):
+            return HttpResponseRedirect(self.get_success_url())
         form.instance.group_id = self.kwargs['group_id']
         form.instance.stu_id = self.kwargs['stu_id']
         form.instance.tea_name = self.request.session['realname']
         form.instance.note_time = timezone.now()
         if form.cleaned_data['forget']==True:
+            form.instance.note = '学生忘记记录'
+            # 学生可能在此时提交了实验记录，所以检查一小时以内的记录
             now = timezone.now() + timedelta(hours=-1) # 1小时以内
             old_his = StudentHist.objects.filter(stu_id=self.kwargs['stu_id'],fin_time__gte=now).order_by('-fin_time');
             if (old_his.count() == 0):  # 这里可能会有竞争条件，但暂时忽略
@@ -318,6 +326,13 @@ class AddStudentEvaView(BSModalCreateView):
                 hist.group = group
                 hist.confirm = 1
                 hist.save()
+            else:
+                log = old_his.first()
+                log.tea_name = self.request.session['realname']
+                log.fin_time = timezone.now()
+                log.confirm = 1
+                log.save()
+                form.instance.note = '验收离开'
         return super().form_valid(form)
 
 def evaView(request, group_id, stu_id):
@@ -400,6 +415,7 @@ class CourseUpdateView(UpdateView):
     model = Course
     template_name = 'courses/course_update.html'
     form_class = CourseForm
+    success_message = ''
 
     def get_success_url(self):
         return reverse('courses:detail', kwargs={'course_id': self.kwargs['pk']})
