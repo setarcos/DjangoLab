@@ -21,6 +21,7 @@ function termcode(term)
     <li class="nav-item"><a class="nav-link active">课程详情</a></li>
     <li class="nav-item"><a class="nav-link" href="{% url 'courses:groups' course.id %}">分组信息</a></li>
     <li class="nav-item"><a class="nav-link" href="{% url 'courses:schedules' course.id %}">时间安排</a></li>
+    <li class="nav-item"><a class="nav-link" href="{% url 'courses:files' course.id %}">课程资料</a></li>
   </ul>
   <div class="tab-content" id="course-tabs">
     <table class="table table-course">

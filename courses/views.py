@@ -2,19 +2,21 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, Http404
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.conf import settings
 from .models import Course, CourseGroup, StudentGroup, StudentHist
-from .models import SchoolYear, CourseSchedule, StudentLog, LabRoom
+from .models import SchoolYear, CourseSchedule, StudentLog, LabRoom, CourseFiles
 from home.models import Teacher
 from django.views.generic.list import ListView
 from django.views.generic.edit import UpdateView
+from django import forms
 
 from filelock import FileLock
-from os import remove
+import os
 from django.utils import timezone
 from datetime import timedelta
 
 from .forms import StuLabForm, GroupForm, ScheduleForm, StudentEvaForm, LabRoomQueryForm, CourseForm, EvaDayForm
-from .forms import SeatForm
+from .forms import SeatForm, UploadForm
 from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView
 
 def index(request):
@@ -76,7 +78,7 @@ def joinGroup(request, group_id):
         else:
             m.seat = 1
         m.save()
-    remove(f"/tmp/group.{group_id}")
+    os.remove(f"/tmp/group.{group_id}")
     return render(request, 'courses/group_detail.html', {'group': student.order_by('seat')})
 
 def leaveGroup(request, group_id):
@@ -424,3 +426,47 @@ class CourseUpdateView(UpdateView):
         if self.request.session['schoolid'] != form.instance.tea_id:
             return HttpResponseRedirect(self.get_success_url())
         return super().form_valid(form)
+
+def courseUploadFile(request, course_id):
+    course = get_object_or_404(Course, pk=course_id)
+    if request.user.username != 'Teacher':
+        raise Http404("只有教师具有此权限")
+    if request.method == 'POST':
+        form = UploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            up_file = request.FILES['file']
+            files = CourseFiles.objects.filter(course=course, fname=up_file.name)
+            if (files.count() > 0):
+                raise forms.ValidationError("文件已经在服务器存在")
+            cfile = CourseFiles()
+            cfile.course = course
+            cfile.fname = up_file.name
+            cfile.finfo = form.cleaned_data['finfo']
+            cfile.save()
+            path = '{media}/course/{course}/'.format(media=settings.MEDIA_ROOT, course=course_id)
+            if not os.path.exists(path):
+                os.makedirs(path)
+            with open('{path}{name}'.format(path=path, name=cfile.fname), 'wb+') as wfile:
+                for chunk in up_file.chunks():
+                    wfile.write(chunk)
+            return HttpResponseRedirect(reverse('courses:files', args=(course_id,)))
+        else:
+            print("Not valid\n")
+    else:
+        form = UploadForm()
+    return render(request, 'courses/upload.html', {'form': form})
+
+def courseFiles(request, course_id):
+    course = get_object_or_404(Course, pk=course_id)
+    files = CourseFiles.objects.filter(course=course)
+    return render(request, 'courses/course_file.html', {'files': files, 'course': course})
+
+def delFile(request, file_id):
+    if request.user.username != 'Teacher':
+        raise Http404("只有教师具有此权限")
+    file = get_object_or_404(CourseFiles, pk=file_id)
+    course_id = file.course.id
+    os.remove('{media}/course/{course}/{name}'.format(media=settings.MEDIA_ROOT,
+                course=course_id, name=file.fname))
+    file.delete()
+    return HttpResponseRedirect(reverse('courses:files', args=(course_id,)))

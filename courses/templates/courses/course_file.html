@@ -1,0 +1,46 @@
+{% extends 'nav.html' %}
+{% load static %}
+ 
+{% block subtitle %}-课程资料{% endblock %}
+
+{% block main %}
+<script language="JavaScript">
+function SureDel(delurl)
+{
+	if (confirm("确定要删除这条记录?")){
+        location = delurl;
+	}
+}
+</script>
+
+<div class="container">
+  <ul class="nav nav-tabs">
+    <li class="nav-item"><a class="nav-link" href="{% url 'courses:detail' course.id %}">课程详情</a></li>
+    <li class="nav-item"><a class="nav-link" href="{% url 'courses:groups' course.id %}">分组信息</a></li>
+    <li class="nav-item"><a class="nav-link" href="{% url 'courses:schedules' course.id %}">时间安排</a></li>
+    <li class="nav-item"><a class="nav-link active">课程资料</a></li>
+  </ul>
+  <div class="tab-content" id="course-tabs">
+      {% if files.count %}
+      <table class = "table table-course table-striped">
+          <tr><th>序号</th><th>文件</th>
+              {% if request.session.schoolid == course.tea_id %} <th>操作</th> {% endif %}
+          </tr>
+        {% for p in files %}
+        <tr><td>{{ forloop.counter}}</td><td><a class="nav-link"
+            href="{% get_media_prefix %}course/{{p.course.id}}/{{p.fname}}">{{ p.finfo}}</a></td>
+          {% if request.session.schoolid == course.tea_id %}
+          <td><a class="btn btn-outline-danger" href="javascript:SureDel('{% url 'courses:delFile' p.id %}');">删除</a>
+          </td>
+          {% endif %}
+          </tr>
+        {% endfor %}
+      </table>
+      {% endif %}
+  </div>
+{% if request.session.schoolid == course.tea_id %}
+<a class="btn btn-primary" type="button" href="{% url 'courses:upload' course.id %}">增加</a>
+{% endif %}
+</div>
+{% endblock %}
+{% block ac2 %}active{% endblock %}

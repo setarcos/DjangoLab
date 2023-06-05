@@ -119,3 +119,11 @@ class SeatForm(forms.Form):
     seat2 = forms.IntegerField(
         label = '新座位号',
         )
+
+class UploadForm(forms.Form):
+    finfo = forms.CharField(
+        label = '文件描述'
+        )
+    file = forms.FileField(
+        label = '文件'
+        )

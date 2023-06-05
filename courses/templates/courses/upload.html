@@ -1,0 +1,30 @@
+{% extends 'nav.html' %}
+
+{% load bootstrap4 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+{% block subtitle %}
+-添加文件
+{% endblock %}
+{% block ac2 %}active{% endblock %}
+{% block main %}
+<div class="row">
+  <div class="col-md-12">
+      <form enctype="multipart/form-data" action="" method="post">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    {% buttons %}
+      <button type="submit" class="btn btn-primary">
+        提交
+      </button>
+    {% endbuttons %}
+  </form>
+  </div>
+</div>
+{% endblock %}

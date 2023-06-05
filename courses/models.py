@@ -108,3 +108,11 @@ class StudentLog(models.Model): # StudentEva might be a better name, since I use
     tea_name = models.CharField(max_length=10, verbose_name="教师")
     note = models.CharField(default="", max_length=100, verbose_name="记录内容")
     note_time = models.DateTimeField(verbose_name="时间")
+
+class CourseFiles(models.Model):
+    class Meta:
+        verbose_name="课程资料"
+        verbose_name_plural="课程资料"
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name="课程")
+    fname = models.CharField(max_length=100, verbose_name="文件名")
+    finfo = models.CharField(max_length=100, verbose_name="文件说明")
