@@ -443,7 +443,7 @@ def courseUploadFile(request, course_id):
             cfile.fname = up_file.name
             cfile.finfo = form.cleaned_data['finfo']
             cfile.save()
-            path = '{media}/course/{course}/'.format(media=settings.MEDIA_ROOT, course=course_id)
+            path = '{media}course/{course}/'.format(media=settings.MEDIA_ROOT, course=course_id)
             if not os.path.exists(path):
                 os.makedirs(path)
             with open('{path}{name}'.format(path=path, name=cfile.fname), 'wb+') as wfile:
