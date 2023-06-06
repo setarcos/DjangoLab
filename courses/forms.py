@@ -1,5 +1,5 @@
 from django import forms
-from .models import LabRoom, CourseGroup, Course, CourseSchedule, StudentLog
+from .models import LabRoom, CourseGroup, Course, CourseSchedule, StudentLog, CourseFiles
 from bootstrap_modal_forms.forms import BSModalModelForm
 from ckeditor.widgets import CKEditorWidget
 
@@ -90,6 +90,14 @@ class StudentEvaForm(BSModalModelForm):
         model = StudentLog
         fields = ['note', 'stu_name']
 
+#    def clean(self):
+#        cleaned_data = super().clean()
+#        forget = cleaned_data.get('forget')
+#        note = cleaned_data.get('note')
+#        if (forget == False) and (note == ''):
+#            raise forms.ValidationError("必须填写内容")
+#        return cleaned_data
+
 class EvaDayForm(forms.Form):
     edate = forms.DateField(
         label='实验时间',
@@ -127,3 +135,12 @@ class UploadForm(forms.Form):
     file = forms.FileField(
         label = '文件'
         )
+    course = None
+
+    def clean(self):
+        cleaned_data = super().clean()
+        up_file = cleaned_data.get('file')
+        files = CourseFiles.objects.filter(course=self.course, fname=up_file.name)
+        if (files.count() > 0):
+            raise forms.ValidationError("文件已经在服务器存在")
+        return cleaned_data;

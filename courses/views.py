@@ -433,11 +433,9 @@ def courseUploadFile(request, course_id):
         raise Http404("只有教师具有此权限")
     if request.method == 'POST':
         form = UploadForm(request.POST, request.FILES)
+        form.course = course
         if form.is_valid():
             up_file = request.FILES['file']
-            files = CourseFiles.objects.filter(course=course, fname=up_file.name)
-            if (files.count() > 0):
-                raise forms.ValidationError("文件已经在服务器存在")
             cfile = CourseFiles()
             cfile.course = course
             cfile.fname = up_file.name
@@ -450,8 +448,6 @@ def courseUploadFile(request, course_id):
                 for chunk in up_file.chunks():
                     wfile.write(chunk)
             return HttpResponseRedirect(reverse('courses:files', args=(course_id,)))
-        else:
-            print("Not valid\n")
     else:
         form = UploadForm()
     return render(request, 'courses/upload.html', {'form': form})
@@ -466,7 +462,10 @@ def delFile(request, file_id):
         raise Http404("只有教师具有此权限")
     file = get_object_or_404(CourseFiles, pk=file_id)
     course_id = file.course.id
-    os.remove('{media}/course/{course}/{name}'.format(media=settings.MEDIA_ROOT,
+    try:
+        os.remove('{media}/course/{course}/{name}'.format(media=settings.MEDIA_ROOT,
                 course=course_id, name=file.fname))
+    except:
+        print("File not exists")
     file.delete()
     return HttpResponseRedirect(reverse('courses:files', args=(course_id,)))
