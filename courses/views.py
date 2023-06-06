@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, Http404
 from django.contrib.auth.models import User
+from django.contrib import messages
 from django.urls import reverse
 from django.conf import settings
 from .models import Course, CourseGroup, StudentGroup, StudentHist
@@ -56,17 +57,19 @@ def groupDetail(request, group_id):
     return render(request, 'courses/group_detail.html', {'group': student})
 
 def joinGroup(request, group_id):
-    if request.user.username != 'Student':
-        raise Http404("你必须是学生才可以选课")
     group = get_object_or_404(CourseGroup, pk=group_id)
+    if request.user.username != 'Student':
+        messages.error(request, "只有学生可以选课")
+        return HttpResponseRedirect(reverse('courses:groups', args=(group.course_id,)))
     allgroup = CourseGroup.objects.filter(course=group.course)
     for g in allgroup.all():
         m = StudentGroup.objects.filter(group=g,stu_id = request.session['schoolid'],seat__lte=100)
         if (m.count() > 0):
             if (g == group):
-                raise Http404("你已经在这个组里面了")
+                return HttpResponseRedirect(reverse('courses:groups', args=(group.course_id,)))
             else:
-                raise Http404("你在这个课的其他组里")
+                messages.error(request, "你在这个课的其他组里")
+                return HttpResponseRedirect(reverse('courses:groups', args=(group.course_id,)))
     lockfile = FileLock(f"/tmp/group.{group_id}")
     with lockfile:
         student = StudentGroup.objects.filter(group=group)

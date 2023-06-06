@@ -15,6 +15,7 @@ function SureDel(delurl)
 </script>
 
 <div class="container">
+  {% include 'courses/message.html' %}
   <ul class="nav nav-tabs">
     <li class="nav-item"><a class="nav-link" href="{% url 'courses:detail' course.id %}">课程详情</a></li>
     <li class="nav-item"><a class="nav-link active">分组信息</a></li>
