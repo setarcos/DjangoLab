@@ -51,12 +51,16 @@ function SureConfirm(name, url)
 {% endblock %}
 {% block ac2 %}active{% endblock %}
 {% block morescripts %}
-<script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+<script src="{% static 'js/bootstrap5.modal.forms.js' %}"></script>
 <script type="text/javascript">
-  $(function () {
-    $(".eva-stu").each(function () {
-        $(this).modalForm({formURL: $(this).data("form-url")});
+document.addEventListener('DOMContentLoaded', (e) => {
+  var eva = document.getElementsByClassName("eva-stu");
+  for (var index=0; index < eva.length; index++) {
+    modalForm(eva[index], {
+        formURL: eva[index]["dataset"]["formUrl"],
+        isDeleteForm: false
     });
-   });
+  }
+});
 </script>
 {% endblock %}

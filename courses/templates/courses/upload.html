@@ -1,6 +1,6 @@
 {% extends 'nav.html' %}
 
-{% load bootstrap4 %}
+{% load django_bootstrap5 %}
 
 {# Load CSS and JavaScript #}
 {% bootstrap_css %}
@@ -19,11 +19,7 @@
       <form enctype="multipart/form-data" action="" method="post">
     {% csrf_token %}
     {% bootstrap_form form %}
-    {% buttons %}
-      <button type="submit" class="btn btn-primary">
-        提交
-      </button>
-    {% endbuttons %}
+    {% bootstrap_button "提交" type="submit" class="btn btn-primary" %}
   </form>
   </div>
 </div>

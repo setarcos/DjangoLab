@@ -1,4 +1,4 @@
-django-bootstrap4
+django-bootstrap5
 requests
 filelock
 django-ckeditor

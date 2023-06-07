@@ -3,7 +3,7 @@
 {% block subtitle %}-学生记录{% endblock %}
 {% block main %}
 
-{% load bootstrap4 %}
+{% load django_bootstrap5 %}
 {% bootstrap_messages %}
 <div class="container">
     <div class="panel-heading">学生记录</div>
@@ -13,11 +13,7 @@
         <div class="col-sm-4"> <b>{{ form.edate.label_tag }}</b> - {{ form.edate }}</div>
         <div class="col-sm-4"> <b>{{ form.nweek.label_tag }}</b> - {{ form.nweek}} </div>
         <div class="col-sm-4">
-    {% buttons %}
-      <button type="submit" class="btn btn-primary">
-       查询 
-      </button>
-    {% endbuttons %}
+        {% bootstrap_button "查询" type="submit" class="btn btn-primary" %}
         </div>
     </div>
       </form>

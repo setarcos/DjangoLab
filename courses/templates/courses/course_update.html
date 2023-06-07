@@ -1,6 +1,6 @@
 {% extends "nav.html" %}
 
-{% load bootstrap4 %}
+{% load django_bootstrap5 %}
 
 {% bootstrap_messages %}
 {% block subtitle %}-修改课程信息{% endblock %}
@@ -11,11 +11,7 @@
     {% csrf_token %}
     {{ form.media }}
     {% bootstrap_form form %}
-    {% buttons %}
-      <button type="submit" class="btn btn-primary">
-       提交 
-      </button>
-    {% endbuttons %}
+    {% bootstrap_button "提交" type="submit" class="btn btn-primary" %}
       </form>
   </div>
 </div>

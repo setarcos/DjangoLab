@@ -4,8 +4,9 @@
 {% block title %}电子信息科学基础实验中心{% block subtitle %}{% endblock %}{% endblock %}
 {% block body_class %}homepage{% endblock %}
 {% block content %}
-<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/">电子信息科学基础实验中心</a>
+<nav class="navbar navbar-expand-md navbar-dark sticky-top bg-dark shadow">
+  <div class="container-fluid">
+  <a class="navbar-brand" href="/">电子信息科学基础实验中心</a>
    <button class="navbar-toggler d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
    <span data-feather="sidebar">菜单</span></button>
   <ul class="navbar-nav px-3">
@@ -17,12 +18,15 @@
     {% endif %}
     </li>
   </ul>
+  </div>
 </nav>
 <div class="container-fluid">
   {% block container %}
   <div class="row">
-    <nav id="sidebarMenu" class="col-md-2 col-lg-2 d-md-block bg-light sidebar collapse">
-      <div class="sidebar-sticky"> <ul class="nav flex-column">
+    <div class="col-md-3 col-lg-3 mt-3">
+    <nav id="sidebarMenu" class="d-md-block bg-light sidebar collapse">
+      <div class="sidebar-sticky mt-3 mx-5">
+        <ul class="nav flex-column">
           <li class="nav-item">
             <a class="nav-link {% block ac1 %}{% endblock %}" href="/">
             <span data-feather="check"></span>
@@ -58,12 +62,15 @@
         </ul>
       </div>
     </nav>
-    <main role="main" class="container col-md-9 ml-sm-auto col-lg-10 px-4">
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    </div>
+    <div class="col-md-8 ml-sm-auto col-lg-8">
+    <main role="main">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap justify-content-center pt-3 pb-2 mb-3 border-bottom">
       {% block main %}
       {% endblock %}
       </div>
     </main>
+    </div>
   </div>
   {% endblock %}
 </div>

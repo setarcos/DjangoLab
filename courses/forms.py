@@ -90,13 +90,13 @@ class StudentEvaForm(BSModalModelForm):
         model = StudentLog
         fields = ['note', 'stu_name']
 
-#    def clean(self):
-#        cleaned_data = super().clean()
-#        forget = cleaned_data.get('forget')
-#        note = cleaned_data.get('note')
-#        if (forget == False) and (note == ''):
-#            raise forms.ValidationError("必须填写内容")
-#        return cleaned_data
+    def clean(self):
+        cleaned_data = super(StudentEvaForm, self).clean()
+        forget = cleaned_data.get('forget')
+        note = cleaned_data.get('note')
+        if (forget == False) and (note == ''):
+            raise forms.ValidationError("必须填写内容")
+        return cleaned_data
 
 class EvaDayForm(forms.Form):
     edate = forms.DateField(

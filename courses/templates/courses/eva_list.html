@@ -3,7 +3,7 @@
 {% block subtitle %}-学生情况{% endblock %}
 
 {% block main %}
-{% load bootstrap4 %}
+{% load django_bootstrap5 %}
 {% bootstrap_messages %}
 <script language="JavaScript">
 function SureDel(delurl)
@@ -22,11 +22,7 @@ function SureDel(delurl)
             <b>{{ form.seat2.label_tag }}</b> {{ form.seat2 }}
         </div>
         <div class="col-sm-4">
-        {% buttons %}
-          <button type="submit" class="btn btn-primary">
-           更新座位
-          </button>
-        {% endbuttons %}
+            {% bootstrap_button "更新座位" type="submit" class="btn btn-primary" %}
         </div>
     </div>
     </form>
