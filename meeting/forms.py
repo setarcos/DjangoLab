@@ -15,7 +15,7 @@ class AgendaForm(forms.Form):
         required=False,
         label="日期",
         initial=timezone.now().date(),
-#        widget=forms.SelectDateWidget,
+        widget=forms.SelectDateWidget,
     )
 
     week = forms.ChoiceField(
