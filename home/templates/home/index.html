@@ -24,7 +24,7 @@
     </div>
     <div class="card-body">
     {% if courses %}
-     <table class="table table-home">
+     <table class="table table-borderless">
          <tr><th>课程名称</th><th>上课时间</th><th>上课地点</th></tr>
          {% for c in courses %}
          <tr> <td><a href="{% url 'courses:detail' c.course.id %}">{{ c.course }}</a></td>
