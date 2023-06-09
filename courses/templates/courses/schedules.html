@@ -54,11 +54,20 @@ function SureDel(delurl)
 {% endblock %}
 {% block ac2 %}active{% endblock %}
 {% block morescripts %}
-<script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+<script src="{% static 'js/bootstrap5.modal.forms.js' %}"></script>
 <script language="JavaScript">
-$(function() {
-    $("#add-schedule").modalForm({formURL: "{% url 'courses:addSchedule' course.id %}", modalID: "#modal"});
-    $(".update-schedule").each(function (){$(this).modalForm({formURL: $(this).data("form-url")});});
+document.addEventListener('DOMContentLoaded', (e) => {
+  var eva = document.getElementsByClassName("update-schedule");
+  for (var index=0; index < eva.length; index++) {
+    modalForm(eva[index], {
+        formURL: eva[index]["dataset"]["formUrl"],
+        isDeleteForm: false
+    });
+  }
+  modalForm(document.getElementById('add-schedule'), {
+    formURL: "{% url 'courses:addSchedule' course.id %}",
+    isDeleteForm: false
+  })
 });
 </script>
 {% endblock %}
