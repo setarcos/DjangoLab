@@ -30,12 +30,17 @@
 {% block morescripts %}
 <script>
 $(document).ready(function(){
+  var element = document.getElementById("id_date_year");
+  if (element) {
+    var parent = element.parentNode;
+    parent.classList.add("input-group");
+  }
   $("#id_repeatable_0").click(function(){
-    $("label[for='id_date_year']").text("日期");
+    $("label[for='id_date_year']").text("日期：");
 	$("#id_week").prop('disabled', true);
   });
   $("#id_repeatable_1").click(function(){
-    $("label[for='id_date_year']").text("截止时间");
+    $("label[for='id_date_year']").text("截止时间：");
 	$("#id_week").prop('disabled', false);
   });
 });
