@@ -141,6 +141,7 @@ def logAdd(request, group_id):
         initials['lab_name'] = his_dfl.lab_name
         initials['note'] = his_dfl.note
         form = StuLabForm(initials)
+        form.errors.clear()
     return render(request, 'courses/log_add.html', {'form': form})
 
 def logConfirm(request, log_id):
