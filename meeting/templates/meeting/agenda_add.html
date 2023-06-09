@@ -29,20 +29,32 @@
 {% block ac4 %}active{% endblock %}
 {% block morescripts %}
 <script>
-$(document).ready(function(){
+window.addEventListener('DOMContentLoaded', function() {
+  var radio0 = document.getElementById('id_repeatable_0');
+  var label = document.querySelector('label[for="id_date_year"]');
+  var check = document.getElementById('id_week');
+  if (radio0) {
+    radio0.addEventListener('change', function() {
+      if (radio0.checked) {
+        label.textContent = "日期：";
+        check.disabled = true;
+      }
+    });
+  }
+  var radio1 = document.getElementById('id_repeatable_1');
+  if (radio1) {
+    radio1.addEventListener('change', function() {
+      if (radio1.checked) {
+        label.textContent = "截止时间：";
+        check.disabled = false;
+      }
+    });
+  }
   var element = document.getElementById("id_date_year");
   if (element) {
     var parent = element.parentNode;
     parent.classList.add("input-group");
   }
-  $("#id_repeatable_0").click(function(){
-    $("label[for='id_date_year']").text("日期：");
-	$("#id_week").prop('disabled', true);
-  });
-  $("#id_repeatable_1").click(function(){
-    $("label[for='id_date_year']").text("截止时间：");
-	$("#id_week").prop('disabled', false);
-  });
 });
 </script>
 {% endblock %}
