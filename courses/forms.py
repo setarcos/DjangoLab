@@ -35,15 +35,6 @@ class StuLabForm(forms.Form):
         label='设备问题',
         )
 
-    def clean(self):
-        super().clean()
-        if (not self.is_valid()):
-            return
-        s = self.cleaned_data.get('switch')
-        e = self.cleaned_data.get('table')
-        if (not s) or (not e):
-            raise forms.ValidationError("必须先整理桌面和给设备关机")
-
 class GroupForm(BSModalModelForm):
     nweek = forms.ChoiceField(
             label='星期',
