@@ -68,14 +68,13 @@ function SureDel(delurl)
 {% endblock %}
 {% block ac2 %}active{% endblock %}
 {% block morescripts %}
-<script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+<script src="{% static 'js/bootstrap5.modal.forms.js' %}"></script>
 <script language="JavaScript">
-$(document).ready(function() {
-
-    $("#add-group").modalForm({
-        formURL: "{% url 'courses:addGroup' course.id %}"
-    });
-
+document.addEventListener('DOMContentLoaded', (e) => {
+  modalForm(document.getElementById('add-group'), {
+    formURL: "{% url 'courses:addGroup' course.id %}",
+    isDeleteForm: false
+  })
 });
 </script>
 {% endblock %}
