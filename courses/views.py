@@ -174,7 +174,7 @@ def updateSeat(request, group_id, stu_id):
             student = m.first()
             student.seat = seat2
             student.save()
-    return HttpResponseRedirect(reverse('courses:gdetail', args=(group_id,)))
+    return HttpResponseRedirect(reverse('courses:logView', args=(group_id,)))
 
 def logView(request, group_id):
     group = get_object_or_404(CourseGroup, pk=group_id)
