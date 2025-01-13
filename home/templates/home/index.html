@@ -31,9 +31,13 @@
              <td><script>weekcode("{{ c.week }}")</script></td>
              <td>{{ c.room }}
                  {% if request.user.username == 'Student' %}
-                 {% if c.complete == 0 %}
-                 <a class="btn btn-outline-danger" href="{% url 'courses:logAdd' c.id %}">实验记录</a>
-                 {% endif %}
+                     {% if c.survey == 1 %}
+                     <a class="btn btn-outline-danger" href="{% url 'linux:index' %}">课程仪表盘</a>
+                     {% else %}
+                     {% if c.complete == 0 %}
+                     <a class="btn btn-outline-danger" href="{% url 'courses:logAdd' c.id %}">实验记录</a>
+                     {% endif %}
+                     {% endif %}
                  {% else %}
                  <a class="btn btn-outline-danger" href="{% url 'courses:logView' c.id %}">查看名单</a>
                  {% endif %}

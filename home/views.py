@@ -4,6 +4,7 @@ from django.contrib.auth import login, logout
 from django.shortcuts import render, get_object_or_404
 from django.conf import settings
 from courses.models import SchoolYear, CourseGroup, StudentGroup, StudentHist
+from linux.models import Survey
 from .models import Teacher
 
 import hashlib
@@ -27,6 +28,11 @@ def index(request):
         for g in cg:
             sg = StudentGroup.objects.filter(group=g,stu_id=request.session['schoolid'])
             if sg.count() > 0:
+                sv = Survey.objects.filter(course=g.course)
+                if (sv.count() > 0):
+                    g.survey = 1
+                else:
+                    g.survey = 0
                 now = timezone.now() + timedelta(hours=-5) # 五小时以内
                 sh = StudentHist.objects.filter(group=g, stu_id=request.session['schoolid'],confirm=1,fin_time__gte=now)
                 if (sh.count() > 0):
