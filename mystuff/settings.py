@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'home.apps.UserConfig',
     'meeting.apps.MeetingConfig',
     'courses.apps.CoursesConfig',
+    'linux.apps.LinuxConfig',
 ]
 
 MIDDLEWARE = [
