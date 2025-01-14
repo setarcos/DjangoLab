@@ -3,7 +3,26 @@
 
 {% block main %}
 <div class="container">
+{% if messages %}
+<ul class="messages">
+{% for message in messages %}
+<div class="container-fluid p-0">
+  <div class="alert {{ message.tags }}" role="alert" >
+    {{ message }}
+  </div>
+</div>
+{% endfor %}
+</ul>
+{% endif %}
   <div class="panel-heading"> 课程仪表盘 </div>
+  {% if survey %}
+    {% for s in survey %}
+      {% if s.flag == 1 %}
+      <li>设置登陆公钥：
+      <a class="btn btn-outline-danger" href="{% url 'linux:pubkey' %}">上传公钥</a></li>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
 </div>
 {% endblock %}
 {% block ac2 %}active{% endblock %}

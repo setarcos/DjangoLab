@@ -1,0 +1,17 @@
+{% extends 'nav.html' %}
+  
+{% block subtitle %}-上传公钥{% endblock %}
+{% block main %}
+
+{% load django_bootstrap5 %}
+{% bootstrap_messages %}
+<div class="container">
+  <form action="" method="post">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    {% bootstrap_button "提交" type="submit" class="btn btn-primary" %}
+  </form>
+</div>
+{% endblock %}
+{% block ac5 %}active{% endblock %}
+

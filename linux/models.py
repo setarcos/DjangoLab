@@ -16,7 +16,7 @@ class Answer(models.Model):
     class Meta:
         verbose_name="学生答案"
         verbose_name_plural="学生答案"
-    survey = models.ForeignKey(Survey, on_delete=models.CASCADE, verbose_name="题目")
+    flag = models.IntegerField(default=0, verbose_name="类别")
     stu_id = models.CharField(max_length=10, verbose_name="学号")
     answer = models.CharField(max_length=200, verbose_name="答案")
     atime = models.DateTimeField(default=timezone.now().date(), verbose_name="回答时间")
