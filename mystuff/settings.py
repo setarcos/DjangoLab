@@ -145,3 +145,5 @@ CKEDITOR_BROWSE_SHOW_DIRS = True
 CKEDITOR_UPLOAD_PATH='uploads/'
 
 IAAA_KEY = 'fzNVnhjFSpUqzS06QSQkSbgmMvTDUeJWIwNGzxd0GZk='
+FORGE_KEY = 'J2jS3x15nNGR2OYyWColdBgr8CWbBwkijYgwzEpc'
+FORGE_URL = 'http://testgit.my.site'

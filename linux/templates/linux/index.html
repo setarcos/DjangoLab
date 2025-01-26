@@ -21,6 +21,11 @@
       <li>设置登陆公钥：
       <a class="btn btn-outline-danger" href="{% url 'linux:pubkey' %}">上传公钥</a></li>
       {% endif %}
+      {% if s.flag == 2 %}
+      <li>创建 git 账号：
+      <a class="btn btn-outline-danger" href="{% url 'linux:gituser' %}">创建账号</a>
+      <a class="btn btn-outline-danger" href="{% url 'linux:gitlogin' %}">登陆git</a></li>
+      {% endif %}
     {% endfor %}
   {% endif %}
 </div>
