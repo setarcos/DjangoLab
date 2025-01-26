@@ -54,7 +54,7 @@ def auth(request):
         else:
             ip = request.META.get('REMOTE_ADDR')
         return ip
-    KEY='7028D67CD5F82F92E0530100007F7A7D'
+    KEY=settings.IAAA_KEY
     ip=get_client_ip(request)
     token=request.GET.get('token', '')
     if settings.DEBUG:

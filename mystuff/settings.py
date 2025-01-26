@@ -143,3 +143,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 CKEDITOR_BROWSE_SHOW_DIRS = True
 CKEDITOR_UPLOAD_PATH='uploads/'
+
+IAAA_KEY = 'fzNVnhjFSpUqzS06QSQkSbgmMvTDUeJWIwNGzxd0GZk='
