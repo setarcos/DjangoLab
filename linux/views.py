@@ -116,3 +116,26 @@ def gituser(request):
     else:
         messages.error(request, "用户建立失败")
         return HttpResponseRedirect(reverse('linux:index'))
+
+def resetUser(request):
+    if not in_course(request):
+        raise HttpResponseForbidden("用户没有权限")
+    username = request.session['schoolid']
+    url = f"{settings.FORGE_URL}/api/v1/admin/users/{username}"
+    headers = {
+        "Authorization": f"token {settings.FORGE_KEY}",
+        "Content-Type": "application/json",
+    }
+    password = secrets.token_urlsafe(16)
+    payload = {
+        "password": password
+    }
+
+    response = requests.patch(url, json=payload, headers=headers)
+
+    if response.status_code == 200:
+        messages.success(request, f"密码重置为 {password}")
+        return HttpResponseRedirect(reverse('linux:index'))
+    else:
+        messages.error(request, f"密码重置失败")
+        return HttpResponseRedirect(reverse('linux:index'))

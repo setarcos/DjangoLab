@@ -6,4 +6,5 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('pubkey', views.pubkey, name='pubkey'),
     path('gituser', views.gituser, name='gituser'),
+    path('resetuser', views.resetUser, name='resetUser'),
 ]

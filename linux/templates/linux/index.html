@@ -24,6 +24,7 @@
       {% if s.flag == 2 %}
       <li style="margin-bottom: 10px;">创建 git 账号：
       <a class="btn btn-outline-danger" href="{% url 'linux:gituser' %}">创建账号</a>
+      <a class="btn btn-outline-danger" href="{% url 'linux:resetUser' %}">重置密码</a>
       <a class="btn btn-outline-danger" href="{{ forgeurl }}">登陆git</a></li>
       {% endif %}
     {% endfor %}
