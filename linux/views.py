@@ -10,6 +10,7 @@ from django.conf import settings
 import requests
 from requests.auth import HTTPBasicAuth
 import secrets
+import subprocess
 
 def index(request):
     year = SchoolYear.get_current_year()
@@ -23,7 +24,8 @@ def index(request):
             survey = Survey.objects.filter(course=g.course)
             if (survey.count() > 0):
                 break
-    return render(request, 'linux/index.html', {'survey': survey})
+    forgeurl = settings.FORGE_URL
+    return render(request, 'linux/index.html', {'survey': survey, 'forgeurl': forgeurl})
 
 def in_course(request):
     if 'linux' in request.session:
@@ -41,6 +43,27 @@ def in_course(request):
                 return True
     return false
 
+def addLinuxUser(request, sshkey):
+    username = request.session['schoolid']
+    remote_host = settings.FORGE_SSH
+    try:
+        command = (
+            f"ssh -t pluto@{remote_host} "
+            f"'/home/pluto/manage_user.sh \"{username}\" \"{sshkey}\"'"
+        )
+
+        result = subprocess.run(
+            command,
+            shell=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+        return result.returncode
+    except Exception as e:
+        return -1
+
+
 def pubkey(request):
     if not in_course(request):
         raise HttpResponseForbidden("用户没有权限")
@@ -57,7 +80,15 @@ def pubkey(request):
             key.answer = form.cleaned_data['pubkey']
             key.atime = timezone.now()
             key.save()
-            messages.success(request, "公钥保存成功")
+            result = addLinuxUser(request, key.answer)
+            if result == 0:
+                messages.success(request, "公钥保存成功")
+            if result == 2:
+                messages.error(request, "公钥格式错误")
+            if result == 3:
+                messages.error(request, "建立用户失败")
+            if result == -1:
+                messages.error(request, "连接服务器失败")
             return HttpResponseRedirect(reverse('linux:index'))
     form = PubkeyForm()
     form.fields['stu_id'].initial = request.session['schoolid']
@@ -85,8 +116,3 @@ def gituser(request):
     else:
         messages.error(request, "用户建立失败")
         return HttpResponseRedirect(reverse('linux:index'))
-
-def gitlogin(request):
-    if not in_course(request):
-        raise HttpResponseForbidden("用户没有权限")
-    return redirect(f"{settings.FORGE_URL}")

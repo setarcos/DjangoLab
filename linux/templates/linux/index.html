@@ -14,17 +14,17 @@
 {% endfor %}
 </ul>
 {% endif %}
-  <div class="panel-heading"> 课程仪表盘 </div>
+<div class="panel-heading"> <h3>课程仪表盘</h3> </div>
   {% if survey %}
     {% for s in survey %}
       {% if s.flag == 1 %}
-      <li>设置登陆公钥：
+      <li style="margin-bottom: 10px;">设置登陆公钥：
       <a class="btn btn-outline-danger" href="{% url 'linux:pubkey' %}">上传公钥</a></li>
       {% endif %}
       {% if s.flag == 2 %}
-      <li>创建 git 账号：
+      <li style="margin-bottom: 10px;">创建 git 账号：
       <a class="btn btn-outline-danger" href="{% url 'linux:gituser' %}">创建账号</a>
-      <a class="btn btn-outline-danger" href="{% url 'linux:gitlogin' %}">登陆git</a></li>
+      <a class="btn btn-outline-danger" href="{{ forgeurl }}">登陆git</a></li>
       {% endif %}
     {% endfor %}
   {% endif %}
