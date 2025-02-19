@@ -32,8 +32,8 @@ class SchoolYear(models.Model):
         verbose_name="学年"
         verbose_name_plural="学年"
     name = models.CharField(max_length=10, verbose_name="学期")
-    start = models.DateField(default='2022-01-01', verbose_name="起始时间")
-    end = models.DateField(default='2022-01-01', verbose_name="结束时间")
+    start = models.DateField(default=timezone.now().date(), verbose_name="起始时间")
+    end = models.DateField(default=timezone.now().date(), verbose_name="结束时间")
     def __str__(self):
         return self.name
 
