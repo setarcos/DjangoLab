@@ -7,4 +7,5 @@ urlpatterns = [
     path('pubkey', views.pubkey, name='pubkey'),
     path('gituser', views.gituser, name='gituser'),
     path('resetuser', views.resetUser, name='resetUser'),
+    path('diff', views.showDiff, name='showDiff'),
 ]

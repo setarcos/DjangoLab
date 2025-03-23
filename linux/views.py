@@ -63,6 +63,39 @@ def addLinuxUser(request, sshkey):
     except Exception as e:
         return -1
 
+def showDiff(request):
+    if not in_course(request):
+        raise HttpResponseForbidden("用户没有权限")
+    username = request.session['schoolid']
+    remote_host = settings.FORGE_SSH
+    try:
+        command = (
+            f"ssh -t pluto@{remote_host} "
+            f"'sudo diff -urN /home/pluto/vim.good /home/{username}/vim.learn'"
+        )
+
+        result = subprocess.run(
+            command,
+            shell=True,
+            capture_output=True,
+            text=True
+        )
+        output = result.stdout
+        error = result.stderr
+
+        if result.returncode == 1:
+            lines = output.splitlines()
+            output = '\n'.join(lines[3:])
+            return render(request, 'linux/diff.html', {'output': output})
+        if result.returncode == 0:
+            messages.success(request, "作业完成")
+        if result.returncode == 2:
+            messages.error(request, f"比较失败：{error}")
+
+        return HttpResponseRedirect(reverse('linux:index'))
+    except Exception as e:
+        messages.error(request, f"命令异常：{str(e)}")
+        return HttpResponseRedirect(reverse('linux:index'))
 
 def pubkey(request):
     if not in_course(request):

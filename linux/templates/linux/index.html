@@ -27,6 +27,10 @@
       <a class="btn btn-outline-danger" href="{% url 'linux:resetUser' %}">重置密码</a>
       <a class="btn btn-outline-danger" href="{{ forgeurl }}" target="_blank" rel="noopener noreferrer">登陆git</a></li>
       {% endif %}
+      {% if s.flag == 3 %}
+      <li style="margin-bottom: 10px;">检查 VIM 作业：
+      <a class="btn btn-outline-danger" href="{% url 'linux:showDiff' %}">检查</a>
+      {% endif %}
     {% endfor %}
   {% endif %}
 </div>

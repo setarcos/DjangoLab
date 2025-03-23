@@ -7,9 +7,10 @@ class Survey(models.Model):
         verbose_name="调查问题"
         verbose_name_plural="调查问题"
     SurveyType = [
-            (1, "上传公钥"),
-            (2, "创建 git 账号"),
-            ]
+        (1, "上传公钥"),
+        (2, "创建 git 账号"),
+        (3, "检查 VIM 作业"),
+    ]
     course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name="课程")
     flag = models.IntegerField(default=0, verbose_name="类别", choices=SurveyType)
     sweek = models.IntegerField(default=1, verbose_name="开始周")

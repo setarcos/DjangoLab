@@ -1,0 +1,12 @@
+{% extends 'nav.html' %}
+{% block subtitle %}-作业结果{% endblock %}
+
+{% block main %}
+<div class="container">
+<div class="panel-heading"> <h3> VIM 作业还需修改的部分</h3> </div>
+  {% if output %}
+  <pre>{{output}}</pre>
+  {% endif %}
+</div>
+{% endblock %}
+{% block ac2 %}active{% endblock %}
