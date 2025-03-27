@@ -8,4 +8,5 @@ urlpatterns = [
     path('gituser', views.gituser, name='gituser'),
     path('resetuser', views.resetUser, name='resetUser'),
     path('diff', views.showDiff, name='showDiff'),
+    path('vimcp', views.copyViHW, name='vimcp'),
 ]

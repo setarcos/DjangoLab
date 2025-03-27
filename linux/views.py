@@ -46,10 +46,11 @@ def in_course(request):
 def addLinuxUser(request, sshkey):
     username = request.session['schoolid']
     remote_host = settings.FORGE_SSH
+    remote_user = settings.SSH_USER
     try:
         command = (
-            f"ssh -t pluto@{remote_host} "
-            f"'/home/pluto/manage_user.sh \"{username}\" \"{sshkey}\"'"
+            f"ssh -t {remote_user}@{remote_host} "
+            f"'/home/{remote_user}/manage_user.sh \"{username}\" \"{sshkey}\"'"
         )
 
         result = subprocess.run(
@@ -68,10 +69,11 @@ def showDiff(request):
         raise HttpResponseForbidden("用户没有权限")
     username = request.session['schoolid']
     remote_host = settings.FORGE_SSH
+    remote_user = settings.SSH_USER
     try:
         command = (
-            f"ssh -t pluto@{remote_host} "
-            f"'sudo diff -urN /home/pluto/vim.good /home/{username}/vim.learn'"
+            f"ssh -t {remote_user}@{remote_host} "
+            f"'sudo diff -urN /home/{remote_user}/vim.good /home/{username}/vim.learn'"
         )
 
         result = subprocess.run(
@@ -91,6 +93,36 @@ def showDiff(request):
             messages.success(request, "作业完成")
         if result.returncode == 2:
             messages.error(request, f"比较失败：{error}")
+
+        return HttpResponseRedirect(reverse('linux:index'))
+    except Exception as e:
+        messages.error(request, f"命令异常：{str(e)}")
+        return HttpResponseRedirect(reverse('linux:index'))
+
+def copyViHW(request):
+    if not in_course(request):
+        raise HttpResponseForbidden("用户没有权限")
+    username = request.session['schoolid']
+    remote_host = settings.FORGE_SSH
+    remote_user = settings.SSH_USER
+    try:
+        command = (
+            f"ssh -t {remote_user}@{remote_host} "
+            f"'sudo cp /home/{remote_user}/vim.learn /home/{username}/vim.learn; sudo chown {username}:{username} /home/{username}/vim.learn'"
+        )
+
+        result = subprocess.run(
+            command,
+            shell=True,
+            capture_output=True,
+            text=True
+        )
+        error = result.stderr
+
+        if result.returncode == 0:
+            messages.success(request, "作业下发完成")
+        else:
+            messages.error(request, f"作业下发失败: {error}")
 
         return HttpResponseRedirect(reverse('linux:index'))
     except Exception as e:

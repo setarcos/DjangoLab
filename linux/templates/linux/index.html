@@ -28,7 +28,8 @@
       <a class="btn btn-outline-danger" href="{{ forgeurl }}" target="_blank" rel="noopener noreferrer">登陆git</a></li>
       {% endif %}
       {% if s.flag == 3 %}
-      <li style="margin-bottom: 10px;">检查 VIM 作业：
+      <li style="margin-bottom: 10px;">VIM 作业（接收后在 SSH 服务器个人目录中）：
+      <a class="btn btn-outline-danger" href="{% url 'linux:vimcp' %}">接收</a>
       <a class="btn btn-outline-danger" href="{% url 'linux:showDiff' %}">检查</a>
       {% endif %}
     {% endfor %}
