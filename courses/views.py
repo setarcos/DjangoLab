@@ -371,14 +371,19 @@ def evaDayView(request, group_id):
         week = course.week / 10 - 1 # Weekday
         delta = (nweek - 1) * 7 + week
         edate = course.year.start + timedelta(days=delta)
+    if (nweek == -1):
+        edate = course.year.start
+        day_count = 7 * 18
+    else:
+        day_count = 1
     initials = {}
     initials['edate'] = edate
     initials['nweek'] = nweek
     form = EvaDayForm(initials)
     history = list(StudentGroup.objects.filter(group=group_id).order_by('seat'))
     for i in range(len(history)):
-        history[i].log = list(StudentLog.objects.filter(group=group_id,stu_id=history[i].stu_id,note_time__gte=edate,note_time__lte=edate + timedelta(days=1)))
-    return render(request, 'courses/eva_day.html', {'form': form, 'hist': history})
+        history[i].log = list(StudentLog.objects.filter(group=group_id,stu_id=history[i].stu_id,note_time__gte=edate,note_time__lte=edate + timedelta(days=day_count)))
+    return render(request, 'courses/eva_day.html', {'form': form, 'hist': history, 'show_date': day_count>1})
 
 def delEva(request, pk):
     log = get_object_or_404(StudentLog, pk=pk)

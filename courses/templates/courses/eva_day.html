@@ -25,7 +25,13 @@
            <td>{{ g.seat }}</td><td>
                <table class="table table-course">
                    {% for n in g.log %}
-                   <tr><td>{{ n.note }}</td><td class="d-none d-lg-table-cell" width="35%">{{ n.note_time|date:"H:i:s" }}</td></tr>
+                   <tr><td>{{ n.note }}</td><td class="d-none d-lg-table-cell" width="35%">
+                        {% if show_date %}
+                            {{ n.note_time|date:"Y-m-d H:i:s" }}
+                        {% else %}
+                            {{ n.note_time|date:"H:i:s" }}
+                        {% endif %}
+                   </td></tr>
                    {% endfor %}
                </table>
         </td></tr>
